@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - VITE_API_BASE_URL=http://localhost:8000
+      - VITE_API_URL=http://localhost:8000/api/v1
     depends_on:
       - backend
 
@@ -20,8 +20,6 @@ services:
       - .env
     depends_on:
       - postgres
-    volumes:
-      - ./backend:/app
 
   postgres:
     image: postgres:15
@@ -29,7 +27,7 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: dermai
-      POSTGRES_PASSWORD: dermai_password
+      POSTGRES_PASSWORD: dermai
       POSTGRES_DB: dermai
     volumes:
       - postgres_data:/var/lib/postgresql/data
