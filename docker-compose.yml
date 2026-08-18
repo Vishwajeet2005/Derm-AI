@@ -1,36 +1,47 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
+  postgres:
+    image: postgres:15
+    container_name: dermai_postgres
+    restart: always
     environment:
-      - VITE_API_URL=http://localhost:8000/api/v1
-    depends_on:
-      - backend
+      POSTGRES_USER: dermai
+      POSTGRES_PASSWORD: dermai
+      POSTGRES_DB: dermai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   backend:
     build:
       context: ./backend
+    container_name: dermai_backend
+    restart: always
     ports:
       - "8000:8000"
     env_file:
       - .env
     depends_on:
       - postgres
-
-  postgres:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: dermai
-      POSTGRES_PASSWORD: dermai
-      POSTGRES_DB: dermai
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: dermai_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_data:
