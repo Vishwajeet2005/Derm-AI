@@ -1,8 +1,8 @@
 import os
+import logging
 import firebase_admin
 from firebase_admin import credentials, firestore
-from app.core.config import settings
-import logging
+from .config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -10,16 +10,18 @@ db = None
 
 def init_firebase():
     global db
-    try:
-        if os.path.exists(settings.FIREBASE_CREDENTIALS_PATH):
+    if os.path.exists(settings.FIREBASE_CREDENTIALS_PATH):
+        try:
             cred = credentials.Certificate(settings.FIREBASE_CREDENTIALS_PATH)
             firebase_admin.initialize_app(cred)
             db = firestore.client()
             logger.info("Firebase initialized successfully.")
-        else:
-            logger.warning(f"Firebase credentials not found at {settings.FIREBASE_CREDENTIALS_PATH}. Firebase features will be disabled.")
-    except Exception as e:
-        logger.error(f"Error initializing Firebase: {e}")
+        except Exception as e:
+            logger.error(f"Failed to initialize Firebase: {e}")
+            db = None
+    else:
+        logger.warning("Firebase credentials not found. Progression tracking will use mock storage.")
+        db = None
 
 def get_firestore_db():
     return db
