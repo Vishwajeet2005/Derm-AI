@@ -2,8 +2,9 @@ services:
   - type: web
     name: dermai-backend
     env: docker
-    dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    region: oregon
     plan: free
     healthCheckPath: /
     envVars:
@@ -14,15 +15,15 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM
-        value: HS256
+        value: "HS256"
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
-        value: 1440
-      # Make sure to add FIREBASE_CREDENTIALS_PATH or its JSON content directly in the Render Dashboard later
+        value: "1440"
       - key: ALLOWED_ORIGINS
-        value: https://your-vercel-frontend-url.vercel.app
+        value: "*" # Once Vercel is deployed, change this to your Vercel URL
 
-databases:
-  - name: dermai-db
+  - type: psql
+    name: dermai-db
+    region: oregon
+    plan: free
     databaseName: dermai
     user: dermai
-    plan: free
