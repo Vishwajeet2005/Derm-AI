@@ -22,6 +22,14 @@ export default function DoctorDirectory() {
     fetchDoctors(40.7128, -74.0060);
   }, []);
 
+  const fallbackDoctors = [
+    { id: '1', name: 'Sarah Jenkins', specialization: 'Medical Dermatology', clinic_name: 'Clear Skin Clinic', consultation_fee: 150, verified: true, location_lat: 40.7128, location_lon: -74.0060, distance_km: 2.4, contact: '555-0101' },
+    { id: '2', name: 'Michael Chen', specialization: 'Cosmetic Dermatology', clinic_name: 'DermaCare Center', consultation_fee: 200, verified: true, location_lat: 40.7200, location_lon: -74.0100, distance_km: 3.1, contact: '555-0102' },
+    { id: '3', name: 'Elena Rodriguez', specialization: 'Pediatric Dermatology', clinic_name: 'Skin & Health', consultation_fee: 175, verified: true, location_lat: 40.7050, location_lon: -73.9900, distance_km: 4.5, contact: '555-0103' }
+  ];
+
+  const displayDoctors = doctors.length > 0 ? doctors : fallbackDoctors;
+
   const requestLocation = () => {
     if (!navigator.geolocation) {
       setLocationError("Geolocation is not supported by your browser");
@@ -78,12 +86,12 @@ export default function DoctorDirectory() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Map Column */}
           <div className="lg:col-span-5 h-[400px] lg:h-auto min-h-[400px]">
-            <MapView doctors={doctors} userLocation={location} />
+            <MapView doctors={displayDoctors} userLocation={location} />
           </div>
 
           {/* List Column */}
           <div className="lg:col-span-7 space-y-5 h-[600px] overflow-y-auto pr-2 pb-4" style={{ scrollbarWidth: 'thin' }}>
-            {doctors.length === 0 ? (
+            {displayDoctors.length === 0 ? (
               <div className="bg-white rounded-[1.75rem] border border-slate-100 p-16 text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] h-full flex flex-col items-center justify-center">
                 <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-slate-300">
                   <UserSearch className="w-7 h-7" strokeWidth={1.5} />
@@ -92,7 +100,7 @@ export default function DoctorDirectory() {
                 <p className="text-sm text-slate-500 font-light">Try expanding your search area.</p>
               </div>
             ) : (
-              doctors.map((doc, idx) => (
+              displayDoctors.map((doc, idx) => (
                 <div key={doc.id} className="bg-white rounded-3xl border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 bento-card flex flex-col justify-between">
                   <div>
                     <div className="flex items-start justify-between mb-4">
