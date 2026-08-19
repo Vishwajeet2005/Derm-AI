@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.firebase import init_firebase
 from app.db.database import engine, Base
+import traceback
 
 # Import Routers
 from app.api.auth import router as auth_router
@@ -13,7 +15,10 @@ from app.api.doctors import router as doctors_router
 from app.api.conditions import router as conditions_router
 
 # Create tables
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print("Database connection failed on startup:", e)
 
 app = FastAPI(title="DermAI API")
 
@@ -26,6 +31,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error", "traceback": traceback.format_exc()},
+        headers={"Access-Control-Allow-Origin": request.headers.get("origin", "*")}
+    )
 
 @app.on_event("startup")
 async def startup_event():
