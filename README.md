@@ -6,7 +6,7 @@
 
 ---
 
-## 📖 Overview
+## Overview
 
 **DermAI** is a comprehensive, state-of-the-art web application engineered to democratize access to dermatological care. By leveraging a robust **EfficientNetB3** deep learning model, DermAI allows users to seamlessly upload photographs of skin conditions and receive instantaneous, AI-powered diagnostic insights.
 
@@ -16,18 +16,18 @@ To bridge the gap between digital diagnosis and actionable medical care, DermAI 
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-- 🧠 **Advanced AI Diagnostics:** Powered by a customized EfficientNetB3 Convolutional Neural Network (CNN) architecture, delivering high-confidence predictions and differential diagnosis candidates.
-- 🌍 **Skin Tone Equity (Fitzpatrick Scale):** Algorithmic fairness enforced through balanced training data across all six Fitzpatrick skin types, mitigating diagnostic bias.
+- **Advanced AI Diagnostics:** Powered by a customized EfficientNetB3 Convolutional Neural Network (CNN) architecture, delivering high-confidence predictions and differential diagnosis candidates.
+- **Skin Tone Equity (Fitzpatrick Scale):** Algorithmic fairness enforced through balanced training data across all six Fitzpatrick skin types, mitigating diagnostic bias.
 - 🔬 **Extensive Condition Library:** Capable of classifying 390+ unique skin conditions, with specialized flags for malignant, potentially malignant, and tropical diseases.
-- 🗣️ **Multilingual Voice Explanations:** Web Speech API integration translates complex medical terminology into easily understandable, spoken explanations in the user's preferred language (English, Hindi, Tamil, Telugu, Marathi, Kannada).
-- 📈 **Longitudinal Progression Tracking:** Real-time visual tracking of skin conditions over weeks or months, allowing patients and clinicians to monitor healing or worsening trends.
-- 🏥 **Hyperlocal Doctor Directory:** Integrates the Haversine formula and geolocation APIs to instantly route patients to verified, nearby dermatologists, complete with consultation fees and insurance compatibility.
+- **Multilingual Voice Explanations:** Web Speech API integration translates complex medical terminology into easily understandable, spoken explanations in the user's preferred language (English, Hindi, Tamil, Telugu, Marathi, Kannada).
+- **Longitudinal Progression Tracking:** Real-time visual tracking of skin conditions over weeks or months, allowing patients and clinicians to monitor healing or worsening trends.
+- **Hyperlocal Doctor Directory:** Integrates the Haversine formula and geolocation APIs to instantly route patients to verified, nearby dermatologists, complete with consultation fees and insurance compatibility.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 DermAI is built on a modern, decoupled microservices architecture deployed via Docker. 
 
@@ -57,7 +57,7 @@ DermAI is built on a modern, decoupled microservices architecture deployed via D
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
@@ -92,7 +92,7 @@ DermAI is built on a modern, decoupled microservices architecture deployed via D
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 dermai/
@@ -116,7 +116,7 @@ dermai/
 
 ---
 
-## 🛡️ License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
