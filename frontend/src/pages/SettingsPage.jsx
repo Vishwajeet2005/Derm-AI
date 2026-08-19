@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axiosClient from '../api/axiosClient';
 import { FiMapPin, FiSave, FiCheckCircle } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
 
 const SettingsPage = () => {
   const { user, token, login } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -81,14 +83,14 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] flex flex-col pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto w-full">
         <div className="mb-8">
-          <h1 className="text-3xl font-light text-gray-900 tracking-tight">Profile Settings</h1>
-          <p className="mt-2 text-sm text-gray-500">Manage your personal information and preferences.</p>
+          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">{t('nav.settings')}</p>
+          <h1 className="text-3xl font-light text-[#18181b] tracking-tight">{t('settings.title')}</h1>
         </div>
 
-        <div className="bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl border border-white/20 overflow-hidden">
+        <div className="bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] rounded-[1.75rem] border border-slate-100 overflow-hidden">
           <div className="p-8">
             {message && (
               <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
@@ -209,7 +211,7 @@ const SettingsPage = () => {
                   {loading ? 'Saving...' : (
                     <>
                       <FiSave className="mr-2 h-4 w-4" />
-                      Save Changes
+                      {t('settings.updateBtn')}
                     </>
                   )}
                 </button>
