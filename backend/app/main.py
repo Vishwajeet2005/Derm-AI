@@ -20,7 +20,14 @@ try:
 except Exception as e:
     print("Database connection failed on startup:", e)
 
+from fastapi.staticfiles import StaticFiles
+import os
+
 app = FastAPI(title="DermAI API")
+
+# Ensure uploads dir exists before mounting
+os.makedirs("uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Configure CORS
 origins = settings.ALLOWED_ORIGINS.split(",") if settings.ALLOWED_ORIGINS else ["*"]

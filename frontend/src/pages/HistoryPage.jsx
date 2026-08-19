@@ -27,6 +27,15 @@ export default function HistoryPage() {
     </div>
   );
 
+  const getImageUrl = (path) => {
+    if (!path) return '/assets/skin_detection.jpg';
+    if (path.startsWith('uploads/')) {
+      const baseUrl = import.meta.env.VITE_API_URL.replace('/api/v1', '');
+      return `${baseUrl}/${path}`;
+    }
+    return path;
+  };
+
   return (
     <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] py-16">
       <div className="section-container">
@@ -52,10 +61,10 @@ export default function HistoryPage() {
               <div key={d.id} className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 md:p-8 flex flex-col md:flex-row gap-6 bento-card">
                 <div className="w-full md:w-36 h-36 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
                   <img
-                    src={d.image_path || 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=300&q=80'}
+                    src={getImageUrl(d.image_path)}
                     alt="Assessment"
                     className="w-full h-full object-cover"
-                    onError={(e) => e.target.src='https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=300&q=80'}
+                    onError={(e) => e.target.src='/assets/skin_detection.jpg'}
                   />
                 </div>
                 <div className="flex-1 min-w-0">
