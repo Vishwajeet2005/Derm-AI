@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 export default function ProgressionTracker({ entries = [] }) {
   if (!entries.length) {
@@ -23,6 +24,11 @@ export default function ProgressionTracker({ entries = [] }) {
     return map[s?.toLowerCase()] || { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-100' };
   };
 
+  const severityToNum = (s) => {
+    const map = { mild: 1, moderate: 2, severe: 3 };
+    return map[s?.toLowerCase()] || 0;
+  };
+
   const getImageUrl = (path) => {
     if (!path) return '/assets/photo_tracking.jpg';
     if (path.startsWith('uploads/')) {
@@ -32,44 +38,89 @@ export default function ProgressionTracker({ entries = [] }) {
     return path;
   };
 
+  const chartData = [...entries].reverse().map(e => ({
+    date: new Date(e.recorded_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+    severity: severityToNum(e.severity)
+  }));
+
   return (
-    <div className="relative ml-5 border-l-2 border-slate-200 space-y-8">
-      {entries.map((entry, idx) => {
-        const s = severity(entry.severity);
-        return (
-          <div key={entry.id || idx} className="relative pl-10">
-            <div className="absolute w-3.5 h-3.5 bg-[#84a59d] rounded-full -left-[8px] top-2 border-[3px] border-white shadow-sm" />
-            <div className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 flex flex-col md:flex-row gap-6 bento-card">
-              <div className="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
-                <img
-                  src={getImageUrl(entry.image_url)}
-                  alt="Skin condition"
-                  className="w-full h-full object-cover"
-                  onError={(e) => e.target.src='/assets/photo_tracking.jpg'}
-                />
-              </div>
-              <div className="flex-1">
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-1.5">
-                  {new Date(entry.recorded_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
-                </p>
-                <div className="flex items-center gap-3 mb-3">
-                  <h4 className="text-lg font-light text-[#18181b]">{entry.diagnosis_name}</h4>
-                  <span className={`text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-md border ${s.bg} ${s.text} ${s.border}`}>
-                    {entry.severity}
-                  </span>
+    <div className="space-y-12">
+      {/* Analytics Chart */}
+      <div className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-8">
+        <h3 className="text-lg font-medium text-[#18181b] mb-6">Health Analytics</h3>
+        <div className="h-[250px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#94a3b8' }} dy={10} />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fontSize: 12, fill: '#94a3b8' }} 
+                ticks={[1, 2, 3]} 
+                tickFormatter={(val) => {
+                  if (val === 1) return 'Mild';
+                  if (val === 2) return 'Mod';
+                  if (val === 3) return 'Sev';
+                  return '';
+                }} 
+              />
+              <Tooltip 
+                contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                labelStyle={{ fontWeight: 'bold', color: '#18181b', marginBottom: '0.25rem' }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="severity" 
+                stroke="#6b8c84" 
+                strokeWidth={3}
+                dot={{ r: 4, fill: '#6b8c84', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6, fill: '#6b8c84', stroke: '#fff', strokeWidth: 2 }} 
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Timeline */}
+      <div className="relative ml-5 border-l-2 border-slate-200 space-y-8">
+        {entries.map((entry, idx) => {
+          const s = severity(entry.severity);
+          return (
+            <div key={entry.id || idx} className="relative pl-10">
+              <div className="absolute w-3.5 h-3.5 bg-[#84a59d] rounded-full -left-[8px] top-2 border-[3px] border-white shadow-sm" />
+              <div className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 flex flex-col md:flex-row gap-6 bento-card">
+                <div className="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
+                  <img
+                    src={getImageUrl(entry.image_url)}
+                    alt="Skin condition"
+                    className="w-full h-full object-cover"
+                    onError={(e) => e.target.src='/assets/photo_tracking.jpg'}
+                  />
                 </div>
-                {entry.clinician_notes ? (
-                  <div className="bg-[#f8fafc] px-4 py-3 rounded-xl border border-slate-100">
-                    <p className="text-sm text-slate-600 font-light leading-relaxed italic">"{entry.clinician_notes}"</p>
+                <div className="flex-1">
+                  <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-1.5">
+                    {new Date(entry.recorded_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </p>
+                  <div className="flex items-center gap-3 mb-3">
+                    <h4 className="text-lg font-light text-[#18181b]">{entry.diagnosis_name}</h4>
+                    <span className={`text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-md border ${s.bg} ${s.text} ${s.border}`}>
+                      {entry.severity}
+                    </span>
                   </div>
-                ) : (
-                  <p className="text-xs text-slate-400 font-light italic">No notes recorded.</p>
-                )}
+                  {entry.clinician_notes ? (
+                    <div className="bg-[#f8fafc] px-4 py-3 rounded-xl border border-slate-100">
+                      <p className="text-sm text-slate-600 font-light leading-relaxed italic">"{entry.clinician_notes}"</p>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-400 font-light italic">No notes recorded.</p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
