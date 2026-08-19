@@ -1,15 +1,61 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
+  --color-slate-blue-50: #f1f5f9;
+  --color-slate-blue-100: #e2e8f0;
+  --color-slate-blue-500: #64748b;
+  --color-slate-blue-600: #475569;
+  --color-slate-blue-700: #334155;
+  --color-sage-green-500: #84a59d;
+  --color-sage-green-600: #6b8c84;
+  --color-charcoal-800: #27272a;
+  --color-charcoal-900: #18181b;
+  
+  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fade-in 1s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f9fafb;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: var(--color-charcoal-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.bento-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
