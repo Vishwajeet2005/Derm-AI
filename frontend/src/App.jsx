@@ -12,6 +12,8 @@ import DiagnosePage from './pages/DiagnosePage';
 import HistoryPage from './pages/HistoryPage';
 import ProgressionPage from './pages/ProgressionPage';
 import DoctorsPage from './pages/DoctorsPage';
+import SettingsPage from './pages/SettingsPage';
+import SymptomChecker from './pages/SymptomChecker';
 
 function App() {
   return (
@@ -56,6 +58,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <DoctorsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/interview" 
+                element={
+                  <ProtectedRoute>
+                    <SymptomChecker />
                   </ProtectedRoute>
                 } 
               />
