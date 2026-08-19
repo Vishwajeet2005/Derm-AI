@@ -69,3 +69,7 @@ class DermAIModel:
             }
 
 model_instance = DermAIModel()
+
+def predict(image_array):
+    """Module-level predict function that delegates to the singleton model instance."""
+    return model_instance.predict(image_array)
