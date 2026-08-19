@@ -4,8 +4,8 @@ from ..db.database import get_db
 from ..db.models import Diagnosis, User
 from .deps import get_current_user
 from ..ml.preprocess import preprocess_image
-from ..ml.model import model_instance
-from ..ml.diagnostic_framework import get_condition_details, severity_assessment, urgency_flag
+from ..ml.model import predict
+from ..ml.diagnostic_framework import layer_1_condition_details, layer_2_severity, layer_3_urgency
 from ..ml.voice_explainer import generate_explanation
 import shutil
 import os
@@ -37,16 +37,16 @@ async def create_diagnosis(
         img_array = preprocess_image(img_bytes)
         
         # 2. Predict
-        prediction = model_instance.predict(img_array)
+        prediction = predict(img_array)
         top_1_class = prediction["top_1_class"]
         confidence = prediction["top_1_confidence"]
         top_3 = prediction["top_3_list"]
         
         # 3. Diagnostic Framework
-        condition_details = get_condition_details(db, top_1_class)
-        severity = severity_assessment(confidence)
+        condition_details = layer_1_condition_details(top_1_class)
+        severity = layer_2_severity(confidence)
         category = condition_details.get("category", "standard")
-        urgency = urgency_flag(category)
+        urgency = layer_3_urgency(category)
         
         # 4. Explanation Generation
         desc = condition_details.get("description", "A skin condition requiring monitoring.")

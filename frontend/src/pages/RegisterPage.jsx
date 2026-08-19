@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { Activity, Loader2, Info } from 'lucide-react';
+import { Loader2, HelpCircle } from 'lucide-react';
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    language_pref: 'en',
-    fitzpatrick_type: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', password: '', language_pref: 'en', fitzpatrick_type: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,15 +13,10 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
-      const payload = { ...formData };
-      if (payload.fitzpatrick_type) {
-        payload.fitzpatrick_type = parseInt(payload.fitzpatrick_type);
-      } else {
-        delete payload.fitzpatrick_type;
-      }
-      
+      const payload = { ...form };
+      if (payload.fitzpatrick_type) payload.fitzpatrick_type = parseInt(payload.fitzpatrick_type);
+      else delete payload.fitzpatrick_type;
       await axiosClient.post('/auth/register', payload);
       navigate('/login');
     } catch (err) {
@@ -37,115 +26,93 @@ export default function RegisterPage() {
     }
   };
 
+  const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
+
   return (
-    <div className="flex min-h-screen bg-white font-sans selection:bg-[#6b8c84] selection:text-white">
-      {/* Left Side - Image */}
-      <div className="hidden lg:block lg:w-1/2 relative">
-        <img 
-          src="https://images.unsplash.com/photo-1612349317150-e410f624c427?q=80&w=1200&auto=format&fit=crop" 
-          alt="Dermatologist consultation" 
+    <div className="flex min-h-screen">
+      {/* Left — Image */}
+      <div className="hidden lg:block lg:w-[55%] relative">
+        <img
+          src="https://images.pexels.com/photos/5473177/pexels-photo-5473177.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          alt="Skin examination"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#334155]/20 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1e293b]/30 to-transparent" />
+        <div className="absolute bottom-12 left-12 right-12 max-w-md">
+          <blockquote className="text-white/90 text-lg font-light leading-relaxed mb-4">
+            "Skin disease affects nearly one-third of the world's population. Accessible screening is a crucial first step toward treatment."
+          </blockquote>
+          <p className="text-white/60 text-sm font-medium">— World Health Organization</p>
+        </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 px-6 sm:px-12 lg:px-24 bg-slate-50 overflow-y-auto">
-        <div className="w-full max-w-md mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <Link to="/" className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-[#334155] rounded-xl flex items-center justify-center">
-              <Activity className="w-5 h-5 text-white" strokeWidth={2} />
+      {/* Right — Form */}
+      <div className="w-full lg:w-[45%] flex flex-col justify-center py-12 px-8 sm:px-16 lg:px-20 bg-white overflow-y-auto">
+        <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+          <Link to="/" className="flex items-center gap-2.5 mb-12">
+            <div className="w-8 h-8 bg-[#334155] rounded-lg flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" /><path d="M12 8v8" /><path d="M8 12h8" />
+              </svg>
             </div>
-            <span className="text-xl font-medium tracking-tight text-[#27272a]">DermAI</span>
+            <span className="text-lg font-semibold text-[#27272a]">DermAI</span>
           </Link>
 
-          <h2 className="text-3xl font-light tracking-tight text-[#27272a] mb-2">
-            Patient Registration
-          </h2>
-          <p className="text-sm text-slate-500 mb-8 font-light">
-            Create your secure clinical profile. <br/>
+          <h1 className="text-3xl font-light text-[#18181b] mb-2">Create your account</h1>
+          <p className="text-sm text-slate-500 font-light mb-10">
+            Start monitoring your skin health today.{' '}
             <Link to="/login" className="font-medium text-[#6b8c84] hover:text-[#52736b] transition-colors">
-              Already a patient? Log in here.
+              Already have an account?
             </Link>
           </p>
 
-          <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium border border-red-100">
-                  {error}
-                </div>
-              )}
-              
-              <div>
-                <label className="block text-sm font-medium text-[#475569] mb-1">Full Legal Name</label>
-                <input
-                  type="text"
-                  required
-                  className="block w-full rounded-xl border-slate-200 py-2.5 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                />
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-xl text-sm font-medium border border-red-100">
+                {error}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#475569] mb-1">Email Address</label>
-                <input
-                  type="email"
-                  required
-                  className="block w-full rounded-xl border-slate-200 py-2.5 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#475569] mb-1">Secure Password</label>
-                <input
-                  type="password"
-                  required
-                  className="block w-full rounded-xl border-slate-200 py-2.5 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50"
-                  value={formData.password}
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-[#475569]">Clinical Skin Tone (Optional)</label>
-                  <div className="group relative">
-                    <Info className="w-4 h-4 text-slate-400 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-[#27272a] text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                      Helps improve diagnostic accuracy using the standard Fitzpatrick scale.
-                    </div>
+            )}
+            <div>
+              <label className="block text-sm font-medium text-[#475569] mb-1.5">Full Name</label>
+              <input type="text" required className="input-field" value={form.name} onChange={set('name')} placeholder="Dr. Jane Smith" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#475569] mb-1.5">Email</label>
+              <input type="email" required className="input-field" value={form.email} onChange={set('email')} placeholder="you@example.com" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#475569] mb-1.5">Password</label>
+              <input type="password" required className="input-field" value={form.password} onChange={set('password')} placeholder="Minimum 8 characters" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <label className="text-sm font-medium text-[#475569]">Skin Type</label>
+                <span className="text-xs text-slate-400">(optional)</span>
+                <div className="group relative ml-auto">
+                  <HelpCircle className="w-3.5 h-3.5 text-slate-400 cursor-help" />
+                  <div className="absolute bottom-full right-0 mb-2 w-52 p-3 bg-[#1e293b] text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none leading-relaxed">
+                    Your Fitzpatrick skin type helps us provide more accurate assessments for your specific skin tone.
                   </div>
                 </div>
-                <select
-                  className="block w-full rounded-xl border-slate-200 py-2.5 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50"
-                  value={formData.fitzpatrick_type}
-                  onChange={(e) => setFormData({...formData, fitzpatrick_type: e.target.value})}
-                >
-                  <option value="">Skip this step</option>
-                  <option value="1">Type I (Pale white, always burns)</option>
-                  <option value="2">Type II (White, usually burns)</option>
-                  <option value="3">Type III (Light brown, sometimes burns)</option>
-                  <option value="4">Type IV (Moderate brown, rarely burns)</option>
-                  <option value="5">Type V (Dark brown, very rarely burns)</option>
-                  <option value="6">Type VI (Deeply pigmented, never burns)</option>
-                </select>
               </div>
+              <select className="input-field" value={form.fitzpatrick_type} onChange={set('fitzpatrick_type')}>
+                <option value="">Skip for now</option>
+                <option value="1">Type I — Very fair, always burns</option>
+                <option value="2">Type II — Fair, usually burns</option>
+                <option value="3">Type III — Medium, sometimes burns</option>
+                <option value="4">Type IV — Olive, rarely burns</option>
+                <option value="5">Type V — Brown, very rarely burns</option>
+                <option value="6">Type VI — Dark brown, never burns</option>
+              </select>
+            </div>
+            <button type="submit" disabled={loading} className="btn-primary w-full !mt-8">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create Account'}
+            </button>
+          </form>
 
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex w-full justify-center items-center rounded-xl bg-[#334155] py-3.5 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#27272a] focus:outline-none focus:ring-2 focus:ring-[#84a59d] focus:ring-offset-2 disabled:opacity-50 transition-all duration-300"
-                >
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Complete Registration'}
-                </button>
-              </div>
-            </form>
-          </div>
+          <p className="text-xs text-slate-400 font-light mt-8 leading-relaxed text-center">
+            By creating an account, you agree to our Terms of Service and Privacy Policy. DermAI does not replace professional medical advice.
+          </p>
         </div>
       </div>
     </div>

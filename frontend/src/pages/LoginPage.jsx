@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import { useAuth } from '../context/AuthContext';
-import { Activity, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -16,100 +16,78 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const formData = new URLSearchParams();
       formData.append('username', email);
       formData.append('password', password);
-
       const res = await axiosClient.post('/auth/login', formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
-      
       login(res.data.data.token.access_token, res.data.data.user);
       navigate('/diagnose');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to log in. Please check your credentials.');
+      setError(err.response?.data?.detail || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-white font-sans selection:bg-[#6b8c84] selection:text-white">
-      {/* Left Side - Image */}
-      <div className="hidden lg:block lg:w-1/2 relative">
-        <img 
-          src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=1200&auto=format&fit=crop" 
-          alt="Dermatology clinic" 
+    <div className="flex min-h-screen">
+      {/* Left — Image */}
+      <div className="hidden lg:block lg:w-[55%] relative">
+        <img
+          src="https://images.pexels.com/photos/5473186/pexels-photo-5473186.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          alt="Dermatology clinic"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#334155]/20 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1e293b]/30 to-transparent" />
+        <div className="absolute bottom-12 left-12 right-12 max-w-md">
+          <blockquote className="text-white/90 text-lg font-light leading-relaxed mb-4">
+            "Early detection of melanoma increased five-year survival rates to over 99%. A simple skin check can save your life."
+          </blockquote>
+          <p className="text-white/60 text-sm font-medium">— Skin Cancer Foundation</p>
+        </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center py-12 px-6 sm:px-12 lg:px-24 bg-slate-50">
-        <div className="w-full max-w-md mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <Link to="/" className="flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-[#334155] rounded-xl flex items-center justify-center">
-              <Activity className="w-5 h-5 text-white" strokeWidth={2} />
+      {/* Right — Form */}
+      <div className="w-full lg:w-[45%] flex flex-col justify-center py-16 px-8 sm:px-16 lg:px-20 bg-white">
+        <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+          <Link to="/" className="flex items-center gap-2.5 mb-14">
+            <div className="w-8 h-8 bg-[#334155] rounded-lg flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" /><path d="M12 8v8" /><path d="M8 12h8" />
+              </svg>
             </div>
-            <span className="text-xl font-medium tracking-tight text-[#27272a]">DermAI</span>
+            <span className="text-lg font-semibold text-[#27272a]">DermAI</span>
           </Link>
 
-          <h2 className="text-3xl font-light tracking-tight text-[#27272a] mb-2">
-            Patient Portal
-          </h2>
-          <p className="text-sm text-slate-500 mb-8 font-light">
-            Secure access to your dermatological records and assessments. <br/>
+          <h1 className="text-3xl font-light text-[#18181b] mb-2">Welcome back</h1>
+          <p className="text-sm text-slate-500 font-light mb-10">
+            Sign in to access your skin health records.{' '}
             <Link to="/register" className="font-medium text-[#6b8c84] hover:text-[#52736b] transition-colors">
-              New patient? Register here.
+              New here? Create an account
             </Link>
           </p>
 
-          <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium border border-red-100">
-                  {error}
-                </div>
-              )}
-              
-              <div>
-                <label className="block text-sm font-medium text-[#475569] mb-2">Email address</label>
-                <input
-                  type="email"
-                  required
-                  className="block w-full rounded-xl border-slate-200 py-3 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50 transition-colors"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="patient@example.com"
-                />
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-xl text-sm font-medium border border-red-100">
+                {error}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#475569] mb-2">Password</label>
-                <input
-                  type="password"
-                  required
-                  className="block w-full rounded-xl border-slate-200 py-3 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50 transition-colors"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                />
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex w-full justify-center items-center rounded-xl bg-[#334155] py-3.5 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#27272a] focus:outline-none focus:ring-2 focus:ring-[#84a59d] focus:ring-offset-2 disabled:opacity-50 transition-all duration-300"
-                >
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Secure Login'}
-                </button>
-              </div>
-            </form>
-          </div>
+            )}
+            <div>
+              <label className="block text-sm font-medium text-[#475569] mb-1.5">Email</label>
+              <input type="email" required className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#475569] mb-1.5">Password</label>
+              <input type="password" required className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+            </div>
+            <button type="submit" disabled={loading} className="btn-primary w-full !mt-8">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
+            </button>
+          </form>
         </div>
       </div>
     </div>
