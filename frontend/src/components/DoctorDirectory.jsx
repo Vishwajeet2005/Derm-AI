@@ -1,107 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosClient from '../api/axiosClient';
-import { MapPin, Phone, Award, Search, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Star, CheckCircle, Clock } from 'lucide-react';
 
 export default function DoctorDirectory() {
   const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const findNearbyDoctors = () => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          const res = await axiosClient.get(`/doctors/nearby?lat=${latitude}&lon=${longitude}`);
-          setDoctors(res.data.data || []);
-        } catch (err) {
-          setError(err.response?.data?.detail || "Failed to fetch nearby doctors");
-        } finally {
-          setLoading(false);
-        }
-      },
-      (err) => {
-        setError("Unable to retrieve your location. Please ensure location permissions are granted.");
+  useEffect(() => {
+    // In a real app, we'd use geolocation. Using a hardcoded coordinate for demo.
+    const fetchDoctors = async () => {
+      try {
+        const res = await axiosClient.get('/doctors/nearby?lat=40.7128&lon=-74.0060');
+        setDoctors(res.data.data);
+      } catch (err) {
+        console.error('Failed to fetch doctors', err);
+      } finally {
         setLoading(false);
       }
+    };
+    fetchDoctors();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-20">
+        <div className="w-10 h-10 border-4 border-slate-200 border-t-[#84a59d] rounded-full animate-spin"></div>
+      </div>
     );
-  };
+  }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Find a Dermatologist</h2>
-        <p className="text-gray-600 mb-6">Locate verified skin specialists near you for professional consultation.</p>
-        
-        <button 
-          onClick={findNearbyDoctors}
-          disabled={loading}
-          className="inline-flex items-center justify-center space-x-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors shadow-sm disabled:opacity-70"
-        >
-          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <MapPin className="w-5 h-5" />}
-          <span>{loading ? 'Searching...' : 'Use My Location'}</span>
-        </button>
-        {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {doctors.map(doc => (
-          <div key={doc.id} className="border border-gray-200 rounded-lg p-5 hover:border-primary-300 transition-colors bg-gray-50">
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-1">
-                  {doc.name} {doc.verified && <Award className="w-4 h-4 text-blue-500" title="Verified Professional" />}
-                </h3>
-                <p className="text-primary-700 text-sm font-medium">{doc.specialization}</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+      {doctors.map((doc, idx) => (
+        <div key={doc.id} className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] bento-card flex flex-col justify-between">
+          <div>
+            <div className="flex items-start justify-between mb-6">
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-xl font-medium text-[#475569] uppercase border border-slate-100">
+                {doc.name.split(' ').map(n => n[0]).join('')}
               </div>
-              <span className="text-sm font-bold text-gray-500 bg-white px-2 py-1 rounded border border-gray-200">
-                ~{doc.distance_km?.toFixed(1) || '?'} km
-              </span>
-            </div>
-            
-            <p className="text-sm text-gray-700 font-medium mb-1">{doc.clinic_name}</p>
-            <p className="text-xs text-gray-500 mb-4 flex items-start gap-1">
-              <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" /> {doc.address}
-            </p>
-
-            <div className="flex flex-wrap gap-2 mb-4">
-              {doc.languages_spoken?.map(lang => (
-                <span key={lang} className="text-[10px] bg-gray-200 text-gray-700 px-2 py-1 rounded-full uppercase tracking-wider font-bold">
-                  {lang}
-                </span>
-              ))}
-              {doc.insurance_accepted && (
-                <span className="text-[10px] bg-green-100 text-green-800 px-2 py-1 rounded-full uppercase tracking-wider font-bold">
-                  Accepts Insurance
-                </span>
+              {doc.verified && (
+                <div className="bg-[#84a59d]/10 text-[#6b8c84] px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3" />
+                  Verified
+                </div>
               )}
             </div>
 
-            <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-200">
-              <span className="text-sm font-bold text-gray-900">Fee: ${doc.consultation_fee}</span>
-              <a 
-                href={`tel:${doc.contact}`} 
-                className="flex items-center space-x-1 text-primary-600 hover:text-primary-800 text-sm font-bold"
-              >
-                <Phone className="w-4 h-4" /> <span>Call Now</span>
-              </a>
+            <h3 className="text-xl font-medium text-[#27272a] mb-1">Dr. {doc.name}</h3>
+            <p className="text-sm font-medium text-[#84a59d] uppercase tracking-wider mb-4">{doc.specialization}</p>
+            
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center text-slate-500 font-light text-sm">
+                <MapPin className="w-4 h-4 mr-3 text-slate-400" />
+                <span>{doc.clinic_name} <br/> <span className="text-slate-400">{doc.distance_km?.toFixed(1)} miles away</span></span>
+              </div>
+              <div className="flex items-center text-slate-500 font-light text-sm">
+                <Phone className="w-4 h-4 mr-3 text-slate-400" />
+                {doc.contact}
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-      
-      {!loading && !error && doctors.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p>Click the button above to find dermatologists near you.</p>
+
+          <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-1">Consultation</p>
+              <p className="text-[#27272a] font-medium">${doc.consultation_fee}</p>
+            </div>
+            <button className="px-5 py-2.5 bg-[#334155] text-white text-sm font-medium rounded-xl hover:bg-[#27272a] transition-colors">
+              Book Now
+            </button>
+          </div>
+        </div>
+      ))}
+
+      {doctors.length === 0 && (
+        <div className="col-span-full py-20 text-center text-slate-500 font-light">
+          No specialists found in your immediate vicinity.
         </div>
       )}
     </div>

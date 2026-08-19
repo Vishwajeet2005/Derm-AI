@@ -1,101 +1,67 @@
 import React from 'react';
+import { ShieldAlert, AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
 import VoiceExplainer from './VoiceExplainer';
-import { AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react';
 
 export default function DiagnosisResult({ result }) {
   if (!result) return null;
 
-  const { 
-    primary_diagnosis, 
-    confidence_score, 
-    severity, 
-    urgency_flag, 
-    explanation_text,
-    top_3_candidates = [] 
-  } = result;
-
-  const getSeverityColor = (sev) => {
-    switch(sev?.toLowerCase()) {
-      case 'mild': return 'bg-green-100 text-green-800 border-green-200';
-      case 'moderate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'severe': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+  const getUrgencyConfig = (flag) => {
+    switch(flag?.toLowerCase()) {
+      case 'immediate':
+        return { icon: ShieldAlert, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100', text: 'Immediate Attention Required' };
+      case 'urgent':
+        return { icon: AlertTriangle, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-100', text: 'Schedule Consultation Soon' };
+      default:
+        return { icon: CheckCircle2, color: 'text-[#84a59d]', bg: 'bg-[#84a59d]/10', border: 'border-[#84a59d]/20', text: 'Routine Monitoring' };
     }
   };
 
-  const getUrgencyIcon = (urgency) => {
-    switch(urgency?.toLowerCase()) {
-      case 'standard': return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'priority': return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
-      case 'immediate': return <AlertCircle className="w-5 h-5 text-red-500" />;
-      default: return null;
-    }
-  };
-
-  const confidencePercentage = (confidence_score * 100).toFixed(1);
+  const config = getUrgencyConfig(result.urgency_flag);
+  const UrgencyIcon = config.icon;
 
   return (
-    <div className="space-y-6">
-      {/* Primary Result Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div className="flex justify-between items-start mb-4">
+    <div className="w-full bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden animate-fade-in-up">
+      <div className="p-8 border-b border-slate-100">
+        <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Primary Diagnosis</h2>
-            <h1 className="text-2xl font-bold text-gray-900">{primary_diagnosis}</h1>
+            <p className="text-sm font-medium text-slate-400 uppercase tracking-widest mb-2">Primary Assessment</p>
+            <h2 className="text-3xl font-light text-[#27272a]">{result.primary_diagnosis}</h2>
           </div>
-          <div className={`px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wide flex items-center gap-1 ${getSeverityColor(severity)}`}>
-            {severity}
-          </div>
-        </div>
-
-        {/* Confidence Bar */}
-        <div className="mb-6">
-          <div className="flex justify-between text-sm mb-1">
-            <span className="font-medium text-gray-700">AI Confidence Level</span>
-            <span className="font-bold text-primary-700">{confidencePercentage}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <div className="bg-primary-600 h-2.5 rounded-full" style={{ width: `${confidencePercentage}%` }}></div>
+          <div className="text-right">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100">
+              <span className="text-xl font-medium text-[#475569]">
+                {Math.round(result.confidence_score * 100)}%
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-2 font-medium">CONFIDENCE</p>
           </div>
         </div>
 
-        {/* Urgency Alert */}
-        <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-lg border border-gray-100 mb-6">
-          {getUrgencyIcon(urgency_flag)}
-          <div>
-            <p className="text-sm font-semibold text-gray-900 capitalize">Urgency: {urgency_flag}</p>
-            <p className="text-xs text-gray-500">Based on standard medical guidelines for this condition category.</p>
-          </div>
+        <div className={`flex items-center gap-3 p-4 rounded-xl border ${config.bg} ${config.border} ${config.color} mb-6`}>
+          <UrgencyIcon className="w-5 h-5" />
+          <span className="font-medium text-sm">{config.text}</span>
         </div>
 
-        {/* Alternative Candidates */}
-        {top_3_candidates.length > 1 && (
-          <div className="border-t pt-4">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">Differential Diagnoses</h3>
-            <ul className="space-y-2">
-              {top_3_candidates.slice(1).map((candidate, idx) => (
-                <li key={idx} className="flex justify-between items-center text-sm text-gray-600">
-                  <span>{candidate.class_name}</span>
-                  <span className="text-gray-400">{(candidate.confidence * 100).toFixed(1)}%</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div className="prose prose-slate max-w-none font-light leading-relaxed text-slate-600 mb-6">
+          <p>{result.explanation_text}</p>
+        </div>
+
+        <VoiceExplainer text={result.explanation_text} />
       </div>
 
-      {/* Voice Explainer Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Understanding Your Results</h3>
-        <p className="text-gray-700 text-sm leading-relaxed mb-6">
-          {explanation_text}
-        </p>
-        <VoiceExplainer text={explanation_text} />
+      <div className="bg-slate-50 p-8">
+        <h3 className="text-sm font-medium text-slate-400 uppercase tracking-widest mb-6">Differential Diagnoses</h3>
+        <div className="space-y-4">
+          {result.top_3_candidates?.map((candidate, idx) => (
+            <div key={idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-100 shadow-sm transition-all hover:shadow-md">
+              <span className="font-medium text-[#27272a]">{candidate.class_name}</span>
+              <span className="text-sm font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-lg">
+                {Math.round(candidate.confidence * 100)}% Match
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      
-      <p className="text-xs text-center text-gray-400 mt-4">
-        Disclaimer: DermAI is an informational tool and does not provide definitive medical advice. Please consult a dermatologist for a professional diagnosis.
-      </p>
     </div>
   );
 }

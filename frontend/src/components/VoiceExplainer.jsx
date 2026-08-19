@@ -10,36 +10,24 @@ export default function VoiceExplainer({ text }) {
       setSynth(window.speechSynthesis);
     }
     
-    // Cleanup on unmount
     return () => {
-      if (synth) {
-        synth.cancel();
-      }
+      if (synth) synth.cancel();
     };
   }, [synth]);
 
   const handlePlay = () => {
     if (!synth || !text) return;
     
-    // If it's paused, just resume
     if (synth.paused) {
       synth.resume();
       setIsPlaying(true);
       return;
     }
     
-    // Cancel any ongoing speech
     synth.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // TODO: In Phase 4, use user's language_pref to set utterance.lang
-    // utterance.lang = 'en-US'; 
-    
-    utterance.onend = () => {
-      setIsPlaying(false);
-    };
-    
+    utterance.onend = () => setIsPlaying(false);
     utterance.onerror = (e) => {
       console.error('Speech synthesis error', e);
       setIsPlaying(false);
@@ -57,14 +45,14 @@ export default function VoiceExplainer({ text }) {
   };
 
   return (
-    <div className="flex items-center justify-between bg-primary-50 border border-primary-100 p-4 rounded-lg">
-      <div className="flex items-center space-x-3">
-        <div className="bg-primary-100 p-2 rounded-full text-primary-600">
-          <Volume2 className="w-5 h-5" />
+    <div className="flex items-center justify-between bg-slate-50 border border-slate-100 p-6 rounded-2xl">
+      <div className="flex items-center space-x-4">
+        <div className="bg-white p-3 rounded-xl text-[#84a59d] shadow-sm border border-slate-100">
+          <Volume2 className="w-6 h-6" strokeWidth={1.5} />
         </div>
         <div>
-          <p className="text-sm font-semibold text-primary-900">Audio Explanation</p>
-          <p className="text-xs text-primary-700">Listen to the AI's analysis</p>
+          <p className="text-sm font-medium text-[#27272a] mb-0.5">Clinical Audio Dictation</p>
+          <p className="text-xs text-slate-400 font-light">Listen to the diagnostic report</p>
         </div>
       </div>
       
@@ -72,18 +60,18 @@ export default function VoiceExplainer({ text }) {
         {isPlaying ? (
           <button 
             onClick={handleStop}
-            className="flex items-center justify-center w-10 h-10 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition-colors"
+            className="flex items-center justify-center w-12 h-12 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors"
             title="Stop Audio"
           >
-            <Square className="w-4 h-4 fill-current" />
+            <Square className="w-5 h-5 fill-current" />
           </button>
         ) : (
           <button 
             onClick={handlePlay}
-            className="flex items-center justify-center w-10 h-10 bg-primary-600 text-white rounded-full hover:bg-primary-700 shadow-md transition-colors shadow-primary-500/30"
+            className="flex items-center justify-center w-12 h-12 bg-[#334155] text-white rounded-xl hover:bg-[#27272a] shadow-md transition-colors"
             title="Play Audio"
           >
-            <Play className="w-4 h-4 ml-1 fill-current" />
+            <Play className="w-5 h-5 ml-1 fill-current" />
           </button>
         )}
       </div>

@@ -18,9 +18,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // FastAPI OAuth2PasswordRequestForm requires form data
       const formData = new URLSearchParams();
-      formData.append('username', email); // Using email as username
+      formData.append('username', email);
       formData.append('password', password);
 
       const res = await axiosClient.post('/auth/login', formData, {
@@ -37,61 +36,72 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
-        <div className="text-center">
-          <Activity className="mx-auto h-12 w-12 text-primary-600" />
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 tracking-tight">
-            Welcome back
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
-              Sign up for free
-            </Link>
-          </p>
-        </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm font-medium text-center border border-red-200">
-              {error}
-            </div>
-          )}
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-              <input
-                type="email"
-                required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input
-                type="password"
-                required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans selection:bg-[#6b8c84] selection:text-white">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+        <Link to="/" className="flex justify-center mb-6">
+          <div className="w-12 h-12 bg-[#334155] rounded-2xl flex items-center justify-center shadow-sm">
+            <Activity className="w-6 h-6 text-white" strokeWidth={1.5} />
           </div>
+        </Link>
+        <h2 className="text-center text-3xl font-light tracking-tight text-[#27272a]">
+          Patient Portal
+        </h2>
+        <p className="mt-2 text-center text-sm text-slate-500">
+          Secure access to your health records. <br/>
+          <Link to="/register" className="font-medium text-[#6b8c84] hover:text-[#52736b] transition-colors">
+            New patient? Register here.
+          </Link>
+        </p>
+      </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-70 transition-colors"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Log In'}
-          </button>
-        </form>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+        <div className="bg-white py-10 px-6 sm:px-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:rounded-3xl border border-slate-100">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium text-center border border-red-100">
+                {error}
+              </div>
+            )}
+            
+            <div>
+              <label className="block text-sm font-medium text-[#475569]">Email address</label>
+              <div className="mt-2">
+                <input
+                  type="email"
+                  required
+                  className="block w-full rounded-xl border-slate-200 py-3 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50 transition-colors"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="patient@example.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[#475569]">Password</label>
+              <div className="mt-2">
+                <input
+                  type="password"
+                  required
+                  className="block w-full rounded-xl border-slate-200 py-3 px-4 text-[#27272a] shadow-sm focus:border-[#84a59d] focus:ring-[#84a59d] sm:text-sm bg-slate-50/50 transition-colors"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full justify-center items-center rounded-xl border border-transparent bg-[#334155] py-3.5 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#27272a] focus:outline-none focus:ring-2 focus:ring-[#84a59d] focus:ring-offset-2 disabled:opacity-50 transition-all duration-300"
+              >
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Secure Login'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

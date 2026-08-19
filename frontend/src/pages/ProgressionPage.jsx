@@ -1,55 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axiosClient from '../api/axiosClient';
+import React from 'react';
 import ProgressionTracker from '../components/ProgressionTracker';
-import { Loader2, PlusCircle } from 'lucide-react';
 
 export default function ProgressionPage() {
-  const [sessions, setSessions] = useState([]);
-  const [activeSession, setActiveSession] = useState(null);
-  const [entries, setEntries] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  // Note: For a complete implementation, we would first fetch /progression/sessions 
-  // (which isn't explicitly in the prompt but implied). For now, we'll mock the session select.
-  
-  const fetchSessionEntries = async (sessionId) => {
-    setLoading(true);
-    try {
-      const res = await axiosClient.get(`/progression/${sessionId}`);
-      setEntries(res.data.data || []);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8 border-b pb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Longitudinal Tracking</h1>
-          <p className="text-gray-600">Monitor your condition's progression over time.</p>
+    <div className="min-h-[calc(100vh-80px)] bg-slate-50 py-12 px-6 sm:px-12 lg:px-24 font-sans selection:bg-[#6b8c84] selection:text-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+          <h1 className="text-4xl font-light text-[#27272a] mb-4">Longitudinal Tracking</h1>
+          <p className="text-lg font-light text-slate-500 max-w-2xl">
+            Monitor condition progression over time with standardized metric tracking and visual timelines.
+          </p>
         </div>
-        <button className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors shadow-sm">
-          <PlusCircle className="w-5 h-5" />
-          <span>New Tracker</span>
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 border-r border-gray-200 pr-4">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Active Sessions</h2>
-          <div className="text-gray-500 text-sm p-4 bg-gray-50 rounded-lg border border-gray-200">
-            Select a condition to view its timeline. (Mock: Connect to sessions endpoint in Phase 2)
-          </div>
-        </div>
-        <div className="lg:col-span-2">
-          {loading ? (
-            <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-primary-500" /></div>
-          ) : (
-            <ProgressionTracker entries={entries} />
-          )}
+        
+        <div className="bg-white p-8 sm:p-12 rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+          <ProgressionTracker />
         </div>
       </div>
     </div>
