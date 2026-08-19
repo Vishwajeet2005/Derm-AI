@@ -4,7 +4,7 @@ from ..db.database import get_db
 from ..db.models import Diagnosis, User
 from .deps import get_current_user
 from ..ml.preprocess import preprocess_image
-from ..ml.model import predict
+from ..ml.model import model_instance
 from ..ml.diagnostic_framework import layer_1_condition_details, layer_2_severity, layer_3_urgency
 from ..ml.voice_explainer import generate_explanation
 import shutil
@@ -37,7 +37,7 @@ async def create_diagnosis(
         img_array = preprocess_image(img_bytes)
         
         # 2. Predict
-        prediction = predict(img_array)
+        prediction = model_instance.predict(img_array)
         top_1_class = prediction["top_1_class"]
         confidence = prediction["top_1_confidence"]
         top_3 = prediction["top_3_list"]
