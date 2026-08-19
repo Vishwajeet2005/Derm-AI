@@ -29,11 +29,11 @@ export default function DoctorDirectory() {
     </div>
   );
 
-  // Profile photo URLs - professional doctor headshots from Pexels
+  // Profile photo URLs - professional doctor headshots
   const avatars = [
-    'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=150',
-    'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=150',
-    'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150',
+    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&q=80',
+    'https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?auto=format&fit=crop&w=150&q=80',
+    'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=150&q=80',
   ];
 
   return (

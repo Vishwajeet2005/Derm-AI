@@ -33,10 +33,10 @@ export default function ProgressionTracker({ entries = [] }) {
             <div className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 flex flex-col md:flex-row gap-6 bento-card">
               <div className="w-full md:w-32 h-32 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
                 <img
-                  src={entry.image_url || 'https://images.pexels.com/photos/5473184/pexels-photo-5473184.jpeg?auto=compress&cs=tinysrgb&w=300'}
+                  src={entry.image_url || 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=300&q=80'}
                   alt="Skin condition"
                   className="w-full h-full object-cover"
-                  onError={(e) => e.target.src='https://images.pexels.com/photos/5473184/pexels-photo-5473184.jpeg?auto=compress&cs=tinysrgb&w=300'}
+                  onError={(e) => e.target.src='https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=300&q=80'}
                 />
               </div>
               <div className="flex-1">

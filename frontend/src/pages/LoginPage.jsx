@@ -37,8 +37,8 @@ export default function LoginPage() {
       {/* Left — Image */}
       <div className="hidden lg:block lg:w-[55%] relative">
         <img
-          src="https://images.pexels.com/photos/5473186/pexels-photo-5473186.jpeg?auto=compress&cs=tinysrgb&w=1200"
-          alt="Dermatology clinic"
+          src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
+          alt="Clinical environment"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1e293b]/30 to-transparent" />

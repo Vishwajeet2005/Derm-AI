@@ -45,15 +45,15 @@ export default function LandingPage() {
             <div className="relative">
               <div className="w-[380px] h-[480px] rounded-[2rem] overflow-hidden shadow-2xl shadow-slate-300/40 animate-fade-in-up" style={{ animationDelay: '0.5s', opacity: 0 }}>
                 <img
-                  src="https://images.pexels.com/photos/5473182/pexels-photo-5473182.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Dermatologist examining a patient's skin with a dermatoscope"
+                  src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"
+                  alt="Clinical laboratory environment"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -left-10 w-48 h-48 rounded-2xl overflow-hidden shadow-xl border-4 border-white animate-slide-in-right" style={{ animationDelay: '0.7s', opacity: 0 }}>
                 <img
-                  src="https://images.pexels.com/photos/5473177/pexels-photo-5473177.jpeg?auto=compress&cs=tinysrgb&w=400"
-                  alt="Close-up skin examination"
+                  src="https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=400&q=80"
+                  alt="Medical professional examining"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -80,8 +80,8 @@ export default function LandingPage() {
             {/* BOX 1 — Skin Analysis (spans 8 cols, 2 rows) */}
             <div className="md:col-span-8 md:row-span-2 rounded-[1.75rem] relative overflow-hidden group bento-card">
               <img
-                src="https://images.pexels.com/photos/5473184/pexels-photo-5473184.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Dermatologist using magnifier on patient skin"
+                src="https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=1200&q=80"
+                alt="Medical microscope for skin analysis"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 img-overlay-bottom" />
@@ -99,8 +99,8 @@ export default function LandingPage() {
             {/* BOX 2 — Progression (spans 4 cols) */}
             <div className="md:col-span-4 rounded-[1.75rem] relative overflow-hidden group bento-card">
               <img
-                src="https://images.pexels.com/photos/7089401/pexels-photo-7089401.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Medical consultation"
+                src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=600&q=80"
+                alt="Macro photography of skin texture"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 img-overlay-bottom-light" />
@@ -118,8 +118,8 @@ export default function LandingPage() {
             {/* BOX 3 — Fitzpatrick (spans 4 cols) */}
             <div className="md:col-span-4 rounded-[1.75rem] relative overflow-hidden group bento-card">
               <img
-                src="https://images.pexels.com/photos/6129507/pexels-photo-6129507.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Diverse skin tones"
+                src="https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?auto=format&fit=crop&w=600&q=80"
+                alt="Woman with vitiligo showcasing diverse skin types"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 img-overlay-bottom-light" />
