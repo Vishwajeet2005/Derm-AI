@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { LogOut, Menu, X, Settings } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { LogOut, Menu, X, Settings, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t, i18n } = useTranslation();
 
@@ -28,16 +29,23 @@ export default function Navbar() {
       <div className="section-container">
         <div className="flex h-[72px] items-center justify-between">
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 bg-[#334155] rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 8v8" /><path d="M8 12h8" />
-              </svg>
-            </div>
-            <span className="text-lg font-semibold tracking-tight text-[#27272a]">DermAI</span>
-          </Link>
+          {/* Logo & Back */}
+          <div className="flex items-center gap-4">
+            {location.pathname !== '/' && (
+              <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors" aria-label="Go Back">
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+            )}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-9 h-9 bg-[#334155] rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v8" /><path d="M8 12h8" />
+                </svg>
+              </div>
+              <span className="text-lg font-semibold tracking-tight text-[#27272a] hidden sm:block">DermAI</span>
+            </Link>
+          </div>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
