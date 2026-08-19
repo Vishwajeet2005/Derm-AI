@@ -99,22 +99,55 @@ const SymptomChecker = () => {
   };
 
   const renderSummary = () => {
+    // Generate simple mock AI recommendation based on answers
+    const getRecommendation = () => {
+      const dur = answers['duration'] || '';
+      const sens = answers['sensation'] || '';
+      const chg = answers['changes'] || '';
+      
+      if (chg.includes('grew') || chg.includes('color') || dur.includes('months')) {
+        return {
+          title: "High Priority Review Recommended",
+          text: "Based on the changes in size/color or extended duration you reported, we strongly recommend showing these symptoms to a dermatologist soon for a professional evaluation.",
+          color: "bg-red-50 border-red-200 text-red-800"
+        };
+      } else if (sens.includes('Itches') || sens.includes('Hurts')) {
+        return {
+          title: "Symptomatic Care Advised",
+          text: "Your symptoms indicate active irritation or inflammation. Over-the-counter soothing topical creams may help, but a clinical check is advised if it persists.",
+          color: "bg-amber-50 border-amber-200 text-amber-800"
+        };
+      }
+      return {
+        title: "Standard Monitoring",
+        text: "Your symptoms do not immediately indicate severe red flags. Continue to monitor the area for any rapid changes, and consult a doctor if it worsens.",
+        color: "bg-green-50 border-green-200 text-green-800"
+      };
+    };
+
+    const rec = getRecommendation();
+
     return (
       <div className="animate-in fade-in zoom-in-95 duration-500">
         <div className="text-center mb-8">
-          <div className="mx-auto h-16 w-16 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
-            <FiActivity className="h-8 w-8 text-indigo-600" />
+          <div className="mx-auto h-16 w-16 bg-[#84a59d]/15 rounded-full flex items-center justify-center mb-4">
+            <FiActivity className="h-8 w-8 text-[#6b8c84]" />
           </div>
-          <h2 className="text-3xl font-light text-gray-900 mb-2">Clinical Summary</h2>
-          <p className="text-gray-500">Review your responses below. You can share this with your doctor.</p>
+          <h2 className="text-3xl font-light text-[#18181b] mb-2">Clinical Summary</h2>
+          <p className="text-slate-500">Review your responses below. You can share this with your doctor.</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-          <dl className="divide-y divide-gray-100">
+        <div className={`p-5 mb-8 rounded-2xl border ${rec.color}`}>
+          <h3 className="font-semibold mb-1">{rec.title}</h3>
+          <p className="text-sm opacity-90 leading-relaxed">{rec.text}</p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden mb-8">
+          <dl className="divide-y divide-slate-100">
             {QUESTIONS.map((q) => (
-              <div key={q.id} className="px-6 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8">
-                <dt className="text-sm font-medium text-gray-500">{q.title}</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0 font-medium">
+              <div key={q.id} className="px-6 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8 hover:bg-slate-50 transition-colors">
+                <dt className="text-sm font-medium text-slate-500">{q.title}</dt>
+                <dd className="mt-1 text-sm text-[#18181b] sm:col-span-2 sm:mt-0 font-medium">
                   {answers[q.id] || 'Not answered'}
                 </dd>
               </div>
