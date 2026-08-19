@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../api/axiosClient';
 import { ShieldAlert, AlertTriangle, CheckCircle2, FolderOpen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function HistoryPage() {
   const [diagnoses, setDiagnoses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axiosClient.get('/history')
@@ -40,10 +42,10 @@ export default function HistoryPage() {
     <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] py-16">
       <div className="section-container">
         <div className="mb-14 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">Your records</p>
-          <h1 className="text-4xl font-light text-[#18181b] mb-3">Assessment History</h1>
+          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">{t('nav.history')}</p>
+          <h1 className="text-4xl font-light text-[#18181b] mb-3">{t('history.title')}</h1>
           <p className="text-lg text-slate-500 font-light max-w-xl">
-            A chronological record of your previous skin assessments and results.
+            {t('history.subtitle')}
           </p>
         </div>
 
@@ -52,8 +54,8 @@ export default function HistoryPage() {
             <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-slate-300">
               <FolderOpen className="w-7 h-7" strokeWidth={1.5} />
             </div>
-            <h3 className="text-lg font-medium text-[#18181b] mb-1.5">No assessments yet</h3>
-            <p className="text-sm text-slate-500 font-light">Complete your first skin check to start building your health record.</p>
+            <h3 className="text-lg font-medium text-[#18181b] mb-1.5">{t('history.emptyTitle')}</h3>
+            <p className="text-sm text-slate-500 font-light">{t('history.emptySub')}</p>
           </div>
         ) : (
           <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
