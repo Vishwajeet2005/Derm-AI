@@ -35,9 +35,11 @@ export default function DoctorDirectory() {
         <div key={doc.id} className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] bento-card flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-6">
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-xl font-medium text-[#475569] uppercase border border-slate-100">
-                {doc.name.split(' ').map(n => n[0]).join('')}
-              </div>
+              <img 
+                src={`https://images.unsplash.com/photo-${idx % 2 === 0 ? '1559839734-2b71ea197ec2' : '1622253692010-33facf5c15df'}?q=80&w=150&auto=format&fit=crop`} 
+                alt={doc.name} 
+                className="w-16 h-16 rounded-2xl object-cover border border-slate-100 shadow-sm"
+              />
               {doc.verified && (
                 <div className="bg-[#84a59d]/10 text-[#6b8c84] px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <CheckCircle className="w-3 h-3" />

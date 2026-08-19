@@ -46,9 +46,9 @@ export default function DiagnosePage() {
     <div className="min-h-[calc(100vh-80px)] bg-slate-50 py-12 px-6 sm:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <h1 className="text-4xl font-light text-[#27272a] mb-4">Clinical Diagnostic Engine</h1>
+          <h1 className="text-4xl font-light text-[#27272a] mb-4">Dermatology Analysis</h1>
           <p className="text-lg font-light text-slate-500 max-w-2xl">
-            Upload a high-resolution image for immediate AI-assisted differential diagnosis and clinical triage.
+            Upload a high-resolution image for an immediate clinical assessment of the affected skin area.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function DiagnosePage() {
                 ) : (
                   <>
                     <Database className="w-5 h-5" />
-                    Run Diagnostic Protocol
+                    Analyze Skin Condition
                   </>
                 )}
               </button>
@@ -95,9 +95,9 @@ export default function DiagnosePage() {
                   <div className="absolute inset-0 rounded-full border-4 border-slate-100"></div>
                   <div className="absolute inset-0 rounded-full border-4 border-[#84a59d] border-t-transparent animate-spin"></div>
                 </div>
-                <h3 className="text-xl font-medium text-[#27272a] mb-2">Processing Analysis</h3>
+                <h3 className="text-xl font-medium text-[#27272a] mb-2">Analyzing clinical presentation</h3>
                 <p className="text-slate-500 font-light text-center max-w-xs">
-                  Running multi-layered convolutional neural network on clinical presentation...
+                  Conducting visual assessment against dermatological databases...
                 </p>
               </div>
             ) : result ? (
