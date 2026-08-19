@@ -21,8 +21,8 @@ services:
       - key: ALLOWED_ORIGINS
         value: "*" # Once Vercel is deployed, change this to your Vercel URL
 
-  - type: psql
-    name: dermai-db
+databases:
+  - name: dermai-db
     region: oregon
     plan: free
     databaseName: dermai
