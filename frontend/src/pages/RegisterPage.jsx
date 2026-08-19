@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { Loader2, HelpCircle } from 'lucide-react';
+import { Loader2, HelpCircle, ArrowLeft } from 'lucide-react';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', language_pref: 'en', fitzpatrick_type: '' });
@@ -47,16 +47,23 @@ export default function RegisterPage() {
       </div>
 
       {/* Right — Form */}
-      <div className="w-full lg:w-[45%] flex flex-col justify-center py-12 px-8 sm:px-16 lg:px-20 bg-white overflow-y-auto">
+      <div className="w-full lg:w-[45%] flex flex-col justify-center py-12 px-8 sm:px-16 lg:px-20 bg-white dark:bg-slate-900 overflow-y-auto transition-colors">
         <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <Link to="/" className="flex items-center gap-2.5 mb-12">
-            <div className="w-8 h-8 bg-[#334155] rounded-lg flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" /><path d="M12 8v8" /><path d="M8 12h8" />
-              </svg>
-            </div>
-            <span className="text-lg font-semibold text-[#27272a]">DermAI</span>
-          </Link>
+          <div className="flex items-center justify-between mb-12">
+            <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 bg-[#334155] rounded-lg flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><path d="M12 8v8" /><path d="M8 12h8" />
+                </svg>
+              </div>
+              <span className="text-lg font-semibold text-[#27272a] dark:text-white">DermAI</span>
+            </Link>
+
+            <button onClick={() => navigate(-1)} className="p-2 -mr-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-1.5 text-sm font-medium" aria-label="Go Back">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back</span>
+            </button>
+          </div>
 
           <h1 className="text-3xl font-light text-[#18181b] mb-2">Create your account</h1>
           <p className="text-sm text-slate-500 font-light mb-10">

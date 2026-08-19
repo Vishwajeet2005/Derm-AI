@@ -14,9 +14,17 @@ export default function DoctorDirectory() {
     }
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        setLocationQuery(`dermatologist+near+${latitude},${longitude}`);
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await res.json();
+          const city = data.address.city || data.address.town || data.address.village || data.address.county || "me";
+          setLocationQuery(`dermatologist in ${encodeURIComponent(city)}`);
+        } catch (e) {
+          console.error(e);
+          setLocationQuery(`dermatologist near ${latitude},${longitude}`);
+        }
         setIsLocating(false);
       },
       (error) => {
@@ -28,13 +36,13 @@ export default function DoctorDirectory() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] py-16">
+    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] dark:bg-slate-900 py-16 transition-colors">
       <div className="section-container">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 animate-fade-in-up">
           <div>
-            <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">Live Search</p>
-            <h1 className="text-4xl font-light text-[#18181b] mb-3 tracking-tight">Find Specialists</h1>
-            <p className="text-lg text-slate-500 max-w-xl">
+            <p className="text-sm font-medium text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-3">Live Search</p>
+            <h1 className="text-4xl font-light text-[#18181b] dark:text-white mb-3 tracking-tight">Find Specialists</h1>
+            <p className="text-lg text-slate-500 dark:text-slate-400 max-w-xl">
               Locate verified dermatologists and skin care clinics in your exact area using Google Maps.
             </p>
           </div>
@@ -42,7 +50,7 @@ export default function DoctorDirectory() {
           <button 
             onClick={requestLocation}
             disabled={isLocating}
-            className="inline-flex items-center justify-center px-6 py-3.5 bg-[#334155] hover:bg-[#27272a] text-white rounded-xl font-medium transition-all shadow-sm disabled:opacity-70"
+            className="inline-flex items-center justify-center px-6 py-3.5 bg-[#334155] dark:bg-teal-600 hover:bg-[#27272a] dark:hover:bg-teal-500 text-white rounded-xl font-medium transition-all shadow-sm disabled:opacity-70"
           >
             {isLocating ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
@@ -53,8 +61,8 @@ export default function DoctorDirectory() {
           </button>
         </div>
 
-        <div className="bg-white p-2 rounded-[2rem] border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          <div className="w-full h-[600px] rounded-[1.5rem] overflow-hidden relative bg-slate-100">
+        <div className="bg-white dark:bg-slate-800 p-2 rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-sm animate-fade-in-up transition-colors" style={{ animationDelay: '0.1s' }}>
+          <div className="w-full h-[600px] rounded-[1.5rem] overflow-hidden relative bg-slate-100 dark:bg-slate-900">
             <iframe 
               width="100%" 
               height="100%" 
@@ -62,9 +70,10 @@ export default function DoctorDirectory() {
               scrolling="no" 
               marginHeight="0" 
               marginWidth="0" 
+              allow="geolocation"
               src={`https://maps.google.com/maps?q=${locationQuery}&output=embed`}
               title="Google Maps Dermatologists"
-              className="absolute inset-0"
+              className="absolute inset-0 transition-opacity duration-500"
             ></iframe>
           </div>
         </div>
