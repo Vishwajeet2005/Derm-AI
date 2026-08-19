@@ -12,6 +12,13 @@ class UserCreate(BaseModel):
     location_lat: Optional[float] = None
     location_lon: Optional[float] = None
 
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    language_pref: Optional[str] = None
+    fitzpatrick_type: Optional[int] = None
+    location_lat: Optional[float] = None
+    location_lon: Optional[float] = None
+
 class UserResponse(BaseModel):
     id: UUID
     name: str
