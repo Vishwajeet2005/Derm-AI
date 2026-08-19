@@ -10,9 +10,9 @@ const SettingsPage = () => {
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    fitzpatrick_skin_type: user?.fitzpatrick_skin_type || '3',
-    language_preference: user?.language_preference || 'en',
-    location: user?.location || null,
+    fitzpatrick_skin_type: user?.fitzpatrick_type || user?.fitzpatrick_skin_type || '3',
+    language_preference: user?.language_pref || user?.language_preference || 'en',
+    location: user?.location_lat ? { latitude: user.location_lat, longitude: user.location_lon } : (user?.location || null),
   });
   
   const [loading, setLoading] = useState(false);
@@ -25,9 +25,9 @@ const SettingsPage = () => {
         ...prev,
         name: user.name || '',
         email: user.email || '',
-        fitzpatrick_skin_type: user.fitzpatrick_skin_type || '3',
-        language_preference: user.language_preference || 'en',
-        location: user.location || null,
+        fitzpatrick_skin_type: user.fitzpatrick_type || user.fitzpatrick_skin_type || '3',
+        language_preference: user.language_pref || user.language_preference || 'en',
+        location: user.location_lat ? { latitude: user.location_lat, longitude: user.location_lon } : (user.location || null),
       }));
     }
   }, [user]);
@@ -67,9 +67,10 @@ const SettingsPage = () => {
     try {
       const response = await axiosClient.put('/auth/me', {
         name: formData.name,
-        fitzpatrick_skin_type: formData.fitzpatrick_skin_type,
-        language_preference: formData.language_preference,
-        location: formData.location
+        fitzpatrick_type: formData.fitzpatrick_skin_type,
+        language_pref: formData.language_preference,
+        location_lat: formData.location?.latitude || null,
+        location_lon: formData.location?.longitude || null,
       });
       // Update auth context
       login(token, response.data.data || response.data);

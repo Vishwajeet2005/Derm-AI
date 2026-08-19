@@ -49,11 +49,16 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #ffffff;
+  background-color: #fafcff;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(210,100%,97%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(160,50%,96%,1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(210,100%,97%,1) 0, transparent 50%);
   color: var(--color-charcoal-900);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  min-height: 100vh;
 }
 
 ::selection {
