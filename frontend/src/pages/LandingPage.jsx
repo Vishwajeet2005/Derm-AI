@@ -49,8 +49,8 @@ export default function LandingPage() {
             {/* Immediate Diagnostics - Large Box with Image Background */}
             <div className="group md:col-span-2 md:row-span-2 rounded-3xl p-10 bento-card flex flex-col justify-end relative overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop" 
-                alt="Doctor examining patient" 
+                src="https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=1200&auto=format&fit=crop" 
+                alt="Dermatology examination" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#18181b]/90 via-[#18181b]/40 to-transparent"></div>
@@ -69,7 +69,7 @@ export default function LandingPage() {
             {/* Longitudinal Tracking - Small Box with Image */}
             <div className="group rounded-3xl p-8 bento-card flex flex-col justify-end relative overflow-hidden bg-white">
               <img 
-                src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=800&auto=format&fit=crop" 
+                src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop" 
                 alt="Close up of skin" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
