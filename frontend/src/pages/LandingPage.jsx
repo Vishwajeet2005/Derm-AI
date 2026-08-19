@@ -13,11 +13,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative z-10 pt-32 pb-24 px-6 sm:px-12 lg:px-24 max-w-screen-2xl mx-auto flex flex-col items-center text-center">
-        <div className="inline-flex items-center space-x-2 bg-slate-50 border border-slate-100 rounded-full px-4 py-1.5 mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <span className="flex h-2 w-2 rounded-full bg-[#84a59d]"></span>
-          <span className="text-sm font-medium text-slate-600 tracking-wide uppercase">Dermatology AI Engine v2.0 Live</span>
-        </div>
-        
+
         <h1 className="text-5xl md:text-7xl font-light tracking-tight text-[#27272a] max-w-4xl leading-[1.1] mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
           Clinical Skin Analysis, <br />
           <span className="font-semibold text-[#475569]">Equitable for All.</span>
