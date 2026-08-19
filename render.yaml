@@ -9,7 +9,7 @@ services:
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL
-        sync: false # You will paste your Supabase connection string here in the Render Dashboard
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM
