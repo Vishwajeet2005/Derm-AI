@@ -27,7 +27,7 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       
-      login(res.data.access_token, res.data.user);
+      login(res.data.data.token.access_token, res.data.data.user);
       navigate('/diagnose');
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to log in. Please check your credentials.');

@@ -36,7 +36,7 @@ export default function RegisterPage() {
       }
 
       const res = await axiosClient.post('/auth/register', payload);
-      login(res.data.access_token, res.data.user);
+      login(res.data.data.token.access_token, res.data.data.user);
       navigate('/diagnose');
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed. Please try again.');
