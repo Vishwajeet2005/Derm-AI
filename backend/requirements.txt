@@ -13,3 +13,4 @@ Pillow
 tensorflow
 keras
 numpy
+email-validator
