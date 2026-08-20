@@ -116,11 +116,6 @@ dermai/
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
 <div align="center">
   <i>Developed to bring dermatological intelligence to everyone, everywhere.</i>
 </div>
