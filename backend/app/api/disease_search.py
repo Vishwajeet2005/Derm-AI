@@ -49,7 +49,7 @@ async def search_disease(q: str = Query(..., min_length=1)):
         "Content-Type": "application/json"
     }
     
-    system_prompt = \"\"\"You are a highly accurate medical API. The user will provide a skin condition or disease name.
+    system_prompt = """You are a highly accurate medical API. The user will provide a skin condition or disease name.
 You must return a JSON object containing the following exact keys:
 - "condition_name": The standardized medical name.
 - "category": The general category (e.g., "benign", "malignant", "inflammatory", "infectious", "autoimmune").
@@ -59,7 +59,7 @@ You must return a JSON object containing the following exact keys:
 - "symptoms": An array of strings listing common symptoms.
 - "causes": An array of strings listing primary causes or risk factors.
 - "treatment": An array of strings listing common treatments or management strategies.
-Do not wrap the JSON in markdown code blocks. Output raw JSON only.\"\"\"
+Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
 
     payload = {
         "model": "openai/gpt-oss-20b",
@@ -104,3 +104,4 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only.\"\"\"
     }
     
     return {"data": [condition_record]}
+
