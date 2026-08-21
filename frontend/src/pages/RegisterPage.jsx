@@ -33,7 +33,7 @@ export default function RegisterPage() {
       {/* Left â€” Image */}
       <div className="hidden lg:block lg:w-[55%] relative">
         <img
-          src="https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=1200&q=80"
+          src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
           alt="Clinical microscope"
           className="absolute inset-0 w-full h-full object-cover"
         />
