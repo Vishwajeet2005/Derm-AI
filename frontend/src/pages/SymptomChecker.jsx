@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { FiArrowRight, FiArrowLeft, FiCheck, FiActivity } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,9 +58,9 @@ const SymptomChecker = () => {
   const renderProgressBar = () => {
     const progress = (currentStep / QUESTIONS.length) * 100;
     return (
-      <div className="w-full bg-gray-100 rounded-full h-1.5 mb-8 overflow-hidden">
+      <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-1.5 mb-8 overflow-hidden">
         <div 
-          className="bg-indigo-600 h-1.5 rounded-full transition-all duration-500 ease-out" 
+          className="bg-[#84a59d] dark:bg-teal-600 h-1.5 rounded-full transition-all duration-500 ease-out" 
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -73,8 +73,8 @@ const SymptomChecker = () => {
 
     return (
       <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <h2 className="text-2xl font-light text-gray-900 mb-2">{question.title}</h2>
-        <p className="text-gray-500 mb-8">{question.description}</p>
+        <h2 className="text-2xl font-light text-gray-900 dark:text-white mb-2">{question.title}</h2>
+        <p className="text-gray-500 dark:text-slate-400 mb-8">{question.description}</p>
         
         <div className="space-y-3">
           {question.options.map((option, idx) => (
@@ -83,14 +83,14 @@ const SymptomChecker = () => {
               onClick={() => handleOptionSelect(option)}
               className={`w-full text-left px-6 py-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between ${
                 currentAnswer === option 
-                  ? 'border-indigo-600 bg-indigo-50 shadow-sm' 
-                  : 'border-transparent bg-white shadow-sm hover:bg-gray-50 hover:border-gray-200'
+                  ? 'border-[#84a59d] dark:border-teal-500 bg-indigo-50 dark:bg-teal-900/30 shadow-sm' 
+                  : 'border-transparent bg-white dark:bg-[#0f172a] shadow-sm hover:bg-gray-50 dark:hover:bg-slate-800 hover:border-gray-200 dark:border-slate-700'
               }`}
             >
-              <span className={`font-medium ${currentAnswer === option ? 'text-indigo-900' : 'text-gray-700'}`}>
+              <span className={`font-medium ${currentAnswer === option ? 'text-[#84a59d] dark:text-teal-300' : 'text-gray-700 dark:text-slate-300'}`}>
                 {option}
               </span>
-              {currentAnswer === option && <FiCheck className="text-indigo-600 h-5 w-5" />}
+              {currentAnswer === option && <FiCheck className="text-[#84a59d] dark:text-teal-400 h-5 w-5" />}
             </button>
           ))}
         </div>
@@ -109,19 +109,19 @@ const SymptomChecker = () => {
         return {
           title: "High Priority Review Recommended",
           text: "Based on the changes in size/color or extended duration you reported, we strongly recommend showing these symptoms to a dermatologist soon for a professional evaluation.",
-          color: "bg-red-50 border-red-200 text-red-800"
+          color: "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-900/50 text-red-800 dark:text-red-400"
         };
       } else if (sens.includes('Itches') || sens.includes('Hurts')) {
         return {
           title: "Symptomatic Care Advised",
           text: "Your symptoms indicate active irritation or inflammation. Over-the-counter soothing topical creams may help, but a clinical check is advised if it persists.",
-          color: "bg-amber-50 border-amber-200 text-amber-800"
+          color: "bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-900/50 text-amber-800 dark:text-amber-400"
         };
       }
       return {
         title: "Standard Monitoring",
         text: "Your symptoms do not immediately indicate severe red flags. Continue to monitor the area for any rapid changes, and consult a doctor if it worsens.",
-        color: "bg-green-50 border-green-200 text-green-800"
+        color: "bg-green-50 dark:bg-teal-900/30 border-green-200 dark:border-teal-900/50 text-green-800 dark:text-teal-400"
       };
     };
 
@@ -142,7 +142,7 @@ const SymptomChecker = () => {
           <p className="text-sm opacity-90 leading-relaxed">{rec.text}</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden mb-8">
+        <div className="bg-white dark:bg-[#0f172a] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden mb-8">
           <dl className="divide-y divide-slate-100">
             {QUESTIONS.map((q) => (
               <div key={q.id} className="px-6 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-8 hover:bg-slate-50 transition-colors">
@@ -159,23 +159,23 @@ const SymptomChecker = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#020617] transition-colors flex flex-col pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto w-full">
-        <div className="bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl border border-white/40 p-8 sm:p-12">
+        <div className="bg-white dark:bg-[#0f172a]/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl border border-white/40 p-8 sm:p-12">
           {renderProgressBar()}
           
           <div className="min-h-[400px]">
             {!isLastStep ? renderQuestion() : renderSummary()}
           </div>
 
-          <div className="mt-8 pt-8 border-t border-gray-100 flex items-center justify-between">
+          <div className="mt-8 pt-8 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
             <button
               onClick={handleBack}
               disabled={currentStep === 0}
               className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
                 currentStep === 0 
                   ? 'text-gray-300 cursor-not-allowed' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:bg-slate-800'
               }`}
             >
               <FiArrowLeft className="mr-2 h-4 w-4" />
@@ -186,7 +186,7 @@ const SymptomChecker = () => {
               <button
                 onClick={handleNext}
                 disabled={!answers[QUESTIONS[currentStep].id]}
-                className="inline-flex items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-[#84a59d] dark:bg-teal-600 hover:bg-[#6b8c84] dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#84a59d] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next Step
                 <FiArrowRight className="ml-2 h-4 w-4" />
@@ -194,7 +194,7 @@ const SymptomChecker = () => {
             ) : (
               <button
                 onClick={() => navigate('/')}
-                className="inline-flex items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+                className="inline-flex items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-[#84a59d] dark:bg-teal-600 hover:bg-[#6b8c84] dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#84a59d] transition-all"
               >
                 Done
                 <FiCheck className="ml-2 h-4 w-4" />
@@ -208,3 +208,4 @@ const SymptomChecker = () => {
 };
 
 export default SymptomChecker;
+

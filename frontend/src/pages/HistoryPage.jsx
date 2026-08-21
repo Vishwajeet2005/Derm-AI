@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axiosClient from '../api/axiosClient';
 import { ShieldAlert, AlertTriangle, CheckCircle2, FolderOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ export default function HistoryPage() {
   };
 
   if (loading) return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-72px)] bg-[#f8fafc]">
+    <div className="flex justify-center items-center min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] transition-colors">
       <div className="w-10 h-10 border-[3px] border-slate-200 border-t-[#84a59d] rounded-full animate-spin" />
     </div>
   );
@@ -39,29 +39,29 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] py-16">
+    <div className="min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] py-16 transition-colors">
       <div className="section-container">
         <div className="mb-14 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">{t('nav.history')}</p>
-          <h1 className="text-4xl font-light text-[#18181b] mb-3">{t('history.title')}</h1>
-          <p className="text-lg text-slate-500 font-light max-w-xl">
+          <p className="text-sm font-medium text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-3">{t('nav.history')}</p>
+          <h1 className="text-4xl font-light text-[#18181b] dark:text-white mb-3">{t('history.title')}</h1>
+          <p className="text-lg text-slate-500 dark:text-slate-400 font-light max-w-xl">
             {t('history.subtitle')}
           </p>
         </div>
 
         {diagnoses.length === 0 ? (
-          <div className="bg-white rounded-[1.75rem] border border-slate-100 p-16 text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
-            <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-slate-300">
+          <div className="bg-white dark:bg-[#0f172a] rounded-[1.75rem] border border-slate-100 dark:border-slate-800 transition-colors p-16 text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+            <div className="w-14 h-14 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-5 text-slate-300">
               <FolderOpen className="w-7 h-7" strokeWidth={1.5} />
             </div>
-            <h3 className="text-lg font-medium text-[#18181b] mb-1.5">{t('history.emptyTitle')}</h3>
-            <p className="text-sm text-slate-500 font-light">{t('history.emptySub')}</p>
+            <h3 className="text-lg font-medium text-[#18181b] dark:text-white mb-1.5">{t('history.emptyTitle')}</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-light">{t('history.emptySub')}</p>
           </div>
         ) : (
           <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
             {diagnoses.map((d) => (
-              <div key={d.id} className="bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-6 md:p-8 flex flex-col md:flex-row gap-6 bento-card">
-                <div className="w-full md:w-36 h-36 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
+              <div key={d.id} className="bg-white dark:bg-[#0f172a] rounded-[1.75rem] border border-slate-100 dark:border-slate-800 transition-colors shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] p-6 md:p-8 flex flex-col md:flex-row gap-6 bento-card">
+                <div className="w-full md:w-36 h-36 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0">
                   <img
                     src={getImageUrl(d.image_path)}
                     alt="Assessment"
@@ -72,12 +72,12 @@ export default function HistoryPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div>
-                      <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-1">
+                      <p className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">
                         {new Date(d.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                       </p>
-                      <h3 className="text-xl font-light text-[#18181b]">{d.primary_diagnosis}</h3>
+                      <h3 className="text-xl font-light text-[#18181b] dark:text-white">{d.primary_diagnosis}</h3>
                     </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100 flex-shrink-0">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700 flex-shrink-0">
                       {urgencyIcon(d.urgency_flag)}
                       <span className="text-xs font-medium text-[#475569] capitalize">{d.urgency_flag}</span>
                     </div>
@@ -85,7 +85,7 @@ export default function HistoryPage() {
                   <div className="flex gap-8 mt-5">
                     <div>
                       <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-0.5">Confidence</p>
-                      <p className="text-base font-medium text-[#18181b]">{Math.round(d.confidence_score * 100)}%</p>
+                      <p className="text-base font-medium text-[#18181b] dark:text-white">{Math.round(d.confidence_score * 100)}%</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-0.5">Severity</p>
@@ -101,3 +101,4 @@ export default function HistoryPage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import { useAuth } from '../context/AuthContext';
@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left — Image */}
+      {/* Left â€” Image */}
       <div className="hidden lg:block lg:w-[55%] relative">
         <img
           src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
@@ -46,11 +46,11 @@ export default function LoginPage() {
           <blockquote className="text-white/90 text-lg font-light leading-relaxed mb-4">
             "Early detection of melanoma increased five-year survival rates to over 99%. A simple skin check can save your life."
           </blockquote>
-          <p className="text-white/60 text-sm font-medium">— Skin Cancer Foundation</p>
+          <p className="text-white/60 text-sm font-medium">â€” Skin Cancer Foundation</p>
         </div>
       </div>
 
-      {/* Right — Form */}
+      {/* Right â€” Form */}
       <div className="w-full lg:w-[45%] flex flex-col justify-center py-16 px-8 sm:px-16 lg:px-20 bg-white dark:bg-slate-900 transition-colors">
         <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
           <div className="flex items-center justify-between mb-14">
@@ -69,27 +69,27 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <h1 className="text-3xl font-light text-[#18181b] mb-2">Welcome back</h1>
-          <p className="text-sm text-slate-500 font-light mb-10">
+          <h1 className="text-3xl font-light text-[#18181b] dark:text-white mb-2">Welcome back</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-light mb-10">
             Sign in to access your skin health records.{' '}
-            <Link to="/register" className="font-medium text-[#6b8c84] hover:text-[#52736b] transition-colors">
+            <Link to="/register" className="font-medium text-[#6b8c84] dark:text-teal-400 hover:text-[#52736b] dark:hover:text-teal-300 transition-colors">
               New here? Create an account
             </Link>
           </p>
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-xl text-sm font-medium border border-red-100">
+              <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 dark:border-red-900/50">
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-[#475569] mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-[#475569] dark:text-slate-300 mb-1.5">Email</label>
               <input type="email" required className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#475569] mb-1.5">Password</label>
-              <input type="password" required className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+              <label className="block text-sm font-medium text-[#475569] dark:text-slate-300 mb-1.5">Password</label>
+              <input type="password" required className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full !mt-8">
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
@@ -100,3 +100,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

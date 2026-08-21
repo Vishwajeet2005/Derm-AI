@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import DiagnosisResult from '../components/DiagnosisResult';
 import axiosClient from '../api/axiosClient';
@@ -36,13 +36,13 @@ export default function DiagnosePage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] py-16">
+    <div className="min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] py-16 transition-colors">
       <div className="section-container">
         {/* Header */}
         <div className="mb-14 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">Skin assessment</p>
-          <h1 className="text-4xl font-light text-[#18181b] mb-3">Analyze your skin concern</h1>
-          <p className="text-lg text-slate-500 font-light max-w-xl">
+          <p className="text-sm font-medium text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-3">Skin assessment</p>
+          <h1 className="text-4xl font-light text-[#18181b] dark:text-white mb-3">Analyze your skin concern</h1>
+          <p className="text-lg text-slate-500 dark:text-slate-400 font-light max-w-xl">
             Upload a clear, well-lit photograph of the affected area. Our system will provide an instant assessment.
           </p>
         </div>
@@ -50,14 +50,14 @@ export default function DiagnosePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Upload column */}
           <div className="space-y-5 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
-            <div className="bg-white rounded-[1.75rem] p-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-slate-100">
+            <div className="bg-white dark:bg-[#0f172a] rounded-[1.75rem] p-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800 transition-colors">
               <ImageUploader onImageUpload={handleImageUpload} selectedImage={selectedImage} />
             </div>
 
             {selectedImage && !result && (
               <button onClick={handleDiagnose} disabled={loading} className="btn-primary w-full">
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing…</>
+                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzingâ€¦</>
                 ) : (
                   <><Upload className="w-5 h-5" /> Analyze Skin Condition</>
                 )}
@@ -65,7 +65,7 @@ export default function DiagnosePage() {
             )}
 
             {error && (
-              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-xl text-sm font-medium border border-red-100">{error}</div>
+              <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 dark:border-red-900/50">{error}</div>
             )}
           </div>
 
@@ -78,7 +78,7 @@ export default function DiagnosePage() {
                   <div className="absolute inset-0 rounded-full border-[3px] border-[#84a59d] border-t-transparent animate-spin" />
                 </div>
                 <h3 className="text-lg font-medium text-[#18181b] mb-1">Analyzing your photo</h3>
-                <p className="text-sm text-slate-500 font-light">This usually takes a few seconds.</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-light">This usually takes a few seconds.</p>
               </div>
             ) : result ? (
               <DiagnosisResult result={result} />
@@ -98,3 +98,4 @@ export default function DiagnosePage() {
     </div>
   );
 }
+

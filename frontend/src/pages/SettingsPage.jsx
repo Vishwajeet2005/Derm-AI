@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axiosClient from '../api/axiosClient';
 import { FiMapPin, FiSave, FiCheckCircle } from 'react-icons/fi';
@@ -84,14 +84,14 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#f8fafc] flex flex-col pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] transition-colors flex flex-col pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto w-full">
         <div className="mb-8">
-          <p className="text-sm font-medium text-[#6b8c84] tracking-widest uppercase mb-3">{t('nav.settings')}</p>
-          <h1 className="text-3xl font-light text-[#18181b] tracking-tight">{t('settings.title')}</h1>
+          <p className="text-sm font-medium text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-3">{t('nav.settings')}</p>
+          <h1 className="text-3xl font-light text-[#18181b] dark:text-white tracking-tight">{t('settings.title')}</h1>
         </div>
 
-        <div className="bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] rounded-[1.75rem] border border-slate-100 overflow-hidden">
+        <div className="bg-white dark:bg-[#0f172a] shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] rounded-[1.75rem] border border-slate-100 dark:border-slate-800 transition-colors overflow-hidden">
           <div className="p-8">
             {message && (
               <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.includes('success') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
@@ -105,7 +105,7 @@ const SettingsPage = () => {
                 
                 {/* Name */}
                 <div className="sm:col-span-2">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-slate-300">Full Name</label>
                   <div className="mt-2">
                     <input
                       type="text"
@@ -113,7 +113,7 @@ const SettingsPage = () => {
                       id="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="block w-full rounded-xl border-gray-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-3 bg-white/50 backdrop-blur-sm transition-all"
+                      className="block w-full rounded-xl border-gray-200 dark:border-slate-700 dark:text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-4 py-3 bg-white/50 dark:bg-slate-800 backdrop-blur-sm transition-all"
                       required
                     />
                   </div>
@@ -121,7 +121,7 @@ const SettingsPage = () => {
 
                 {/* Email - Readonly */}
                 <div className="sm:col-span-2">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-slate-300">Email Address</label>
                   <div className="mt-2">
                     <input
                       type="email"
@@ -129,14 +129,14 @@ const SettingsPage = () => {
                       id="email"
                       value={formData.email}
                       readOnly
-                      className="block w-full rounded-xl border-gray-200 bg-gray-100/50 text-gray-500 shadow-sm sm:text-sm px-4 py-3 cursor-not-allowed"
+                      className="block w-full rounded-xl border-gray-200 dark:border-slate-700 dark:text-white bg-gray-100/50 text-gray-500 dark:text-slate-400 shadow-sm sm:text-sm px-4 py-3 cursor-not-allowed"
                     />
                   </div>
                 </div>
 
                 {/* Fitzpatrick Skin Type */}
                 <div>
-                  <label htmlFor="fitzpatrick_skin_type" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="fitzpatrick_skin_type" className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                     Fitzpatrick Skin Type
                   </label>
                   <div className="mt-2">
@@ -145,7 +145,7 @@ const SettingsPage = () => {
                       name="fitzpatrick_skin_type"
                       value={formData.fitzpatrick_skin_type}
                       onChange={handleChange}
-                      className="block w-full rounded-xl border-gray-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-3 bg-white/50 backdrop-blur-sm"
+                      className="block w-full rounded-xl border-gray-200 dark:border-slate-700 dark:text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-4 py-3 bg-white/50 dark:bg-slate-800 backdrop-blur-sm"
                     >
                       <option value="1">Type 1: Always burns, never tans (Pale, freckles)</option>
                       <option value="2">Type 2: Usually burns, tans minimally (Fair)</option>
@@ -159,7 +159,7 @@ const SettingsPage = () => {
 
                 {/* Language Preference */}
                 <div>
-                  <label htmlFor="language_preference" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="language_preference" className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                     Language Preference
                   </label>
                   <div className="mt-2">
@@ -168,11 +168,11 @@ const SettingsPage = () => {
                       name="language_preference"
                       value={formData.language_preference}
                       onChange={handleChange}
-                      className="block w-full rounded-xl border-gray-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-3 bg-white/50 backdrop-blur-sm"
+                      className="block w-full rounded-xl border-gray-200 dark:border-slate-700 dark:text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-4 py-3 bg-white/50 dark:bg-slate-800 backdrop-blur-sm"
                     >
                       <option value="en">English (en)</option>
-                      <option value="es">Español (es)</option>
-                      <option value="fr">Français (fr)</option>
+                      <option value="es">EspaÃ±ol (es)</option>
+                      <option value="fr">FranÃ§ais (fr)</option>
                     </select>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ const SettingsPage = () => {
                 {/* Location */}
                 <div className="sm:col-span-2">
                   <div className="flex items-center justify-between">
-                    <label className="block text-sm font-medium text-gray-700">Location</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">Location</label>
                     <button
                       type="button"
                       onClick={handleUpdateLocation}
@@ -191,7 +191,7 @@ const SettingsPage = () => {
                       {locationLoading ? 'Locating...' : 'Update Location'}
                     </button>
                   </div>
-                  <div className="mt-2 p-4 bg-gray-50/50 rounded-xl border border-gray-100 flex items-center justify-center text-sm text-gray-500">
+                  <div className="mt-2 p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 flex items-center justify-center text-sm text-gray-500 dark:text-slate-400">
                     {formData.location ? (
                       <span>
                         Lat: {parseFloat(formData.location.latitude).toFixed(4)}, Lng: {parseFloat(formData.location.longitude).toFixed(4)}
@@ -226,3 +226,4 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+
