@@ -1,10 +1,29 @@
-from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from ..db.database import get_db
 from ..db.models import Condition
 import uuid
 
 router = APIRouter()
+
+@router.get("/search")
+def search_conditions(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
+    conditions = db.query(Condition).filter(Condition.condition_name.ilike(f"%{q}%")).all()
+    
+    return {
+        "data": [
+            {
+                "id": str(c.id),
+                "condition_name": c.condition_name,
+                "fitzpatrick_spectrum": c.fitzpatrick_spectrum,
+                "category": c.category,
+                "tropical_flag": c.tropical_flag,
+                "description": c.description,
+                "ontology_ref": c.ontology_ref,
+                "icd_code": c.icd_code
+            } for c in conditions
+        ]
+    }
 
 @router.get("/{condition_id}")
 def get_condition(condition_id: str, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, Menu, X, Settings, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -19,6 +19,7 @@ export default function Navbar() {
     { to: '/history', label: t('nav.history') },
     { to: '/progression', label: t('nav.tracking') },
     { to: '/doctors', label: t('nav.doctors') },
+    { to: '/library', label: 'Library' },
     { to: '/interview', label: t('nav.interview') },
   ];
 
@@ -151,3 +152,4 @@ export default function Navbar() {
     </header>
   );
 }
+

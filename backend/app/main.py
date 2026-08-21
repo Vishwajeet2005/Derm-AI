@@ -13,6 +13,7 @@ from app.api.history import router as history_router
 from app.api.progression import router as progression_router
 from app.api.doctors import router as doctors_router
 from app.api.conditions import router as conditions_router
+from app.api.disease_search import router as disease_search_router
 
 # Create tables
 try:
@@ -58,8 +59,10 @@ app.include_router(history_router, prefix="/api/v1/history", tags=["history"])
 app.include_router(progression_router, prefix="/api/v1/progression", tags=["progression"])
 app.include_router(doctors_router, prefix="/api/v1/doctors", tags=["doctors"])
 app.include_router(conditions_router, prefix="/api/v1/conditions", tags=["conditions"])
+app.include_router(disease_search_router, prefix="/api/v1/disease-search", tags=["disease_search"])
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to DermAI API"}
+
 

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -14,6 +14,7 @@ import ProgressionPage from './pages/ProgressionPage';
 import DoctorsPage from './pages/DoctorsPage';
 import SettingsPage from './pages/SettingsPage';
 import SymptomChecker from './pages/SymptomChecker';
+import ConditionLibraryPage from './pages/ConditionLibraryPage';
 
 function App() {
   return (
@@ -77,6 +78,7 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
+              <Route path="/library" element={<ProtectedRoute><ConditionLibraryPage /></ProtectedRoute>} />
             </Routes>
           </main>
         </div>
@@ -86,3 +88,6 @@ function App() {
 }
 
 export default App;
+
+
+
