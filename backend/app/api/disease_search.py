@@ -46,7 +46,10 @@ You must return a JSON object containing the following exact keys:
 - "category": The general category (e.g., "benign", "malignant", "inflammatory", "infectious", "autoimmune").
 - "icd_code": The ICD-10 or ICD-11 code for this condition.
 - "fitzpatrick_spectrum": Which Fitzpatrick skin types this commonly affects (e.g., "I-VI", "I-IV").
-- "description": A concise but highly detailed clinical description of the condition.
+- "overview": A concise but highly detailed clinical overview of the condition.
+- "symptoms": An array of strings listing common symptoms.
+- "causes": An array of strings listing primary causes or risk factors.
+- "treatment": An array of strings listing common treatments or management strategies.
 Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
 
     payload = {
@@ -82,10 +85,14 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
         "category": structured_data.get("category", "Unknown"),
         "icd_code": structured_data.get("icd_code", "N/A"),
         "fitzpatrick_spectrum": structured_data.get("fitzpatrick_spectrum", "N/A"),
-        "description": structured_data.get("description", "No description available."),
+        "overview": structured_data.get("overview", "No overview available."),
+        "symptoms": structured_data.get("symptoms", []),
+        "causes": structured_data.get("causes", []),
+        "treatment": structured_data.get("treatment", []),
         "images": images
     }
     
     return {"data": [condition_record]}
+
 
 
