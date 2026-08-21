@@ -1,4 +1,4 @@
-import os
+﻿import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     FIREBASE_CREDENTIALS_PATH: str = os.getenv("FIREBASE_CREDENTIALS_PATH", "./firebase-credentials.json")
     
     # CORS
-    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+    ALLOWED_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "*")
     
     # ML Model
     MODEL_PATH: str = os.getenv("MODEL_PATH", "./ml/saved_model/dermai_efficientnetb3")
@@ -26,3 +26,4 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 settings = Settings()
+

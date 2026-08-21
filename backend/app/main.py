@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+﻿from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -34,7 +34,7 @@ origins = settings.ALLOWED_ORIGINS.split(",") if settings.ALLOWED_ORIGINS else [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -62,3 +62,4 @@ app.include_router(conditions_router, prefix="/api/v1/conditions", tags=["condit
 @app.get("/")
 def read_root():
     return {"message": "Welcome to DermAI API"}
+
