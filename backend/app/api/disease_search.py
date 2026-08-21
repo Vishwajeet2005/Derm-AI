@@ -50,7 +50,7 @@ You must return a JSON object containing the following exact keys:
 Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
 
     payload = {
-        "model": "llama-3.3-70b-versatile",
+        "model": "openai/gpt-oss-20b",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": q}
@@ -87,4 +87,5 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
     }
     
     return {"data": [condition_record]}
+
 
