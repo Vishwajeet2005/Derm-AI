@@ -40,14 +40,14 @@ async def search_disease(q: str = Query(..., min_length=1)):
         "Content-Type": "application/json"
     }
     
-    system_prompt = \"\"\"You are a highly accurate medical API. The user will provide a skin condition or disease name.
+    system_prompt = """You are a highly accurate medical API. The user will provide a skin condition or disease name.
 You must return a JSON object containing the following exact keys:
 - "condition_name": The standardized medical name.
 - "category": The general category (e.g., "benign", "malignant", "inflammatory", "infectious", "autoimmune").
 - "icd_code": The ICD-10 or ICD-11 code for this condition.
 - "fitzpatrick_spectrum": Which Fitzpatrick skin types this commonly affects (e.g., "I-VI", "I-IV").
 - "description": A concise but highly detailed clinical description of the condition.
-Do not wrap the JSON in markdown code blocks. Output raw JSON only.\"\"\"
+Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
 
     payload = {
         "model": "llama-3.3-70b-versatile",
@@ -87,3 +87,4 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only.\"\"\"
     }
     
     return {"data": [condition_record]}
+
