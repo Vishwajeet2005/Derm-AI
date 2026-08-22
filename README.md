@@ -113,9 +113,3 @@ dermai/
 ├── docker-compose.yml        # Orchestration configuration
 └── README.md                 # Project documentation
 ```
-
----
-
-<div align="center">
-  <i>Developed to bring dermatological intelligence to everyone, everywhere.</i>
-</div>
