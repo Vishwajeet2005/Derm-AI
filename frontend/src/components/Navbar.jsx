@@ -77,7 +77,15 @@ export default function Navbar() {
             </button>
             <select
               value={i18n.language}
-              onChange={(e) => i18n.changeLanguage(e.target.value)}
+              onChange={(e) => {
+                  const lang = e.target.value;
+                  i18n.changeLanguage(lang);
+                  const selectField = document.querySelector(".goog-te-combo");
+                  if (selectField) {
+                    selectField.value = lang;
+                    selectField.dispatchEvent(new Event("change"));
+                  }
+                }}
               className="bg-transparent text-sm text-slate-500 font-medium focus:outline-none cursor-pointer hover:text-slate-700 dark:text-slate-400 dark:hover:text-white mr-2 [&>option]:text-black"
             >
               <option value="en">EN</option>
@@ -152,4 +160,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 
