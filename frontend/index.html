@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DermAI</title>
     <style>
-      /* Hide the Google Translate UI */
-      .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon { display: none !important; }
-      body { top: 0px !important; }
+      /* Completely hide all Google Translate UI elements and tooltips */
+      .goog-te-banner-frame { display: none !important; }
+      .skiptranslate iframe { display: none !important; }
+      #goog-gt-tt { display: none !important; visibility: hidden !important; }
+      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+      body { top: 0px !important; position: static !important; }
       #google_translate_element { display: none !important; }
     </style>
   </head>
