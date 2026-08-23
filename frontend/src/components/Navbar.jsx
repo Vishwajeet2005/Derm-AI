@@ -83,7 +83,9 @@ export default function Navbar() {
                   const selectField = document.querySelector(".goog-te-combo");
                   if (selectField) {
                     selectField.value = lang;
-                    selectField.dispatchEvent(new Event("change"));
+                    selectField.dispatchEvent(new Event('change', { bubbles: true }));
+                    document.cookie = `googtrans=/en/${lang}` + '; path=/';
+                    document.cookie = `googtrans=/en/${lang}` + '; domain=' + location.hostname + '; path=/';
                   }
                 }}
               className="bg-transparent text-sm text-slate-500 font-medium focus:outline-none cursor-pointer hover:text-slate-700 dark:text-slate-400 dark:hover:text-white mr-2 [&>option]:text-black"
@@ -160,5 +162,6 @@ export default function Navbar() {
     </header>
   );
 }
+
 
 
