@@ -39,9 +39,9 @@ def fetch_ai_description(condition_name: str) -> str:
     return f"A medical condition identified as {condition_name}. Consult a dermatologist for a professional evaluation."
 
 def get_condition_details(db: Session, condition_name: str):
-    \"\"\"
+    """
     Layer 1 — takes top_1_class string, returns condition details from the conditions table.
-    \"\"\"
+    """
     condition = db.query(Condition).filter(Condition.condition_name == condition_name).first()
     
     if not condition:
@@ -61,9 +61,9 @@ def get_condition_details(db: Session, condition_name: str):
     }
 
 def severity_assessment(confidence_score: float) -> str:
-    \"\"\"
+    """
     Layer 2 — severity_assessment(confidence_score).
-    \"\"\"
+    """
     if confidence_score > 0.85:
         return "mild"
     elif confidence_score > 0.65:
@@ -72,9 +72,9 @@ def severity_assessment(confidence_score: float) -> str:
         return "severe"
 
 def urgency_flag(condition_category: str) -> str:
-    \"\"\"
+    """
     Layer 3 — urgency_flag(condition_category).
-    \"\"\"
+    """
     cat = condition_category.lower()
     if cat == "malignant":
         return "immediate"
@@ -82,3 +82,4 @@ def urgency_flag(condition_category: str) -> str:
         return "priority"
     else:
         return "standard"
+
