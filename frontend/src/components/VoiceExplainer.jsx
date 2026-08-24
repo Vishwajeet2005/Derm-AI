@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Square, Volume2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,6 +21,8 @@ export default function VoiceExplainer({ text }) {
     // Change language based on i18n
     if (i18n.language.startsWith('es')) u.lang = 'es-ES';
     else if (i18n.language.startsWith('fr')) u.lang = 'fr-FR';
+    else if (i18n.language.startsWith('hi')) u.lang = 'hi-IN';
+    else if (i18n.language.startsWith('mr')) u.lang = 'mr-IN';
     else u.lang = 'en-US';
 
     u.onend = () => setIsPlaying(false);

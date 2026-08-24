@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, Menu, X, Settings, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -93,6 +93,8 @@ export default function Navbar() {
               <option value="en">EN</option>
               <option value="es">ES</option>
               <option value="fr">FR</option>
+              <option value="hi">HI</option>
+              <option value="mr">MR</option>
             </select>
             {user ? (
               <div className="flex items-center gap-2 lg:gap-3">

@@ -119,6 +119,20 @@ const resources = {
       history: { title: "Historique des Évaluations", subtitle: "Dossier chronologique des évaluations.", emptyTitle: "Aucune évaluation", emptySub: "Effectuez votre premier examen." },
       settings: { title: "Paramètres et Profil", updateBtn: "Mettre à jour" }
     }
+  },
+  hi: {
+    translation: {
+      nav: { diagnose: "निदान", history: "इतिहास", tracking: "ट्रैकिंग", doctors: "डॉक्टर", interview: "क्लिनिकल साक्षात्कार", settings: "सेटिंग्स", login: "लॉग इन", register: "साइन अप", logout: "लॉग आउट" },
+      history: { title: "मूल्यांकन इतिहास", subtitle: "आपके पिछले त्वचा मूल्यांकनों का कालानुक्रमिक रिकॉर्ड।", emptyTitle: "कोई मूल्यांकन नहीं", emptySub: "अपना पहला त्वचा परीक्षण पूरा करें।" },
+      settings: { title: "सेटिंग्स और प्रोफ़ाइल", updateBtn: "प्रोफ़ाइल अपडेट करें" }
+    }
+  },
+  mr: {
+    translation: {
+      nav: { diagnose: "निदान", history: "इतिहास", tracking: "ट्रॅकिंग", doctors: "डॉक्टर", interview: "क्लिनिकल मुलाखत", settings: "सेटिंग्ज", login: "लॉग इन", register: "साइन अप", logout: "लॉग आउट" },
+      history: { title: "मूल्यांकन इतिहास", subtitle: "तुमच्या मागील त्वचा मूल्यांकनांची नोंद.", emptyTitle: "कोणतेही मूल्यांकन नाही", emptySub: "तुमची पहिली त्वचा चाचणी पूर्ण करा." },
+      settings: { title: "सेटिंग्ज आणि प्रोफाइल", updateBtn: "प्रोफाइल अपडेट करा" }
+    }
   }
 };
 
