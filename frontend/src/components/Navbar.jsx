@@ -90,11 +90,11 @@ export default function Navbar() {
                 }}
               className="bg-transparent text-sm text-slate-500 font-medium focus:outline-none cursor-pointer hover:text-slate-700 dark:text-slate-400 dark:hover:text-white mr-2 [&>option]:text-black"
             >
-              <option value="en">EN</option>
-              <option value="es">ES</option>
-              <option value="fr">FR</option>
-              <option value="hi">HI</option>
-              <option value="mr">MR</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="hi">हिंदी</option>
+              <option value="mr">मराठी</option>
             </select>
             {user ? (
               <div className="flex items-center gap-2 lg:gap-3">
