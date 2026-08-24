@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import DiagnosisResult from '../components/DiagnosisResult';
 import axiosClient from '../api/axiosClient';
@@ -57,7 +57,7 @@ export default function DiagnosePage() {
             {selectedImage && !result && (
               <button onClick={handleDiagnose} disabled={loading} className="btn-primary w-full">
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzingâ€¦</>
+                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing...</>
                 ) : (
                   <><Upload className="w-5 h-5" /> Analyze Skin Condition</>
                 )}

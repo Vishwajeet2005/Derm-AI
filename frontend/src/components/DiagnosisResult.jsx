@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { AlertTriangle, CheckCircle2, ShieldAlert } from 'lucide-react';
 import VoiceExplainer from './VoiceExplainer';
 
@@ -32,7 +32,7 @@ export default function DiagnosisResult({ result }) {
         </div>
 
         {/* Explanation */}
-        <p className="text-[15px] text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-6">{result.explanation_text}</p>
+        <p id="diagnosis-explanation-text" className="text-[15px] text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-6">{result.explanation_text}</p>
 
         <VoiceExplainer text={result.explanation_text} />
       </div>

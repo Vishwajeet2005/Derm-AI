@@ -16,7 +16,11 @@ export default function VoiceExplainer({ text }) {
     if (!synth || !text) return;
     if (synth.paused) { synth.resume(); setIsPlaying(true); return; }
     synth.cancel();
-    const u = new SpeechSynthesisUtterance(text);
+    // Attempt to read the translated text from the DOM directly
+    const translatedDOM = document.getElementById('diagnosis-explanation-text');
+    const speechText = translatedDOM ? translatedDOM.innerText : text;
+    
+    const u = new SpeechSynthesisUtterance(speechText);
     
     // Change language based on i18n
     if (i18n.language.startsWith('es')) u.lang = 'es-ES';
