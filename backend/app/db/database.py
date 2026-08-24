@@ -1,14 +1,21 @@
-from sqlalchemy import create_engine
+﻿from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from ..core.config import settings
 
-# Fix Neon/Supabase old postgres:// prefix for SQLAlchemy 1.4+
 db_url = settings.DATABASE_URL
 if db_url and db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-engine = create_engine(db_url)
+# Default to sqlite if the hardcoded docker postgres URL is used but we aren't in docker
+if "postgres:5432" in db_url:
+    db_url = "sqlite:///./dermai.db"
+
+if db_url.startswith("sqlite"):
+    engine = create_engine(db_url, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(db_url)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
