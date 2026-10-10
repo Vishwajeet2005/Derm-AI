@@ -104,12 +104,12 @@ export default function RegisterPage() {
               </div>
               <select className="input-field" value={form.fitzpatrick_type} onChange={set('fitzpatrick_type')}>
                 <option value="">Skip for now</option>
-                <option value="1">Type I â€” Very fair, always burns</option>
-                <option value="2">Type II â€” Fair, usually burns</option>
-                <option value="3">Type III â€” Medium, sometimes burns</option>
-                <option value="4">Type IV â€” Olive, rarely burns</option>
-                <option value="5">Type V â€” Brown, very rarely burns</option>
-                <option value="6">Type VI â€” Dark brown, never burns</option>
+                <option value="1">Type I - Very fair, always burns</option>
+                <option value="2">Type II - Fair, usually burns</option>
+                <option value="3">Type III - Medium, sometimes burns</option>
+                <option value="4">Type IV - Olive, rarely burns</option>
+                <option value="5">Type V - Brown, very rarely burns</option>
+                <option value="6">Type VI - Dark brown, never burns</option>
               </select>
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full !mt-8">
@@ -125,4 +125,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
 

@@ -12,7 +12,7 @@ export default function ProgressionPage() {
         const res = await axiosClient.get('/history');
         // Map the backend history to the format ProgressionTracker expects
         // ProgressionTracker expects entries array. History returns { data: [...] }
-        setHistory(res.data.data || []);
+        setHistory((res.data.data || []).map(d => ({...d, recorded_at: d.created_at, diagnosis_name: d.primary_diagnosis, image_url: d.image_path, clinician_notes: d.explanation_text})));
       } catch (error) {
         console.error("Failed to fetch tracking history", error);
       } finally {
@@ -46,3 +46,4 @@ export default function ProgressionPage() {
     </div>
   );
 }
+
