@@ -1,87 +1,105 @@
 ﻿import os
+import json
 import logging
-import torch
-import torchvision.models as models
-from torchvision import transforms
-from PIL import Image
 import numpy as np
+from PIL import Image
 from ..core.config import settings
 
 logger = logging.getLogger(__name__)
 
 class DermAIModel:
     def __init__(self):
-        self.model = None
+        self.session = None
         self.idx_to_class = {}
-        self.transform = None
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self._load_model()
 
     def _load_model(self):
-        model_path = os.path.join(os.path.dirname(__file__), 'saved_model', 'DermAI_Mega_Payload.pth')
+        model_path = os.path.join(os.path.dirname(__file__), 'saved_model', 'dermai_model.onnx')
+        mapping_path = os.path.join(os.path.dirname(__file__), 'saved_model', 'idx_to_class.json')
         
-        if os.path.exists(model_path):
+        if os.path.exists(model_path) and os.path.exists(mapping_path):
             try:
-                logger.info(f"Loading PyTorch model from {model_path} on {self.device}")
-                checkpoint = torch.load(model_path, map_location=self.device, weights_only=False)
+                import onnxruntime as ort
                 
-                self.idx_to_class = checkpoint['idx_to_class']
+                # Load metadata
+                with open(mapping_path, 'r') as f:
+                    # keys in json are strings, convert to int
+                    raw_mapping = json.load(f)
+                    self.idx_to_class = {int(k): v for k, v in raw_mapping.items()}
+                
                 num_classes = len(self.idx_to_class)
-                img_size = checkpoint.get('image_size', 300)
                 
-                self.model = models.efficientnet_b3(weights=None)
-                self.model.classifier[1] = torch.nn.Linear(self.model.classifier[1].in_features, num_classes)
+                # Load ONNX session
+                # Forcing CPU execution provider for cloud compatibility and low memory
+                self.session = ort.InferenceSession(model_path, providers=['CPUExecutionProvider'])
                 
-                self.model.load_state_dict(checkpoint['model_state_dict'])
-                self.model.to(self.device)
-                self.model.eval()
-                
-                self.transform = transforms.Compose([
-                    transforms.Resize((img_size, img_size)),
-                    transforms.ToTensor(),
-                    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-                ])
-                
-                logger.info(f"Successfully loaded EfficientNetB3 with {num_classes} classes.")
+                logger.info(f"Successfully loaded EfficientNetB3 ONNX model with {num_classes} classes.")
+            except ImportError:
+                logger.error("onnxruntime is not installed! Run: pip install onnxruntime")
+                self.session = None
             except Exception as e:
-                logger.error(f"Failed to load model: {e}")
-                self.model = None
+                logger.error(f"Failed to load ONNX model: {e}")
+                self.session = None
         else:
-            logger.warning(f"Model not found at {model_path}. Using mock predictions.")
-            self.model = None
+            logger.warning(f"Model or mapping not found at {model_path}. Using mock predictions.")
+            self.session = None
+
+    def _preprocess(self, image_array):
+        # 1. Ensure PIL RGB Image
+        if not isinstance(image_array, Image.Image):
+            img_array_squeezed = np.squeeze(image_array)
+            if img_array_squeezed.dtype != np.uint8:
+                img_uint8 = (img_array_squeezed * 255).astype(np.uint8)
+            else:
+                img_uint8 = img_array_squeezed
+            image = Image.fromarray(img_uint8).convert('RGB')
+        else:
+            image = image_array.convert('RGB')
+            
+        # 2. Resize
+        image = image.resize((300, 300))
+        
+        # 3. To Numpy, scale to 0-1
+        img_np = np.array(image).astype(np.float32) / 255.0
+        
+        # 4. Normalize (ImageNet stats)
+        mean = np.array([0.485, 0.456, 0.406])
+        std = np.array([0.229, 0.224, 0.225])
+        img_np = (img_np - mean) / std
+        
+        # 5. Transpose to NCHW (channels first)
+        img_np = np.transpose(img_np, (2, 0, 1))
+        
+        # 6. Add batch dimension
+        img_np = np.expand_dims(img_np, axis=0)
+        
+        return img_np
 
     def predict(self, image_array):
-        if self.model is not None:
+        if self.session is not None:
             try:
-                if not isinstance(image_array, Image.Image):
-                    # Revert preprocessing done by preprocess.py
-                    img_array_squeezed = np.squeeze(image_array)
-                    if img_array_squeezed.dtype != np.uint8:
-                        img_uint8 = (img_array_squeezed * 255).astype(np.uint8)
-                    else:
-                        img_uint8 = img_array_squeezed
-                    image = Image.fromarray(img_uint8).convert('RGB')
-                else:
-                    image = image_array.convert('RGB')
-
-                input_tensor = self.transform(image).unsqueeze(0).to(self.device)
+                # Preprocess
+                input_tensor = self._preprocess(image_array)
                 
-                with torch.no_grad():
-                    output = self.model(input_tensor)
-                    probabilities = torch.nn.functional.softmax(output[0], dim=0)
+                # Inference
+                input_name = self.session.get_inputs()[0].name
+                outputs = self.session.run(None, {input_name: input_tensor})
                 
-                top3_prob, top3_indices = torch.topk(probabilities, 3)
-                top3_prob = top3_prob.cpu().numpy()
-                top3_indices = top3_indices.cpu().numpy()
+                # Softmax
+                logits = outputs[0][0]
+                exp_logits = np.exp(logits - np.max(logits))
+                probabilities = exp_logits / exp_logits.sum()
+                
+                # Get Top 3
+                top3_indices = np.argsort(probabilities)[-3:][::-1]
                 
                 top_3 = []
-                for i in range(3):
-                    idx = top3_indices[i]
+                for idx in top3_indices:
                     raw_name = self.idx_to_class[idx]
                     clean_name = raw_name.replace('fitz_', '').replace('ham_', '').replace('_', ' ').title()
                     top_3.append({
                         "class_name": clean_name,
-                        "confidence": float(top3_prob[i])
+                        "confidence": float(probabilities[idx])
                     })
                     
                 return {
