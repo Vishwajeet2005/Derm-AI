@@ -4,14 +4,21 @@ from sqlalchemy.orm import sessionmaker
 from ..core.config import settings
 
 db_url = settings.DATABASE_URL
-if db_url and db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+if db_url:
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+        
+    # Force psycopg2 dialect to fix Render deployment issues
+    if db_url.startswith("postgresql://"):
+        db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+    elif db_url.startswith("postgresql+psycopg://"):
+        db_url = db_url.replace("postgresql+psycopg://", "postgresql+psycopg2://", 1)
 
 # Default to sqlite if the hardcoded docker postgres URL is used but we aren't in docker
-if "postgres:5432" in db_url:
+if db_url and "postgres:5432" in db_url:
     db_url = "sqlite:///./dermai.db"
 
-if db_url.startswith("sqlite"):
+if db_url and db_url.startswith("sqlite"):
     engine = create_engine(db_url, connect_args={"check_same_thread": False})
 else:
     engine = create_engine(
