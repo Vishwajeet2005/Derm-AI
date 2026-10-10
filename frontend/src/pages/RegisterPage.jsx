@@ -30,7 +30,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left â€” Image */}
+      {/* Left - Image */}
       <div className="hidden lg:block lg:w-[55%] relative">
         <img
           src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
@@ -42,11 +42,11 @@ export default function RegisterPage() {
           <blockquote className="text-white/90 text-lg font-light leading-relaxed mb-4">
             "Skin disease affects nearly one-third of the world's population. Accessible screening is a crucial first step toward treatment."
           </blockquote>
-          <p className="text-white/60 text-sm font-medium">â€” World Health Organization</p>
+          <p className="text-white/60 text-sm font-medium">- World Health Organization</p>
         </div>
       </div>
 
-      {/* Right â€” Form */}
+      {/* Right - Form */}
       <div className="w-full lg:w-[45%] flex flex-col justify-center py-12 px-8 sm:px-16 lg:px-20 bg-white dark:bg-slate-900 overflow-y-auto transition-colors">
         <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
           <div className="flex items-center justify-between mb-12">

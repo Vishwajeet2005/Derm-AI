@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left â€” Image */}
+      {/* Left - Image */}
       <div className="hidden lg:block lg:w-[55%] relative">
         <img
           src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
@@ -46,11 +46,11 @@ export default function LoginPage() {
           <blockquote className="text-white/90 text-lg font-light leading-relaxed mb-4">
             "Early detection of melanoma increased five-year survival rates to over 99%. A simple skin check can save your life."
           </blockquote>
-          <p className="text-white/60 text-sm font-medium">â€” Skin Cancer Foundation</p>
+          <p className="text-white/60 text-sm font-medium">- Skin Cancer Foundation</p>
         </div>
       </div>
 
-      {/* Right â€” Form */}
+      {/* Right - Form */}
       <div className="w-full lg:w-[45%] flex flex-col justify-center py-16 px-8 sm:px-16 lg:px-20 bg-white dark:bg-slate-900 transition-colors">
         <div className="w-full max-w-sm mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
           <div className="flex items-center justify-between mb-14">
@@ -89,7 +89,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-[#475569] dark:text-slate-300 mb-1.5">Password</label>
-              <input type="password" required className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
+              <input type="password" required className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full !mt-8">
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
