@@ -71,7 +71,7 @@ class DermAIModel:
         img_np = np.transpose(img_np, (2, 0, 1))
         
         # 6. Add batch dimension
-        img_np = np.expand_dims(img_np, axis=0)
+        img_np = np.expand_dims(img_np, axis=0).astype(np.float32)
         
         return img_np
 
@@ -125,3 +125,4 @@ model_instance = DermAIModel()
 
 def predict(image_array):
     return model_instance.predict(image_array)
+
