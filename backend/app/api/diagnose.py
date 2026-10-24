@@ -44,13 +44,13 @@ async def create_diagnosis(
         
         # 3. Diagnostic Framework
         condition_details = get_condition_details(db, top_1_class)
-        severity = severity_assessment(confidence)
         category = condition_details.get("category", "standard")
+        severity = severity_assessment(top_1_class, confidence)
         urgency = urgency_flag(category)
         
         # 4. Explanation Generation
         desc = condition_details.get("description", "A skin condition requiring monitoring.")
-        explanation = generate_explanation(top_1_class, severity, urgency, desc)
+        explanation = generate_explanation(top_1_class, severity, urgency, desc, confidence)
         
         # 5. Save to DB
         diagnosis = Diagnosis(

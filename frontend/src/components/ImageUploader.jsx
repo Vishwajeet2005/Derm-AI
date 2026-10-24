@@ -1,6 +1,6 @@
-﻿import React, { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { UploadCloud, Image as ImageIcon, RefreshCw } from 'lucide-react';
+import { UploadCloud, Image as ImageIcon, RefreshCw, ZoomIn, Sun, ShieldCheck } from 'lucide-react';
 
 export default function ImageUploader({ onImageUpload, selectedImage }) {
   const onDrop = useCallback((acceptedFiles) => {
@@ -13,46 +13,66 @@ export default function ImageUploader({ onImageUpload, selectedImage }) {
 
   if (selectedImage) {
     return (
-      <div className="relative w-full aspect-[4/3] rounded-[1.5rem] overflow-hidden group bg-slate-50 dark:bg-slate-800 transition-colors">
-        <img src={URL.createObjectURL(selectedImage)} alt="Uploaded skin photo" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#18181b]/0 group-hover:bg-[#18181b]/50 transition-all duration-300 flex items-center justify-center">
-          <button
-            onClick={() => onImageUpload(null)}
-            className="opacity-0 group-hover:opacity-100 inline-flex items-center gap-2 bg-white dark:bg-[#1e293b] text-[#27272a] px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Upload Different Photo
-          </button>
+      <div className="space-y-4">
+        <div className="relative w-full aspect-[4/3] rounded-[1.5rem] overflow-hidden group bg-slate-50 dark:bg-slate-800 transition-colors">
+          <img src={URL.createObjectURL(selectedImage)} alt="Uploaded skin photo" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[#18181b]/0 group-hover:bg-[#18181b]/50 transition-all duration-300 flex items-center justify-center">
+            <button
+              onClick={() => onImageUpload(null)}
+              className="opacity-0 group-hover:opacity-100 inline-flex items-center gap-2 bg-white dark:bg-[#1e293b] text-[#27272a] px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Upload Different Photo
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      {...getRootProps()}
-      className={`w-full aspect-[4/3] border-2 border-dashed rounded-[1.5rem] flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300
-        ${isDragActive
-          ? 'border-[#84a59d] bg-[#84a59d]/5'
-          : 'border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 hover:border-[#84a59d]/40 dark:hover:border-[#84a59d]/60 hover:bg-slate-50 dark:hover:bg-slate-800/80'
-        }`}
-    >
-      <input {...getInputProps()} />
-      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-5 transition-colors
-        ${isDragActive ? 'bg-[#84a59d]/15 text-[#6b8c84]' : 'bg-slate-100 text-slate-400 dark:text-slate-500'}`}>
-        {isDragActive
-          ? <UploadCloud className="w-8 h-8" strokeWidth={1.5} />
-          : <ImageIcon className="w-8 h-8" strokeWidth={1.5} />
-        }
+    <div className="space-y-4">
+      <div
+        {...getRootProps()}
+        className={`w-full aspect-[4/3] border-2 border-dashed rounded-[1.5rem] flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300
+          ${isDragActive
+            ? 'border-[#84a59d] bg-[#84a59d]/5'
+            : 'border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 hover:border-[#84a59d]/40 dark:hover:border-[#84a59d]/60 hover:bg-slate-50 dark:hover:bg-slate-800/80'
+          }`}
+      >
+        <input {...getInputProps()} />
+        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-5 transition-colors
+          ${isDragActive ? 'bg-[#84a59d]/15 text-[#6b8c84]' : 'bg-slate-100 text-slate-400 dark:text-slate-500'}`}>
+          {isDragActive
+            ? <UploadCloud className="w-8 h-8" strokeWidth={1.5} />
+            : <ImageIcon className="w-8 h-8" strokeWidth={1.5} />
+          }
+        </div>
+        <h3 className="text-lg font-medium text-[#27272a] dark:text-white mb-1.5">
+          {isDragActive ? 'Drop your photo here' : 'Upload a skin photo'}
+        </h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 text-center max-w-xs font-light leading-relaxed">
+          Drag and drop a clear, well-lit photo of the affected skin area, or click to browse.
+        </p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-5 font-medium">JPG, PNG up to 10 MB</p>
       </div>
-      <h3 className="text-lg font-medium text-[#27272a] mb-1.5">
-        {isDragActive ? 'Drop your photo here' : 'Upload a skin photo'}
-      </h3>
-      <p className="text-sm text-slate-500 text-center max-w-xs font-light leading-relaxed">
-        Drag and drop a clear, well-lit photo of the affected skin area, or click to browse.
-      </p>
-      <p className="text-xs text-slate-400 dark:text-slate-500 mt-6 font-medium">JPG, PNG up to 10 MB</p>
+
+      {/* Photography Guide / Capture Tips */}
+      <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 border border-slate-100 dark:border-slate-800">
+        <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2.5 flex items-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#6b8c84] dark:text-teal-400" /> Tips for High Accuracy
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-500 dark:text-slate-400 font-light">
+          <div className="flex items-center gap-2">
+            <ZoomIn className="w-3.5 h-3.5 text-[#6b8c84] flex-shrink-0" />
+            <span><strong>Close-up:</strong> Center 5–10 cm from lesion.</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sun className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+            <span><strong>Lighting:</strong> Bright, even light without shadows.</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-

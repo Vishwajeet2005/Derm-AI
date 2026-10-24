@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle2, ShieldAlert, TrendingUp } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ShieldAlert, TrendingUp, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import VoiceExplainer from './VoiceExplainer';
 
@@ -7,8 +7,8 @@ export default function DiagnosisResult({ result }) {
   if (!result) return null;
 
   const urgency = {
-    immediate: { Icon: ShieldAlert, color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/30', border: 'border-red-100 dark:border-red-900/50', label: 'Seek immediate consultation' },
-    urgent:    { Icon: AlertTriangle, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30', border: 'border-amber-100 dark:border-amber-900/50', label: 'Schedule a consultation soon' },
+    immediate: { Icon: ShieldAlert, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-900/30', border: 'border-rose-100 dark:border-rose-900/50', label: 'Critical: Seek immediate clinical evaluation' },
+    priority:  { Icon: AlertTriangle, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30', border: 'border-amber-100 dark:border-amber-900/50', label: 'Priority: Schedule a consultation soon' },
     default:   { Icon: CheckCircle2, color: 'text-[#6b8c84] dark:text-teal-400', bg: 'bg-[#f0f5f3] dark:bg-teal-900/30', border: 'border-[#dce8e3] dark:border-teal-900/50', label: 'Routine monitoring suggested' },
   };
   const u = urgency[result.urgency_flag?.toLowerCase()] || urgency.default;
@@ -19,7 +19,15 @@ export default function DiagnosisResult({ result }) {
       <div className="p-8 pb-0">
         <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">Assessment result</p>
         <div className="flex items-start justify-between gap-4 mb-6">
-          <h2 className="text-2xl font-light text-[#18181b] dark:text-white leading-snug">{result.primary_diagnosis}</h2>
+          <div>
+            <h2 className="text-2xl font-light text-[#18181b] dark:text-white leading-snug">{result.primary_diagnosis}</h2>
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className="text-xs text-slate-400 dark:text-slate-500">Clinical Severity:</span>
+              <span className="text-xs font-semibold capitalize text-[#6b8c84] dark:text-teal-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                {result.severity}
+              </span>
+            </div>
+          </div>
           <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex flex-col items-center justify-center">
             <span className="text-lg font-medium text-[#475569] dark:text-slate-200 leading-none">{Math.round(result.confidence_score * 100)}%</span>
             <span className="text-[9px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">MATCH</span>
@@ -32,8 +40,21 @@ export default function DiagnosisResult({ result }) {
           <span className="text-sm font-medium">{u.label}</span>
         </div>
 
+        {/* Quality Advisory if confidence < 50% */}
+        {result.confidence_score < 0.50 && (
+          <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 text-xs mb-6">
+            <Info className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-600" />
+            <div>
+              <p className="font-semibold mb-0.5">Photo Quality Notice ({Math.round(result.confidence_score * 100)}% Match Certainty)</p>
+              <p className="font-light text-amber-700 dark:text-amber-400 leading-relaxed">
+                The AI confidence is lower than usual. If this image was taken from far away or has background objects, taking a focused, close-up photo directly centered on the skin lesion will significantly improve accuracy.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Explanation */}
-        <p id="diagnosis-explanation-text" className="text-[15px] text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-6">{result.explanation_text}</p>
+        <p id="diagnosis-explanation-text" className="text-[15px] text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-6 whitespace-pre-line">{result.explanation_text}</p>
 
         <VoiceExplainer text={result.explanation_text} />
 
@@ -51,7 +72,7 @@ export default function DiagnosisResult({ result }) {
 
       {/* Differentials */}
       <div className="bg-[#f8fafc] dark:bg-slate-800/50 p-8 mt-6 border-t border-slate-100 dark:border-slate-800">
-        <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-5">Other possibilities</p>
+        <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-5">Differential Possibilities</p>
         <div className="space-y-3">
           {result.top_3_candidates?.map((c, i) => (
             <div key={i} className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#0f172a] rounded-xl border border-slate-100 dark:border-slate-800 transition-shadow hover:shadow-sm">
