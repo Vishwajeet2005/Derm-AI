@@ -4,6 +4,7 @@ from typing import List
 from ..db.database import get_db
 from ..db.models import ProgressionSession, ProgressionEntry, User, Condition
 from .deps import get_current_user
+from ..ml.preprocess import check_dermatological_image
 import uuid
 import os
 import shutil
@@ -37,6 +38,9 @@ def add_progression_entry(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File must be an image")
+
     # Verify session belongs to user
     session = db.query(ProgressionSession).filter(
         ProgressionSession.id == uuid.UUID(session_id),
@@ -50,21 +54,40 @@ def add_progression_entry(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    entry = ProgressionEntry(
-        session_id=session.id,
-        image_path=file_path,
-        diagnosis_id=uuid.UUID(diagnosis_id),
-        clinician_notes=clinician_notes
-    )
-    db.add(entry)
-    
-    # Update session last_updated
-    session.last_updated = entry.recorded_at
-    
-    db.commit()
-    db.refresh(entry)
-    
-    return {"data": {"entry_id": str(entry.id)}}
+    try:
+        with open(file_path, "rb") as f:
+            img_bytes = f.read()
+
+        is_valid_skin, validation_message, _ = check_dermatological_image(img_bytes)
+        if not is_valid_skin:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            raise HTTPException(status_code=400, detail=validation_message)
+
+        entry = ProgressionEntry(
+            session_id=session.id,
+            image_path=file_path,
+            diagnosis_id=uuid.UUID(diagnosis_id),
+            clinician_notes=clinician_notes
+        )
+        db.add(entry)
+        
+        # Update session last_updated
+        session.last_updated = entry.recorded_at
+        
+        db.commit()
+        db.refresh(entry)
+        
+        return {"data": {"entry_id": str(entry.id)}}
+    except HTTPException:
+        raise
+    except Exception as e:
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except Exception:
+                pass
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{session_id}")
 def get_progression_entries(
@@ -72,7 +95,6 @@ def get_progression_entries(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    # Verify session
     session = db.query(ProgressionSession).filter(
         ProgressionSession.id == uuid.UUID(session_id),
         ProgressionSession.user_id == current_user.id
@@ -81,19 +103,18 @@ def get_progression_entries(
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
         
-    entries = db.query(ProgressionEntry).filter(ProgressionEntry.session_id == session.id).order_by(ProgressionEntry.recorded_at.asc()).all()
+    entries = db.query(ProgressionEntry).filter(
+        ProgressionEntry.session_id == session.id
+    ).order_by(ProgressionEntry.recorded_at.asc()).all()
     
-    results = []
+    resp = []
     for e in entries:
-        # Also join with diagnosis to get diagnosis_name and severity
-        diag = e.diagnosis
-        results.append({
+        resp.append({
             "id": str(e.id),
-            "image_url": e.image_path,
-            "recorded_at": e.recorded_at.isoformat(),
+            "image_path": e.image_path,
+            "diagnosis_id": str(e.diagnosis_id),
             "clinician_notes": e.clinician_notes,
-            "diagnosis_name": diag.primary_diagnosis if diag else "Unknown",
-            "severity": diag.severity if diag else "Unknown"
+            "recorded_at": e.recorded_at.isoformat()
         })
         
-    return {"data": results}
+    return {"data": resp}

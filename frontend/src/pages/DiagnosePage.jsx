@@ -3,7 +3,7 @@ import ImageUploader from '../components/ImageUploader';
 import DiagnosisResult from '../components/DiagnosisResult';
 import axiosClient from '../api/axiosClient';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, Upload, FileSearch } from 'lucide-react';
+import { Loader2, Upload, FileSearch, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function DiagnosePage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -69,8 +69,23 @@ export default function DiagnosePage() {
             )}
 
             {error && (
-              <div className="bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 px-4 py-2.5 rounded-xl text-xs font-medium border border-rose-100 dark:border-rose-900/50">
-                {error}
+              <div className="bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 p-3.5 rounded-xl text-xs font-medium border border-rose-200/80 dark:border-rose-900/60 space-y-2 animate-fade-in">
+                <div className="flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 leading-relaxed">
+                    <p className="font-semibold text-rose-800 dark:text-rose-200">Image Validation Notice</p>
+                    <p className="mt-0.5 text-rose-600 dark:text-rose-300 font-normal">{error}</p>
+                  </div>
+                </div>
+                <div className="pt-1 flex items-center justify-end">
+                  <button
+                    onClick={() => { setSelectedImage(null); setError(''); }}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-medium text-rose-700 dark:text-rose-300 hover:text-rose-900 dark:hover:text-rose-100 underline underline-offset-2 transition-colors"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Select a different photograph
+                  </button>
+                </div>
               </div>
             )}
           </div>
