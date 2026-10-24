@@ -1,4 +1,4 @@
-﻿import i18n from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
@@ -17,7 +17,7 @@ const resources = {
         compSkinCare1: "Comprehensive skin care,",
         compSkinCare2: "in one place.",
         box1Title: "Skin Condition Detection",
-        box1Desc: "Upload a photo of your concern and receive an instant assessment covering over 390 dermatological conditions - from eczema and psoriasis to melanoma indicators.",
+        box1Desc: "Upload a photo of your concern and receive an instant assessment covering over 120 dermatological conditions - from eczema and psoriasis to melanoma indicators.",
         box2Title: "Photo-Based Tracking",
         box2Desc: "Track how your skin changes over weeks and months with side-by-side comparisons.",
         box3Title: "Built for Every Skin Tone",
@@ -27,12 +27,12 @@ const resources = {
         btnBrowse: "Browse Directory",
         clinVal: "Clinical validation",
         clinValTitle: "Built on peer-reviewed research.",
-        stat1Label: "Skin conditions covered",
-        stat1Desc: "Including rare tropical and pediatric dermatological conditions.",
-        stat2Label: "Assessment accuracy",
-        stat2Desc: "Validated against board-certified dermatologist diagnoses.",
+        stat1Label: "Conditions Covered",
+        stat1Desc: "Covering 121 conditions across Fitzpatrick 17k and HAM10000 benchmark datasets.",
+        stat2Label: "Top-3 Accuracy",
+        stat2Desc: "Validated across differential dermatology diagnoses.",
         stat3Label: "Fitzpatrick types supported",
-        stat3Desc: "Equal accuracy from the lightest to the darkest skin tones.",
+        stat3Desc: "Equitable screening from fair to deeply pigmented skin tones.",
         ctaTitle: "Ready to check your skin?",
         ctaDesc: "It takes 30 seconds. Upload a photo, receive your assessment, and connect with a specialist if needed.",
         btnCreate: "Create Your Free Account",
@@ -56,7 +56,7 @@ const resources = {
         compSkinCare1: "Cuidado de la piel integral,",
         compSkinCare2: "en un solo lugar.",
         box1Title: "Detección de condiciones",
-        box1Desc: "Sube una foto de tu problema y recibe una evaluación de más de 390 afecciones de la piel.",
+        box1Desc: "Sube una foto de tu problema y recibe una evaluación de más de 120 afecciones de la piel.",
         box2Title: "Seguimiento fotográfico",
         box2Desc: "Haz un seguimiento de los cambios de tu piel semana a semana.",
         box3Title: "Para todos los tonos",
@@ -67,9 +67,9 @@ const resources = {
         clinVal: "Validación Clínica",
         clinValTitle: "Basado en investigaciones revisadas por pares.",
         stat1Label: "Condiciones cubiertas",
-        stat1Desc: "Incluyendo condiciones tropicales y pediátricas.",
-        stat2Label: "Precisión",
-        stat2Desc: "Validado contra diagnósticos de expertos.",
+        stat1Desc: "Abarcando 121 afecciones en Fitzpatrick 17k y HAM10000.",
+        stat2Label: "Precisión Top-3",
+        stat2Desc: "Validado en diagnósticos diferenciales de dermatología.",
         stat3Label: "Tipos Fitzpatrick",
         stat3Desc: "Precisión igual para tonos de piel oscuros y claros.",
         ctaTitle: "¿Listo para revisar tu piel?",
@@ -95,43 +95,29 @@ const resources = {
         compSkinCare1: "Soins complets de la peau,",
         compSkinCare2: "en un seul endroit.",
         box1Title: "Détection des conditions",
-        box1Desc: "Recevez une évaluation couvrant plus de 390 affections dermatologiques.",
+        box1Desc: "Recevez une évaluation couvrant plus de 120 affections dermatologiques.",
         box2Title: "Suivi photo",
         box2Desc: "Suivez l'évolution de votre peau avec des comparaisons côte à côte.",
-        box3Title: "Pour toutes les peaux",
-        box3Desc: "Entraîné sur des ensembles de données mondialement diversifiés.",
-        box4Title: "Médecins près de chez vous",
-        box4Desc: "Nous vous connectons avec des dermatologues certifiés dans votre région.",
-        btnBrowse: "Parcourir l'annuaire",
+        box3Title: "Pour toutes les carnations",
+        box3Desc: "Entraîné sur des données mondiales pour une précision équitable.",
+        box4Title: "Trouvez un dermatologue proche",
+        box4Desc: "Nous vous mettons en relation avec des dermatologues certifiés dans votre région.",
+        btnBrowse: "Parcourir le répertoire",
         clinVal: "Validation clinique",
         clinValTitle: "Basé sur des recherches évaluées par des pairs.",
         stat1Label: "Affections couvertes",
-        stat1Desc: "Y compris les conditions tropicales et pédiatriques.",
-        stat2Label: "Précision",
-        stat2Desc: "Validé par des dermatologues certifiés.",
+        stat1Desc: "Couvrant 121 conditions sur Fitzpatrick 17k et HAM10000.",
+        stat2Label: "Précision Top-3",
+        stat2Desc: "Validé sur les diagnostics dermatologiques différentiels.",
         stat3Label: "Types Fitzpatrick",
-        stat3Desc: "Précision équitable pour toutes les teintes.",
-        ctaTitle: "Prêt à vérifier votre peau ?",
-        ctaDesc: "Cela prend 30 secondes. Téléchargez une photo et obtenez votre évaluation.",
-        btnCreate: "Créer un Compte Gratuit",
-        footerText: "DermAI est un outil éducatif. Consultez toujours un médecin."
+        stat3Desc: "Précision équivalente pour toutes les carnations.",
+        ctaTitle: "Prêt à examiner votre peau ?",
+        ctaDesc: "Cela prend 30 secondes. Téléchargez une photo et connectez-vous avec un spécialiste.",
+        btnCreate: "Créer un compte gratuit",
+        footerText: "DermAI est un outil éducatif et ne remplace pas un avis médical."
       },
-      history: { title: "Historique des Évaluations", subtitle: "Dossier chronologique des évaluations.", emptyTitle: "Aucune évaluation", emptySub: "Effectuez votre premier examen." },
-      settings: { title: "Paramètres et Profil", updateBtn: "Mettre à jour" }
-    }
-  },
-  hi: {
-    translation: {
-      nav: { diagnose: "निदान", history: "इतिहास", tracking: "ट्रैकिंग", doctors: "डॉक्टर", interview: "क्लिनिकल साक्षात्कार", settings: "सेटिंग्स", login: "लॉग इन", register: "साइन अप", logout: "लॉग आउट" },
-      history: { title: "मूल्यांकन इतिहास", subtitle: "आपके पिछले त्वचा मूल्यांकनों का कालानुक्रमिक रिकॉर्ड।", emptyTitle: "कोई मूल्यांकन नहीं", emptySub: "अपना पहला त्वचा परीक्षण पूरा करें।" },
-      settings: { title: "सेटिंग्स और प्रोफ़ाइल", updateBtn: "प्रोफ़ाइल अपडेट करें" }
-    }
-  },
-  mr: {
-    translation: {
-      nav: { diagnose: "निदान", history: "इतिहास", tracking: "ट्रॅकिंग", doctors: "डॉक्टर", interview: "क्लिनिकल मुलाखत", settings: "सेटिंग्ज", login: "लॉग इन", register: "साइन अप", logout: "लॉग आउट" },
-      history: { title: "मूल्यांकन इतिहास", subtitle: "तुमच्या मागील त्वचा मूल्यांकनांची नोंद.", emptyTitle: "कोणतेही मूल्यांकन नाही", emptySub: "तुमची पहिली त्वचा चाचणी पूर्ण करा." },
-      settings: { title: "सेटिंग्ज आणि प्रोफाइल", updateBtn: "प्रोफाइल अपडेट करा" }
+      history: { title: "Historique des examens", subtitle: "Enregistrement chronologique de vos évaluations.", emptyTitle: "Aucune évaluation", emptySub: "Effectuez votre premier examen." },
+      settings: { title: "Paramètres & Profil", updateBtn: "Mettre à jour" }
     }
   }
 };

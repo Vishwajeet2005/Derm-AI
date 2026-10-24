@@ -1,10 +1,18 @@
-﻿import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, TrendingUp, Users, Sparkles, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LegalModal from '../components/LegalModal';
 
 export default function LandingPage() {
   const { t } = useTranslation();
+  const [legalModalOpen, setLegalModalOpen] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
+
+  const openLegal = (tab) => {
+    setLegalTab(tab);
+    setLegalModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-transparent font-sans">
@@ -117,6 +125,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Clinical Validation & Accurate Metrics Section */}
       <section className="py-28 bg-white dark:bg-[#0f172a] border-t border-slate-100 dark:border-slate-800 transition-colors">
         <div className="section-container">
           <div className="text-center mb-20 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
@@ -126,8 +135,8 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-100 dark:bg-slate-800 rounded-[1.75rem] overflow-hidden shadow-sm animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
             {[
-              { value: '390+', label: t('landing.stat1Label'), description: t('landing.stat1Desc') },
-              { value: '94%', label: t('landing.stat2Label'), description: t('landing.stat2Desc') },
+              { value: '120+', label: t('landing.stat1Label'), description: t('landing.stat1Desc') },
+              { value: '92%', label: t('landing.stat2Label'), description: t('landing.stat2Desc') },
               { value: '6', label: t('landing.stat3Label'), description: t('landing.stat3Desc') },
             ].map((stat, i) => (
               <div key={i} className="bg-white dark:bg-[#1e293b] p-12 flex flex-col items-center text-center transition-colors">
@@ -157,6 +166,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Footer with functional Privacy & Terms */}
       <footer className="py-12 bg-white dark:bg-[#0f172a] border-t border-slate-100 dark:border-slate-800 transition-colors">
         <div className="section-container flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
@@ -171,11 +181,30 @@ export default function LandingPage() {
             {t('landing.footerText')}
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Privacy</a>
-            <a href="#" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Terms</a>
+            <button 
+              type="button"
+              onClick={() => openLegal('privacy')}
+              className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Privacy
+            </button>
+            <button 
+              type="button"
+              onClick={() => openLegal('terms')}
+              className="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Terms
+            </button>
           </div>
         </div>
       </footer>
+
+      {/* Interactive Privacy Policy & Terms Modal */}
+      <LegalModal
+        isOpen={legalModalOpen}
+        onClose={() => setLegalModalOpen(false)}
+        initialTab={legalTab}
+      />
     </div>
   );
 }
