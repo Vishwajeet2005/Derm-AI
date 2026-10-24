@@ -49,10 +49,11 @@ async def create_diagnosis(
         top_1_class = prediction["top_1_class"]
         confidence = prediction["top_1_confidence"]
         top_3 = prediction["top_3_list"]
+        is_ood = prediction.get("is_out_of_distribution", False)
         
-        # 4. Out-of-Distribution threshold: If top-1 confidence is below 12%,
+        # 4. Out-of-Distribution threshold: If top-1 confidence is below 18% or is_ood is True,
         # the model cannot identify any recognizable dermatological pathology
-        if confidence < 0.12:
+        if is_ood or confidence < 0.18:
             if os.path.exists(file_path):
                 os.remove(file_path)
             raise HTTPException(

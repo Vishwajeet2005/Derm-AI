@@ -83,13 +83,24 @@ class DermAIModel:
                 input_name = self.session.get_inputs()[0].name
                 outputs = self.session.run(None, {input_name: input_tensor})
                 
-                # Softmax with Clinical Temperature Calibration (T = 0.65)
-                # Calibrates multi-class probability distribution across 121 classes
-                # Preserves exact class ranking while accurately scaling dominant winners to clinical certainty levels
-                T = 0.65
-                logits = outputs[0][0] / T
-                exp_logits = np.exp(logits - np.max(logits))
-                probabilities = exp_logits / exp_logits.sum()
+                # Evaluate raw unnormalized logits for Out-of-Distribution (OOD) signal
+                raw_logits = outputs[0][0]
+                top_raw_logit = float(np.max(raw_logits))
+                
+                # If top_raw_logit < 0.60, the network has no distinct pathological signal
+                # Keep T = 1.0 (uncalibrated) to prevent boosting random noise, and flag as OOD
+                if top_raw_logit < 0.60:
+                    exp_logits = np.exp(raw_logits - top_raw_logit)
+                    probabilities = exp_logits / exp_logits.sum()
+                    is_ood = True
+                else:
+                    # Softmax with Clinical Temperature Calibration (T = 0.65)
+                    # Calibrates multi-class probability distribution across 121 classes
+                    T = 0.65
+                    logits = raw_logits / T
+                    exp_logits = np.exp(logits - np.max(logits))
+                    probabilities = exp_logits / exp_logits.sum()
+                    is_ood = False
                 
                 # Get Top 3
                 top3_indices = np.argsort(probabilities)[-3:][::-1]
@@ -106,7 +117,9 @@ class DermAIModel:
                 return {
                     "top_1_class": top_3[0]["class_name"],
                     "top_1_confidence": top_3[0]["confidence"],
-                    "top_3_list": top_3
+                    "top_3_list": top_3,
+                    "top_raw_logit": top_raw_logit,
+                    "is_out_of_distribution": is_ood
                 }
             except Exception as e:
                 logger.error(f"Prediction error: {e}")
@@ -119,7 +132,9 @@ class DermAIModel:
                     {"class_name": "Model Not Loaded", "confidence": 0.99},
                     {"class_name": "Mock Class 2", "confidence": 0.01},
                     {"class_name": "Mock Class 3", "confidence": 0.00}
-                ]
+                ],
+                "top_raw_logit": 0.0,
+                "is_out_of_distribution": False
             }
 
 model_instance = DermAIModel()
