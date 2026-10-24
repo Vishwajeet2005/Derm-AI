@@ -1,17 +1,17 @@
-# 📖 Derm-AI: Complete Architectural, Functional & AI Models Guide
+# Derm-AI: Complete Architectural, Functional & AI Models Guide
 
 > **A comprehensive master document explaining every component, feature, data flow, and machine learning model powering the Derm-AI platform.**
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 1. [Executive Summary & Core Mission](#1-executive-summary--core-mission)
 2. [End-to-End System Architecture](#2-end-to-end-system-architecture)
 3. [Deep Dive into the AI Models](#3-deep-dive-into-the-ai-models)
-   - [Model 1: Production Lightweight Computer Vision Engine (EfficientNet-B3 ONNX)](#model-1-production-lightweight-computer-vision-engine-efficientnet-b3-onnx)
-   - [Model 2: Multimodal Vision-Language Transformer (`vishwajeetborade/vit-text-multimodal-derm-multimodel`)](#model-2-multimodal-vision-language-transformer-vishwajeetboradevit-text-multimodal-derm-multimodel)
-   - [Model Comparison Matrix](#model-comparison-matrix)
-   - [How Both Models Work Together in Derm-AI](#how-both-models-work-together-in-derm-ai)
+ - [Model 1: Production Lightweight Computer Vision Engine (EfficientNet-B3 ONNX)](#model-1-production-lightweight-computer-vision-engine-efficientnet-b3-onnx)
+ - [Model 2: Multimodal Vision-Language Transformer (`vishwajeetborade/vit-text-multimodal-derm-multimodel`)](#model-2-multimodal-vision-language-transformer-vishwajeetboradevit-text-multimodal-derm-multimodel)
+ - [Model Comparison Matrix](#model-comparison-matrix)
+ - [How Both Models Work Together in Derm-AI](#how-both-models-work-together-in-derm-ai)
 4. [Frontend Architecture & Component Walkthrough](#4-frontend-architecture--component-walkthrough)
 5. [Backend API & Database Architecture](#5-backend-api--database-architecture)
 6. [Complete Request & Diagnostic Data Flow](#6-complete-request--diagnostic-data-flow)
@@ -36,28 +36,28 @@ Derm-AI is structured into decoupled, high-performance layers:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        CLIENT LAYER (React 18 + Vite)                  │
-│  • Diagnose Flow (Drag & Drop)        • Symptom Checker Wizard         │
-│  • Progression Timeline Visualizer    • Geolocation Doctor Directory   │
-│  • Condition Encyclopedia             • Multilingual Voice Explainer   │
+│ CLIENT LAYER (React 18 + Vite) │
+│ • Diagnose Flow (Drag & Drop) • Symptom Checker Wizard │
+│ • Progression Timeline Visualizer • Geolocation Doctor Directory │
+│ • Condition Encyclopedia • Multilingual Voice Explainer │
 └───────────────────────────────────┬────────────────────────────────────┘
-                                    │ HTTP / REST / Multipart
-                                    ▼
+ │ HTTP / REST / Multipart
+ ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│                       GATEWAY & API (FastAPI)                          │
-│  • JWT Auth & Permissions             • CORS Middleware                │
-│  • Input Validation (Pydantic v2)     • Static Image Serving           │
+│ GATEWAY & API (FastAPI) │
+│ • JWT Auth & Permissions • CORS Middleware │
+│ • Input Validation (Pydantic v2) • Static Image Serving │
 └───────────────┬───────────────────────────────┬────────────────────────┘
-                │                               │
-    ┌───────────▼─────────────┐     ┌───────────▼────────────────────────┐
-    │     DATA PERSISTENCE    │     │       AI INFERENCE ENGINES         │
-    │  • PostgreSQL 15        │     │  1. Production Engine:             │
-    │    - Users & Profiles   │     │     EfficientNet-B3 (ONNX Runtime) │
-    │    - Diagnoses & Scans  │     │     [<90MB RAM, <200ms CPU]        │
-    │    - Progression History│     │  2. Advanced Multimodal Engine:    │
-    │    - Doctor Directory   │     │     ViT + Text Multimodal Transformer│
-    │  • SQLAlchemy 2.0 ORM   │     │     [vishwajeetborade/vit-text...] │
-    └─────────────────────────┘     └────────────────────────────────────┘
+ │ │
+ ┌───────────▼─────────────┐ ┌───────────▼────────────────────────┐
+ │ DATA PERSISTENCE │ │ AI INFERENCE ENGINES │
+ │ • PostgreSQL 15 │ │ 1. Production Engine: │
+ │ - Users & Profiles │ │ EfficientNet-B3 (ONNX Runtime) │
+ │ - Diagnoses & Scans │ │ [<90MB RAM, <200ms CPU] │
+ │ - Progression History│ │ 2. Advanced Multimodal Engine: │
+ │ - Doctor Directory │ │ ViT + Text Multimodal Transformer│
+ │ • SQLAlchemy 2.0 ORM │ │ [vishwajeetborade/vit-text...] │
+ └─────────────────────────┘ └────────────────────────────────────┘
 ```
 
 ---
@@ -67,16 +67,16 @@ Derm-AI is structured into decoupled, high-performance layers:
 Derm-AI incorporates two distinct machine learning models designed to address different operational and clinical requirements:
 
 ```
-                 DERM-AI MACHINE LEARNING ARSENAL
-                 ────────────────────────────────
-                   │                            │
-                   ▼                            ▼
-      [ MODEL 1: ONNX PRODUCTION ]     [ MODEL 2: MULTIMODAL ViT ]
-       • EfficientNet-B3                • Vision Transformer (ViT-Base)
-       • Image-Only Inference           • Multi-modal (Image + Text)
-       • Embedded in Backend            • Hosted on Hugging Face Hub
-       • <90MB RAM (Cloud Optimized)    • Comprehensive Clinical Reasoning
-       • 121 Diagnostic Classes         • 4 Combined Datasets
+ DERM-AI MACHINE LEARNING ARSENAL
+ ────────────────────────────────
+ │ │
+ ▼ ▼
+ [ MODEL 1: ONNX PRODUCTION ] [ MODEL 2: MULTIMODAL ViT ]
+ • EfficientNet-B3 • Vision Transformer (ViT-Base)
+ • Image-Only Inference • Multi-modal (Image + Text)
+ • Embedded in Backend • Hosted on Hugging Face Hub
+ • <90MB RAM (Cloud Optimized) • Comprehensive Clinical Reasoning
+ • 121 Diagnostic Classes • 4 Combined Datasets
 ```
 
 ---
@@ -96,19 +96,19 @@ It utilizes **MBConv (Mobile Inverted Bottleneck Convolution)** blocks with Sque
 #### Datasets Used:
 1. **Fitzpatrick 17k (114 Classes):** Clinical photography categorized across all six Fitzpatrick skin phototypes (I to VI), ensuring the model performs equitably across different skin tones.
 2. **HAM10000 (7 Classes):** 10,000 dermatoscopic images capturing seven major pigmented lesion and cancer categories:
-   - `ham_mel`: Melanoma (malignant skin cancer)
-   - `ham_bcc`: Basal Cell Carcinoma
-   - `ham_akiec`: Actinic Keratoses / Intraepithelial Carcinoma
-   - `ham_bkl`: Benign Keratosis-like lesions
-   - `ham_nv`: Melanocytic Nevi (common moles)
-   - `ham_vasc`: Vascular lesions
-   - `ham_df`: Dermatofibroma
+ - `ham_mel`: Melanoma (malignant skin cancer)
+ - `ham_bcc`: Basal Cell Carcinoma
+ - `ham_akiec`: Actinic Keratoses / Intraepithelial Carcinoma
+ - `ham_bkl`: Benign Keratosis-like lesions
+ - `ham_nv`: Melanocytic Nevi (common moles)
+ - `ham_vasc`: Vascular lesions
+ - `ham_df`: Dermatofibroma
 
 #### Inference Pipeline:
 1. **Pillow Ingestion:** Converts any input image to RGB.
 2. **Resizing:** Standardized to $300 \times 300$ pixels.
 3. **Scaling & Normalization:** Scaled to $[0, 1]$, then normalized using ImageNet statistics:
-   $$\mu = [0.485, 0.456, 0.406], \quad \sigma = [0.229, 0.224, 0.225]$$
+ $$\mu = [0.485, 0.456, 0.406], \quad \sigma = [0.229, 0.224, 0.225]$$
 4. **Channel Layout:** Transposed to channels-first layout (`[1, 3, 300, 300]`).
 5. **Strict Float32 Casting:** Cast using `.astype(np.float32)` to avoid NumPy implicit float64 casting crashes in ONNX.
 6. **ONNX Execution:** Evaluated via `onnxruntime.InferenceSession` on CPU, using Softmax to yield Top-3 differential predictions.
@@ -135,24 +135,24 @@ In actual clinical practice, dermatologists do not diagnose skin conditions pure
 This model bridges that gap by accepting **both** the image of the lesion and the patient's textual symptom description, projecting both into a shared embedding space for joint classification.
 
 ```
-       PATIENT PHOTO                         SYMPTOM DESCRIPTION
-      (224x224 Pixels)                   ("Itchy red patch on elbow for 2 weeks")
-             │                                              │
-             ▼                                              ▼
-   [ ViT Patch Embedder ]                         [ Text Tokenizer ]
-  (16x16 Non-Overlapping Patches)                 (WordPiece Token Embeddings)
-             │                                              │
-             ▼                                              ▼
- [ 12-Layer Vision Transformer ]                [ Text Transformer Encoder ]
-             │                                              │
-             └──────────────────────┬───────────────────────┘
-                                    │
-                                    ▼
-                         [ Multimodal Fusion Layer ]
-                        (Cross-Attention / Joint Head)
-                                    │
-                                    ▼
-                       [ Clinical Diagnosis Output ]
+ PATIENT PHOTO SYMPTOM DESCRIPTION
+ (224x224 Pixels) ("Itchy red patch on elbow for 2 weeks")
+ │ │
+ ▼ ▼
+ [ ViT Patch Embedder ] [ Text Tokenizer ]
+ (16x16 Non-Overlapping Patches) (WordPiece Token Embeddings)
+ │ │
+ ▼ ▼
+ [ 12-Layer Vision Transformer ] [ Text Transformer Encoder ]
+ │ │
+ └──────────────────────┬───────────────────────┘
+ │
+ ▼
+ [ Multimodal Fusion Layer ]
+ (Cross-Attention / Joint Head)
+ │
+ ▼
+ [ Clinical Diagnosis Output ]
 ```
 
 #### Datasets Combined for Training:
@@ -180,10 +180,10 @@ inputs = processor(images=image, return_tensors="pt")
 
 # 3. Predict
 with torch.no_grad():
-    outputs = model(**inputs)
-    logits = outputs.logits
-    predicted_idx = logits.argmax(-1).item()
-    confidence = torch.softmax(logits, dim=-1)[0, predicted_idx].item()
+ outputs = model(**inputs)
+ logits = outputs.logits
+ predicted_idx = logits.argmax(-1).item()
+ confidence = torch.softmax(logits, dim=-1)[0, predicted_idx].item()
 
 print(f"Predicted Class Index: {predicted_idx} ({confidence * 100:.2f}%)")
 ```
@@ -210,11 +210,11 @@ print(f"Predicted Class Index: {predicted_idx} ({confidence * 100:.2f}%)")
 
 The two models serve complementary roles in the Derm-AI ecosystem:
 
-1. **First-Line Triage (Model 1 - EfficientNet-B3 ONNX):**  
-   When a user lands on the website and uploads a photo, Model 1 runs instantly inside the local FastAPI container. Because it uses less than 90MB of RAM, it never times out or crashes the free-tier server, delivering immediate Top-3 differential predictions and risk ratings.
+1. **First-Line Triage (Model 1 - EfficientNet-B3 ONNX):** 
+ When a user lands on the website and uploads a photo, Model 1 runs instantly inside the local FastAPI container. Because it uses less than 90MB of RAM, it never times out or crashes the free-tier server, delivering immediate Top-3 differential predictions and risk ratings.
 
-2. **Deep Clinical Correlation (Model 2 - Multimodal ViT):**  
-   When the user completes the **Clinical Symptom Checker**, their symptom text (duration, itchiness, bodily location) is combined with the image. Model 2 synthesizes visual evidence with the reported history, validating or refining the preliminary triage.
+2. **Deep Clinical Correlation (Model 2 - Multimodal ViT):** 
+ When the user completes the **Clinical Symptom Checker**, their symptom text (duration, itchiness, bodily location) is combined with the image. Model 2 synthesizes visual evidence with the reported history, validating or refining the preliminary triage.
 
 ---
 
@@ -225,29 +225,29 @@ The frontend is built with **React 18** and **Vite**, styled with **Tailwind CSS
 ```
 frontend/src/
 ├── components/
-│   ├── DiagnosisResult.jsx      # Visualizes Top-3 conditions, risk badge, & confidence bar
-│   ├── DoctorDirectory.jsx      # Filterable list of nearby verified dermatologists
-│   ├── ImageUploader.jsx        # Drag-and-drop file uploader with real-time preview
-│   ├── MapView.jsx              # Leaflet/OpenStreetMap visual doctor locator
-│   ├── Navbar.jsx               # Navigation bar with language selector & auth state
-│   ├── ProgressionTracker.jsx   # Side-by-side date-based photo comparison
-│   ├── ProtectedRoute.jsx       # Route guard redirecting unauthenticated users
-│   └── VoiceExplainer.jsx       # Web Speech API text-to-speech audio reader
+│ ├── DiagnosisResult.jsx # Visualizes Top-3 conditions, risk badge, & confidence bar
+│ ├── DoctorDirectory.jsx # Filterable list of nearby verified dermatologists
+│ ├── ImageUploader.jsx # Drag-and-drop file uploader with real-time preview
+│ ├── MapView.jsx # Leaflet/OpenStreetMap visual doctor locator
+│ ├── Navbar.jsx # Navigation bar with language selector & auth state
+│ ├── ProgressionTracker.jsx # Side-by-side date-based photo comparison
+│ ├── ProtectedRoute.jsx # Route guard redirecting unauthenticated users
+│ └── VoiceExplainer.jsx # Web Speech API text-to-speech audio reader
 ├── pages/
-│   ├── ConditionLibraryPage.jsx # Searchable dermatology condition encyclopedia
-│   ├── DiagnosePage.jsx         # Core diagnostic image upload & result view
-│   ├── DoctorsPage.jsx          # Doctor search & map explorer view
-│   ├── HistoryPage.jsx          # Archive of user's past scans & diagnoses
-│   ├── LandingPage.jsx          # Hero section, statistics, and platform benefits
-│   ├── LoginPage.jsx            # User sign-in with JWT storage
-│   ├── ProgressionPage.jsx      # Progression tracker view
-│   ├── RegisterPage.jsx         # Sign-up page with Fitzpatrick skin type selector
-│   ├── SettingsPage.jsx         # Profile, skin type, language, & GPS update page
-│   └── SymptomChecker.jsx       # Step-by-step diagnostic questionnaire wizard
+│ ├── ConditionLibraryPage.jsx # Searchable dermatology condition encyclopedia
+│ ├── DiagnosePage.jsx # Core diagnostic image upload & result view
+│ ├── DoctorsPage.jsx # Doctor search & map explorer view
+│ ├── HistoryPage.jsx # Archive of user's past scans & diagnoses
+│ ├── LandingPage.jsx # Hero section, statistics, and platform benefits
+│ ├── LoginPage.jsx # User sign-in with JWT storage
+│ ├── ProgressionPage.jsx # Progression tracker view
+│ ├── RegisterPage.jsx # Sign-up page with Fitzpatrick skin type selector
+│ ├── SettingsPage.jsx # Profile, skin type, language, & GPS update page
+│ └── SymptomChecker.jsx # Step-by-step diagnostic questionnaire wizard
 ├── context/
-│   └── AuthContext.jsx          # User authentication state & token persistence
+│ └── AuthContext.jsx # User authentication state & token persistence
 └── api/
-    └── axiosClient.js           # Configured Axios instance with Bearer interceptors
+ └── axiosClient.js # Configured Axios instance with Bearer interceptors
 ```
 
 ### Key UI Features & Flows:
@@ -277,63 +277,63 @@ The backend is built with **FastAPI** using asynchronous Python, **Pydantic v2**
 ### Relational Database Schema:
 ```mermaid
 erDiagram
-    USERS ||--o{ DIAGNOSES : "performs"
-    USERS ||--o{ PROGRESSION_SNAPSHOTS : "records"
-    DIAGNOSES ||--o| CONDITIONS : "matches"
-    
-    USERS {
-        int id PK
-        string email
-        string hashed_password
-        string full_name
-        string fitzpatrick_skin_type
-        string preferred_language
-        float latitude
-        float longitude
-        datetime created_at
-    }
+ USERS ||--o{ DIAGNOSES : "performs"
+ USERS ||--o{ PROGRESSION_SNAPSHOTS : "records"
+ DIAGNOSES ||--o| CONDITIONS : "matches"
+ 
+ USERS {
+ int id PK
+ string email
+ string hashed_password
+ string full_name
+ string fitzpatrick_skin_type
+ string preferred_language
+ float latitude
+ float longitude
+ datetime created_at
+ }
 
-    DIAGNOSES {
-        int id PK
-        int user_id FK
-        string image_url
-        string primary_diagnosis
-        float confidence
-        string risk_level
-        json secondary_diagnoses
-        datetime created_at
-    }
+ DIAGNOSES {
+ int id PK
+ int user_id FK
+ string image_url
+ string primary_diagnosis
+ float confidence
+ string risk_level
+ json secondary_diagnoses
+ datetime created_at
+ }
 
-    PROGRESSION_SNAPSHOTS {
-        int id PK
-        int user_id FK
-        string condition_name
-        string image_url
-        string notes
-        datetime recorded_at
-    }
+ PROGRESSION_SNAPSHOTS {
+ int id PK
+ int user_id FK
+ string condition_name
+ string image_url
+ string notes
+ datetime recorded_at
+ }
 
-    DOCTORS {
-        int id PK
-        string name
-        string clinic_name
-        string address
-        float latitude
-        float longitude
-        string phone
-        int consultation_fee
-        float rating
-    }
+ DOCTORS {
+ int id PK
+ string name
+ string clinic_name
+ string address
+ float latitude
+ float longitude
+ string phone
+ int consultation_fee
+ float rating
+ }
 
-    CONDITIONS {
-        int id PK
-        string name
-        string category
-        string description
-        string symptoms
-        string treatments
-        string risk_level
-    }
+ CONDITIONS {
+ int id PK
+ string name
+ string category
+ string description
+ string symptoms
+ string treatments
+ string risk_level
+ }
 ```
 
 ---
@@ -344,28 +344,28 @@ Here is the exact lifecycle of an image uploaded for diagnosis:
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    actor User as Patient (Browser)
-    participant UI as React Frontend
-    participant API as FastAPI Gateway
-    participant Model as ONNX Engine (EfficientNet-B3)
-    participant DB as PostgreSQL Database
+ autonumber
+ actor User as Patient (Browser)
+ participant UI as React Frontend
+ participant API as FastAPI Gateway
+ participant Model as ONNX Engine (EfficientNet-B3)
+ participant DB as PostgreSQL Database
 
-    User->>UI: Selects & uploads skin lesion photo
-    UI->>UI: Creates local preview & validates file type
-    UI->>API: POST /api/v1/diagnose/ (Multipart Form Data + JWT)
-    API->>API: Verifies JWT Token & saves image to /uploads
-    API->>Model: Passes image bytes to _preprocess()
-    Model->>Model: Resizes to 300x300, normalizes, casts to float32
-    Model->>Model: Executes session.run() on CPU
-    Model->>Model: Applies Softmax & extracts Top-3 classes
-    Model-->>API: Returns Top-3 conditions + percentage confidence
-    API->>API: Evaluates Risk Level (High/Med/Low) based on condition flags
-    API->>DB: Saves diagnosis record into 'diagnoses' table
-    DB-->>API: Confirms record persisted
-    API-->>UI: Returns JSON payload (Primary, Top-3, Risk, History ID)
-    UI->>UI: Renders DiagnosisResult component (Cards, Confidence Bars)
-    UI->>User: Displays clear findings, symptoms, & nearby doctor recommendations
+ User->>UI: Selects & uploads skin lesion photo
+ UI->>UI: Creates local preview & validates file type
+ UI->>API: POST /api/v1/diagnose/ (Multipart Form Data + JWT)
+ API->>API: Verifies JWT Token & saves image to /uploads
+ API->>Model: Passes image bytes to _preprocess()
+ Model->>Model: Resizes to 300x300, normalizes, casts to float32
+ Model->>Model: Executes session.run() on CPU
+ Model->>Model: Applies Softmax & extracts Top-3 classes
+ Model-->>API: Returns Top-3 conditions + percentage confidence
+ API->>API: Evaluates Risk Level (High/Med/Low) based on condition flags
+ API->>DB: Saves diagnosis record into 'diagnoses' table
+ DB-->>API: Confirms record persisted
+ API-->>UI: Returns JSON payload (Primary, Top-3, Risk, History ID)
+ UI->>UI: Renders DiagnosisResult component (Cards, Confidence Bars)
+ UI->>User: Displays clear findings, symptoms, & nearby doctor recommendations
 ```
 
 ---
@@ -374,20 +374,20 @@ sequenceDiagram
 
 ### Key Engineering Optimizations Solved:
 1. **Resolution of Cloud Out-of-Memory (OOM) Errors:**
-   - *Problem:* Loading PyTorch + torchvision consumed over 550MB of RAM, causing Render's free tier (512MB RAM) to kill the container.
-   - *Fix:* Replaced PyTorch with `onnxruntime` and exported the model weights to an optimized ONNX static graph. Cut RAM usage to **< 90 MB**.
+ - *Problem:* Loading PyTorch + torchvision consumed over 550MB of RAM, causing Render's free tier (512MB RAM) to kill the container.
+ - *Fix:* Replaced PyTorch with `onnxruntime` and exported the model weights to an optimized ONNX static graph. Cut RAM usage to **< 90 MB**.
 2. **Elimination of NumPy Float64 Runtime Cast Exception:**
-   - *Problem:* In Python, subtracting ImageNet mean arrays (`np.array([0.485, 0.456, 0.406])`) implicitly upgraded the 32-bit image array to `float64`, causing an ONNX runtime crash: `Unexpected input data type. Actual: (tensor(double)), expected: (tensor(float))`.
-   - *Fix:* Appended `.astype(np.float32)` to the final preprocessed array before inference.
+ - *Problem:* In Python, subtracting ImageNet mean arrays (`np.array([0.485, 0.456, 0.406])`) implicitly upgraded the 32-bit image array to `float64`, causing an ONNX runtime crash: `Unexpected input data type. Actual: (tensor(double)), expected: (tensor(float))`.
+ - *Fix:* Appended `.astype(np.float32)` to the final preprocessed array before inference.
 3. **Database Driver Failover:**
-   - *Problem:* Cloud PostgreSQL connection strings often use `postgresql://` or `postgresql+psycopg://` which fail if modern v3 drivers lack native C libraries.
-   - *Fix:* Added an automated connection string rewrite in `database.py` forcing `postgresql+psycopg2://` alongside `psycopg2-binary`.
+ - *Problem:* Cloud PostgreSQL connection strings often use `postgresql://` or `postgresql+psycopg://` which fail if modern v3 drivers lack native C libraries.
+ - *Fix:* Added an automated connection string rewrite in `database.py` forcing `postgresql+psycopg2://` alongside `psycopg2-binary`.
 4. **Progression History Field Mapping:**
-   - *Problem:* Backend returned `created_at` and `primary_diagnosis`, while the frontend component looked for `recorded_at` and `diagnosis_name`, resulting in "INVALID DATE" and blank titles.
-   - *Fix:* Added an adapter map in `ProgressionPage.jsx` normalizing the attributes seamlessly.
+ - *Problem:* Backend returned `created_at` and `primary_diagnosis`, while the frontend component looked for `recorded_at` and `diagnosis_name`, resulting in "INVALID DATE" and blank titles.
+ - *Fix:* Added an adapter map in `ProgressionPage.jsx` normalizing the attributes seamlessly.
 5. **Universal UTF-8 Encoding Cleanup:**
-   - *Problem:* Windows text-encoding mismatches caused corrupted characters (`â€“`, `â€™`) across multiple frontend components.
-   - *Fix:* Ran an automated regex replacement script across all JSX/JS files restoring clean hyphens and apostrophes.
+ - *Problem:* Windows text-encoding mismatches caused corrupted characters (`â€“`, `â€™`) across multiple frontend components.
+ - *Fix:* Ran an automated regex replacement script across all JSX/JS files restoring clean hyphens and apostrophes.
 
 ---
 

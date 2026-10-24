@@ -1,4 +1,4 @@
-# DermAI 🩺
+# DermAI 
 ### Next-Generation AI-Powered Skin Disease Detection, Progression Tracking & Clinical Triage
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -11,7 +11,7 @@
 
 ---
 
-## 📌 Executive Overview
+## Executive Overview
 
 **Derm-AI** is a full-stack, clinical-grade dermatology screening and triage platform built to bridge the gap between early symptom detection and professional specialist care. 
 
@@ -24,64 +24,64 @@ In traditional digital healthcare, individuals seeking answers about skin irregu
 
 ---
 
-## ✨ Key Features & Capabilities
+## Key Features & Capabilities
 
-### 🔬 1. AI Visual Lesion Classification (121 Classes)
+### 1. AI Visual Lesion Classification (121 Classes)
 - **Top-3 Differential Diagnoses:** Provides primary and secondary candidates with percentage confidence scores, aligning with real-world dermatological clinical practice.
 - **Risk Stratification:** Categorizes findings into **High Risk** (e.g., Melanoma, Squamous Cell Carcinoma, Basal Cell Carcinoma), **Medium Risk**, or **Low Risk**, advising immediate clinical consultation when necessary.
 - **Ultra-Lightweight Inference:** Transformed from PyTorch to an ONNX static computation graph, reducing inference memory usage to **< 90 MB RAM** with CPU execution times **< 200 ms**.
 
-### 🎨 2. Diagnostic Fairness Across the Fitzpatrick Scale
+### 2. Diagnostic Fairness Across the Fitzpatrick Scale
 - Trained on the benchmark **Fitzpatrick 17k** dataset (114 conditions spanning Phototypes I through VI) and **HAM10000** (7 pigmented lesion classes).
 - Mitigates diagnostic disparities across light, olive, and deeply pigmented skin tones.
 
-### 📋 3. Interactive Clinical Symptom Checker
+### 3. Interactive Clinical Symptom Checker
 - A step-by-step diagnostic interview wizard collecting essential patient history:
-  - Anatomic lesion location.
-  - Duration and onset speed.
-  - Sensation (itching, burning, pain, bleeding).
-  - Morphological evolution (changes in size, shape, or color).
+ - Anatomic lesion location.
+ - Duration and onset speed.
+ - Sensation (itching, burning, pain, bleeding).
+ - Morphological evolution (changes in size, shape, or color).
 - Compiles an exportable **Clinical Summary** that patients can present directly to a physician.
 
-### 📈 4. Longitudinal Photo Progression Tracking
+### 4. Longitudinal Photo Progression Tracking
 - Monitor skin conditions over days, weeks, or months.
 - Compare side-by-side progression photos to visually evaluate whether a condition is responding to treatment, stabilizing, or worsening.
 
-### 📍 5. Hyperlocal Dermatologist Finder
+### 5. Hyperlocal Dermatologist Finder
 - Interactive map and directory utilizing the **Haversine formula** and browser geolocation.
 - Filters verified local clinics and dermatologists by distance, consultation fees, and ratings.
 
-### 🌐 6. Multilingual Accessibility & Voice Explanations
+### 6. Multilingual Accessibility & Voice Explanations
 - Localized across multiple regional languages including **English, Hindi, and Marathi**.
 - Integrated text-to-speech voice explainer translating complex medical terminology into clear, accessible audio descriptions.
 
-### 🔐 7. Secure Authentication & User Profiles
+### 7. Secure Authentication & User Profiles
 - JWT (JSON Web Tokens) authentication with secure password hashing (`bcrypt`).
 - Customizable profiles with saved Fitzpatrick skin type, preferred language, and diagnostic history.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```mermaid
 flowchart TD
-    Client["React 18 + Vite Frontend\n(Tailwind CSS + Bento Grid)"]
-    API["FastAPI Asynchronous Gateway\n(/api/v1)"]
-    ONNX["ONNX Runtime Engine\nEfficientNet-B3 (121 Classes)\n<90MB RAM | <200ms CPU"]
-    DB[("PostgreSQL Database\n(SQLAlchemy ORM + psycopg2)")]
-    Geo["Geolocation Services\n(Haversine Distance Engine)"]
+ Client["React 18 + Vite Frontend\n(Tailwind CSS + Bento Grid)"]
+ API["FastAPI Asynchronous Gateway\n(/api/v1)"]
+ ONNX["ONNX Runtime Engine\nEfficientNet-B3 (121 Classes)\n<90MB RAM | <200ms CPU"]
+ DB[("PostgreSQL Database\n(SQLAlchemy ORM + psycopg2)")]
+ Geo["Geolocation Services\n(Haversine Distance Engine)"]
 
-    Client -->|"REST / Multipart Form (Image)"| API
-    API -->|"Preprocessed Tensor (300x300 NCHW)"| ONNX
-    ONNX -->|"Softmax Probabilities & Top-3 Logits"| API
-    API -->|"User, History, Conditions & Doctor Data"| DB
-    API -->|"Distance Matrix & Coordinates"| Geo
-    API -->|"JSON Response (Confidence, Risk, Guidance)"| Client
+ Client -->|"REST / Multipart Form (Image)"| API
+ API -->|"Preprocessed Tensor (300x300 NCHW)"| ONNX
+ ONNX -->|"Softmax Probabilities & Top-3 Logits"| API
+ API -->|"User, History, Conditions & Doctor Data"| DB
+ API -->|"Distance Matrix & Coordinates"| Geo
+ API -->|"JSON Response (Confidence, Risk, Guidance)"| Client
 ```
 
 ---
 
-## 🧠 Machine Learning Details
+## Machine Learning Details
 
 ### Architecture & Preprocessing
 * **Base Architecture:** `EfficientNet-B3` with Compound Scaling and Mobile Inverted Bottleneck Convolutions (MBConv).
@@ -109,7 +109,7 @@ flowchart TD
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 | :--- | :--- |
@@ -121,72 +121,72 @@ flowchart TD
 
 ---
 
-## 📂 Project Directory Structure
+## Project Directory Structure
 
 ```text
 Derm-AI/
 ├── backend/
-│   ├── app/
-│   │   ├── api/                     # REST API route controllers
-│   │   │   ├── auth.py              # User authentication & profile management
-│   │   │   ├── conditions.py        # Condition library endpoints
-│   │   │   ├── diagnose.py          # AI inference & image upload handlers
-│   │   │   ├── disease_search.py    # Instant condition search
-│   │   │   ├── doctors.py           # Geolocation doctor directory
-│   │   │   ├── history.py           # User diagnostic scan history
-│   │   │   └── progression.py       # Longitudinal tracking records
-│   │   ├── core/                    # App configuration, security & Firebase utils
-│   │   ├── db/                      # SQLAlchemy models, schemas, and connection pools
-│   │   ├── ml/                      # Inference engine & diagnostic framework
-│   │   │   ├── saved_model/         # ONNX model binary & 121-class mapping JSON
-│   │   │   │   ├── dermai_model.onnx
-│   │   │   │   └── idx_to_class.json
-│   │   │   ├── model.py             # Optimized ONNX inference pipeline
-│   │   │   └── voice_explainer.py   # Audio narration logic
-│   │   └── main.py                  # FastAPI application entrypoint & middleware
-│   ├── Dockerfile                   # Production backend container spec
-│   ├── requirements.txt             # Minimal, lightweight Python dependencies
-│   ├── seed_conditions.py          # Database seeding script for conditions
-│   └── seed_doctors.py             # Database seeding script for dermatologists
+│ ├── app/
+│ │ ├── api/ # REST API route controllers
+│ │ │ ├── auth.py # User authentication & profile management
+│ │ │ ├── conditions.py # Condition library endpoints
+│ │ │ ├── diagnose.py # AI inference & image upload handlers
+│ │ │ ├── disease_search.py # Instant condition search
+│ │ │ ├── doctors.py # Geolocation doctor directory
+│ │ │ ├── history.py # User diagnostic scan history
+│ │ │ └── progression.py # Longitudinal tracking records
+│ │ ├── core/ # App configuration, security & Firebase utils
+│ │ ├── db/ # SQLAlchemy models, schemas, and connection pools
+│ │ ├── ml/ # Inference engine & diagnostic framework
+│ │ │ ├── saved_model/ # ONNX model binary & 121-class mapping JSON
+│ │ │ │ ├── dermai_model.onnx
+│ │ │ │ └── idx_to_class.json
+│ │ │ ├── model.py # Optimized ONNX inference pipeline
+│ │ │ └── voice_explainer.py # Audio narration logic
+│ │ └── main.py # FastAPI application entrypoint & middleware
+│ ├── Dockerfile # Production backend container spec
+│ ├── requirements.txt # Minimal, lightweight Python dependencies
+│ ├── seed_conditions.py # Database seeding script for conditions
+│ └── seed_doctors.py # Database seeding script for dermatologists
 ├── frontend/
-│   ├── public/                      # Static assets & icons
-│   ├── src/
-│   │   ├── api/                     # Axios HTTP client configuration
-│   │   ├── components/              # Reusable UI components
-│   │   │   ├── DiagnosisResult.jsx  # Differential diagnosis & confidence visualizer
-│   │   │   ├── DoctorDirectory.jsx  # Nearby specialist listings
-│   │   │   ├── ImageUploader.jsx    # Drag-and-drop lesion uploader
-│   │   │   ├── MapView.jsx          # Interactive geolocation map
-│   │   │   ├── Navbar.jsx           # Application header & navigation
-│   │   │   ├── ProgressionTracker.jsx # Side-by-side progression timeline
-│   │   │   └── VoiceExplainer.jsx   # Multilingual audio explanation component
-│   │   ├── context/                 # AuthContext & global state providers
-│   │   ├── pages/                   # Application views
-│   │   │   ├── ConditionLibraryPage.jsx
-│   │   │   ├── DiagnosePage.jsx
-│   │   │   ├── DoctorsPage.jsx
-│   │   │   ├── HistoryPage.jsx
-│   │   │   ├── LandingPage.jsx
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── ProgressionPage.jsx
-│   │   │   ├── RegisterPage.jsx
-│   │   │   ├── SettingsPage.jsx
-│   │   │   └── SymptomChecker.jsx
-│   │   ├── App.jsx                  # Route definitions
-│   │   └── main.jsx                 # React root DOM mounting
-│   ├── package.json                 # Node.js dependencies & scripts
-│   ├── tailwind.config.js           # Design system configuration
-│   ├── vercel.json                  # Vercel SPA routing configuration
-│   └── vite.config.js               # Vite build configuration
-├── docker-compose.yml               # Multi-container local orchestration
-├── render.yaml                      # Render deployment specification
-├── .env.example                     # Environment variable template
-└── README.md                        # Documentation
+│ ├── public/ # Static assets & icons
+│ ├── src/
+│ │ ├── api/ # Axios HTTP client configuration
+│ │ ├── components/ # Reusable UI components
+│ │ │ ├── DiagnosisResult.jsx # Differential diagnosis & confidence visualizer
+│ │ │ ├── DoctorDirectory.jsx # Nearby specialist listings
+│ │ │ ├── ImageUploader.jsx # Drag-and-drop lesion uploader
+│ │ │ ├── MapView.jsx # Interactive geolocation map
+│ │ │ ├── Navbar.jsx # Application header & navigation
+│ │ │ ├── ProgressionTracker.jsx # Side-by-side progression timeline
+│ │ │ └── VoiceExplainer.jsx # Multilingual audio explanation component
+│ │ ├── context/ # AuthContext & global state providers
+│ │ ├── pages/ # Application views
+│ │ │ ├── ConditionLibraryPage.jsx
+│ │ │ ├── DiagnosePage.jsx
+│ │ │ ├── DoctorsPage.jsx
+│ │ │ ├── HistoryPage.jsx
+│ │ │ ├── LandingPage.jsx
+│ │ │ ├── LoginPage.jsx
+│ │ │ ├── ProgressionPage.jsx
+│ │ │ ├── RegisterPage.jsx
+│ │ │ ├── SettingsPage.jsx
+│ │ │ └── SymptomChecker.jsx
+│ │ ├── App.jsx # Route definitions
+│ │ └── main.jsx # React root DOM mounting
+│ ├── package.json # Node.js dependencies & scripts
+│ ├── tailwind.config.js # Design system configuration
+│ ├── vercel.json # Vercel SPA routing configuration
+│ └── vite.config.js # Vite build configuration
+├── docker-compose.yml # Multi-container local orchestration
+├── render.yaml # Render deployment specification
+├── .env.example # Environment variable template
+└── README.md # Documentation
 ```
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## Getting Started (Local Development)
 
 ### Prerequisites
 - **Node.js** (v18.0 or newer)
@@ -198,25 +198,25 @@ Derm-AI/
 ### Method A: Running with Docker Compose (Recommended)
 
 1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Vishwajeet2005/Derm-AI.git
-   cd Derm-AI
-   ```
+ ```bash
+ git clone https://github.com/Vishwajeet2005/Derm-AI.git
+ cd Derm-AI
+ ```
 
 2. **Configure environment variables:**
-   ```bash
-   cp .env.example .env
-   ```
+ ```bash
+ cp .env.example .env
+ ```
 
 3. **Build and launch containers:**
-   ```bash
-   docker-compose up --build
-   ```
+ ```bash
+ docker-compose up --build
+ ```
 
 4. **Access the applications:**
-   - **Frontend Web UI:** `http://localhost:3000`
-   - **Backend API Docs (Swagger):** `http://localhost:8000/docs`
-   - **PostgreSQL:** `localhost:5432`
+ - **Frontend Web UI:** `http://localhost:3000`
+ - **Backend API Docs (Swagger):** `http://localhost:8000/docs`
+ - **PostgreSQL:** `localhost:5432`
 
 ---
 
@@ -258,7 +258,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 📡 API Reference Overview
+## API Reference Overview
 
 | Method | Endpoint | Description | Auth Required |
 | :--- | :--- | :--- | :---: |
@@ -276,32 +276,32 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## ☁️ Deployment Guide
+## Deployment Guide
 
 ### Backend (Render)
 1. Link your GitHub repository to **Render**.
 2. Create a new **Web Service** using the Docker runtime (`backend/Dockerfile`).
 3. Set environment variables:
-   - `DATABASE_URL`: Your hosted PostgreSQL connection URI (e.g., Supabase, Neon, or Render PostgreSQL).
-   - `SECRET_KEY`: A secure random cryptographic key.
-   - `ALLOWED_ORIGINS`: Your production frontend domain (e.g., `https://dermai.vercel.app`).
+ - `DATABASE_URL`: Your hosted PostgreSQL connection URI (e.g., Supabase, Neon, or Render PostgreSQL).
+ - `SECRET_KEY`: A secure random cryptographic key.
+ - `ALLOWED_ORIGINS`: Your production frontend domain (e.g., `https://dermai.vercel.app`).
 4. The service will automatically bind and run with low memory usage (<90MB).
 
 ### Frontend (Vercel)
 1. Import the repository on **Vercel**.
 2. Set Root Directory to `frontend`.
 3. Set the build environment variable:
-   - `VITE_API_URL`: Your deployed Render backend URL (e.g., `https://dermai-backend.onrender.com`).
+ - `VITE_API_URL`: Your deployed Render backend URL (e.g., `https://dermai-backend.onrender.com`).
 4. Deploy! `vercel.json` will automatically manage SPA client-side route rewrites.
 
 ---
 
-## ⚠️ Clinical & Ethical Disclaimer
+## Clinical & Ethical Disclaimer
 
-> **IMPORTANT MEDICAL NOTICE:**  
+> **IMPORTANT MEDICAL NOTICE:** 
 > Derm-AI is designed strictly for **preliminary informational and triage screening purposes**. It is **not** a certified medical diagnostic device and does **not** replace the clinical judgment, diagnosis, or treatment plan of a board-certified dermatologist or medical professional. Any skin changes, non-healing lesions, or suspicious moles should be evaluated by a healthcare specialist immediately.
 
 ---
 
-## 📄 License
+## License
 This project is open-source and licensed under the **MIT License**.
