@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Search, BookOpen, AlertCircle, Info, Activity, ShieldAlert, Stethoscope } from 'lucide-react';
 import axiosClient from '../api/axiosClient';
 
@@ -60,60 +60,55 @@ export default function ConditionLibraryPage() {
           </form>
         </div>
 
-        {/* Results */}
-        <div className="space-y-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        {/* Results View */}
+        <div className="space-y-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           {hasSearched && results.length === 0 && !loading && (
-            <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-12 text-center border border-slate-100 dark:border-slate-800">
-              <BookOpen className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-[#18181b] dark:text-white mb-2">No results found</h3>
+            <div className="bg-white dark:bg-[#0f172a] border border-slate-100 dark:border-slate-800 rounded-[1.75rem] p-12 text-center shadow-sm">
+              <AlertCircle className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+              <h3 className="text-lg font-medium text-slate-800 dark:text-white mb-1">No matching conditions found</h3>
               <p className="text-slate-500 dark:text-slate-400">Try adjusting your search terms or checking for typos.</p>
             </div>
           )}
 
           {results.map((condition) => (
-            <div key={condition.id} className="bg-white dark:bg-[#0f172a] rounded-[1.75rem] border border-slate-100 dark:border-slate-800 shadow-sm p-8 transition-colors">
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h2 className="text-3xl font-light text-[#18181b] dark:text-white">{condition.condition_name}</h2>
-                    {condition.category === 'malignant' && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-widest border border-red-100 dark:border-red-900/50">
-                        <AlertCircle className="w-3.5 h-3.5" /> High Risk
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400">ICD Code: {condition.icd_code || 'N/A'}</p>
-                </div>
-                
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm border border-slate-100 dark:border-slate-700">
-                    Category: <span className="font-medium capitalize">{condition.category}</span>
-                  </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm border border-slate-100 dark:border-slate-700">
-                    Fitzpatrick: <span className="font-medium">{condition.fitzpatrick_spectrum}</span>
-                  </span>
-                </div>
-              </div>
+            <div 
+              key={condition.id} 
+              className="bg-white dark:bg-[#0f172a] rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.3)] p-8 lg:p-10 transition-colors"
+            >
+              <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
+                {/* Left Column: Details */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h2 className="text-3xl font-light text-[#18181b] dark:text-white mb-1">{condition.condition_name}</h2>
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">ICD Code: {condition.icd_code}</p>
+                    </div>
 
-              <div className="flex flex-col lg:flex-row gap-8">
-                {/* Left Column: Text Info */}
-                <div className="flex-1 space-y-8">
-                  {/* Overview */}
-                  <div className="bg-[#f8fafc] dark:bg-[#1e293b] p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
-                    <div className="flex items-start gap-3">
-                      <Info className="w-5 h-5 text-[#84a59d] flex-shrink-0 mt-0.5" />
-                      <p className="text-[15px] text-slate-600 dark:text-slate-300 leading-relaxed font-light">
-                        {condition.overview || condition.description || "No detailed clinical overview available for this condition."}
-                      </p>
+                    <div className="flex gap-2">
+                      <span className="px-3 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-medium capitalize">
+                        Category: <strong className="text-[#18181b] dark:text-white">{condition.category}</strong>
+                      </span>
+                      <span className="px-3 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-medium">
+                        Fitzpatrick: <strong className="text-[#18181b] dark:text-white">{condition.fitzpatrick_spectrum}</strong>
+                      </span>
                     </div>
                   </div>
 
+                  {/* Overview box */}
+                  <div className="bg-[#fafcff] dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/60 rounded-2xl p-6 mb-8 flex items-start gap-4">
+                    <Info className="w-5 h-5 text-[#84a59d] flex-shrink-0 mt-0.5" />
+                    <p className="text-slate-600 dark:text-slate-300 text-sm md:text-[15px] font-light leading-relaxed">
+                      {condition.overview}
+                    </p>
+                  </div>
+
+                  {/* Multi-column specs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Symptoms */}
                     {condition.symptoms && condition.symptoms.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 mb-4">
-                          <Activity className="w-4 h-4 text-rose-400" />
+                          <Activity className="w-4 h-4 text-rose-500" />
                           <h4 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Symptoms</h4>
                         </div>
                         <ul className="space-y-2">
@@ -165,11 +160,11 @@ export default function ConditionLibraryPage() {
                   </div>
                 </div>
 
-                {/* Right Column: Images */}
-                {condition.images && condition.images.length > 0 && (
-                  <div className="w-full lg:w-1/3 flex-shrink-0">
-                    <div className="sticky top-24">
-                      <h4 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">Reference Image</h4>
+                {/* Right Column: Reference Images */}
+                <div className="w-full lg:w-1/3 flex-shrink-0">
+                  <div className="sticky top-24">
+                    <h4 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">Reference Image</h4>
+                    {condition.images && condition.images.length > 0 ? (
                       <div className="flex flex-col gap-4">
                         {condition.images.map((img, idx) => (
                           <div key={idx} className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -177,9 +172,19 @@ export default function ConditionLibraryPage() {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    ) : (
+                      <div className="rounded-2xl p-6 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-center flex flex-col items-center justify-center min-h-[220px]">
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-3">
+                          <BookOpen className="w-6 h-6" />
+                        </div>
+                        <p className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-1">Clinical Plate Cataloging</p>
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500 font-light max-w-[200px] leading-relaxed">
+                          A verified dermatological reference photograph for this specific condition is being cataloged in our clinical atlas.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           ))}
@@ -188,5 +193,3 @@ export default function ConditionLibraryPage() {
     </div>
   );
 }
-
-

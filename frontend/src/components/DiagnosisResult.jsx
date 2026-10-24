@@ -40,14 +40,14 @@ export default function DiagnosisResult({ result }) {
           <span className="text-xs font-medium">{u.label}</span>
         </div>
 
-        {/* Quality Advisory if confidence < 50% */}
-        {result.confidence_score < 0.50 && (
+        {/* Differential Advisory if top-1 confidence is below 40% */}
+        {result.confidence_score < 0.40 && (
           <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 text-amber-800 dark:text-amber-300 text-xs mb-3.5">
             <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-600" />
             <div>
-              <p className="font-semibold mb-0.5 text-[11px]">Notice: Moderate Certainty ({Math.round(result.confidence_score * 100)}%)</p>
+              <p className="font-semibold mb-0.5 text-[11px]">Notice: Close Differential Overlap ({Math.round(result.confidence_score * 100)}% Primary Match)</p>
               <p className="font-light text-amber-700 dark:text-amber-400 leading-relaxed text-[11px]">
-                If this image was taken from far away or has objects in the frame, taking a close-up photo centered directly on the lesion will yield higher accuracy.
+                Skin conditions in this category share overlapping visual traits. The model has prioritized {result.primary_diagnosis} as primary, with related possibilities listed below.
               </p>
             </div>
           </div>

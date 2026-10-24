@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException
 import os
 import uuid
 import requests
@@ -12,25 +12,35 @@ logger = logging.getLogger(__name__)
 def fetch_wikipedia_image(query: str):
     headers = {'User-Agent': 'DermAI-Bot/1.0'}
     
-    # Try exact match with redirects
+    # 1. Try exact article match
     try:
         url_exact = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&redirects=1&titles=' + urllib.parse.quote(query)
-        res = requests.get(url_exact, headers=headers, timeout=5)
+        res = requests.get(url_exact, headers=headers, timeout=4)
         pages = res.json().get('query', {}).get('pages', {})
         for _, p in pages.items():
-            if 'original' in p:
-                return [p['original']['source']]
-    except Exception as e:
+            title = p.get('title', '').lower()
+            if 'list of' in title or 'index of' in title:
+                continue
+            if 'original' in p and p['original']['source']:
+                src = p['original']['source']
+                if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo']):
+                    return [src]
+    except Exception:
         pass
 
-    # Try search generator
+    # 2. Try specific dermatology query
     try:
-        url_search = 'https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=' + urllib.parse.quote(query) + '&gsrlimit=1&prop=pageimages&format=json&piprop=original'
-        res = requests.get(url_search, headers=headers, timeout=5)
+        url_search = 'https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=' + urllib.parse.quote(f"{query} cutaneous") + '&gsrlimit=3&prop=pageimages&format=json&piprop=original'
+        res = requests.get(url_search, headers=headers, timeout=4)
         pages = res.json().get('query', {}).get('pages', {})
         for _, p in pages.items():
-            if 'original' in p:
-                return [p['original']['source']]
+            title = p.get('title', '').lower()
+            if 'list of' in title or 'index of' in title:
+                continue
+            if 'original' in p and p['original']['source']:
+                src = p['original']['source']
+                if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo']):
+                    return [src]
     except Exception as e:
         logger.error(f"Wikipedia search API error: {e}")
         
@@ -85,10 +95,9 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
     
     if not images and cond_name.lower() != q.lower():
         images = fetch_wikipedia_image(q)
-        
-    # Final fallback if Wikipedia has absolutely nothing
-    if not images:
-        images = ["https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"]
+
+    # Note: If no authentic medical photo is found on Wikipedia, we return an empty list.
+    # The frontend will render an appropriate clinical placeholder rather than an unrelated stock image.
 
     condition_record = {
         "id": str(uuid.uuid4()),
@@ -102,6 +111,5 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
         "treatment": structured_data.get("treatment", []),
         "images": images
     }
-    
-    return {"data": [condition_record]}
 
+    return {"data": [condition_record]}
