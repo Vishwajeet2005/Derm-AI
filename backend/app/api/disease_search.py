@@ -9,26 +9,59 @@ import urllib.parse
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-def fetch_wikipedia_image(query: str):
-    headers = {'User-Agent': 'DermAI-Bot/1.0'}
-    
-    # 1. Try exact article match
-    try:
-        url_exact = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&redirects=1&titles=' + urllib.parse.quote(query)
-        res = requests.get(url_exact, headers=headers, timeout=4)
-        pages = res.json().get('query', {}).get('pages', {})
-        for _, p in pages.items():
-            title = p.get('title', '').lower()
-            if 'list of' in title or 'index of' in title:
-                continue
-            if 'original' in p and p['original']['source']:
-                src = p['original']['source']
-                if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo']):
-                    return [src]
-    except Exception:
-        pass
+# Specialized Clinical Dermatology Search Synonyms
+# Maps general disease terms to specific dermatological entity pages containing verified skin photography
+DERM_SYNONYMS = {
+    'mucinosis': ['Pretibial myxedema', 'Cutaneous mucinosis', 'Myxedema'],
+    'folliculitis': ['Isolated folliculitis', 'Folliculitis'],
+    'pityriasis rosea': ['Pityriasis rosea'],
+    'sarcoidosis': ['Lupus pernio', 'Cutaneous sarcoidosis'],
+    'eczema': ['Atopic dermatitis', 'Dermatitis'],
+    'acne': ['Acne vulgaris'],
+    'rosacea': ['Rosacea'],
+    'vitiligo': ['Vitiligo'],
+    'psoriasis': ['Psoriasis on back1', 'Psoriasis'],
+    'melanoma': ['Melanoma'],
+    'basal cell carcinoma': ['Basal-cell carcinoma', 'Basal cell carcinoma'],
+    'squamous cell carcinoma': ['Squamous-cell skin cancer'],
+    'lichen planus': ['Lichen planus'],
+    'urticaria': ['Hives'],
+    'scabies': ['Scabies'],
+    'shingles': ['Herpes zoster'],
+    'seborrheic keratosis': ['Seborrheic keratosis'],
+    'actinic keratosis': ['Actinic keratosis']
+}
 
-    # 2. Try specific dermatology query
+def fetch_wikipedia_image(query: str):
+    headers = {'User-Agent': 'DermAI-Bot/1.0 (contact@dermai.org)'}
+    
+    clean_q = query.lower().strip()
+    candidate_terms = [query]
+    
+    # Check if we have specialized dermatology synonyms
+    for k, syn_list in DERM_SYNONYMS.items():
+        if k in clean_q or clean_q in k:
+            candidate_terms = syn_list + candidate_terms
+            break
+
+    # 1. Try exact match on candidates
+    for term in candidate_terms:
+        try:
+            url_exact = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&redirects=1&titles=' + urllib.parse.quote(term)
+            res = requests.get(url_exact, headers=headers, timeout=4)
+            pages = res.json().get('query', {}).get('pages', {})
+            for _, p in pages.items():
+                title = p.get('title', '').lower()
+                if 'list of' in title or 'index of' in title:
+                    continue
+                if 'original' in p and p['original']['source']:
+                    src = p['original']['source']
+                    if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo', 'x-ray', 'radiograph']):
+                        return [src]
+        except Exception:
+            pass
+
+    # 2. Try search generator fallback
     try:
         url_search = 'https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=' + urllib.parse.quote(f"{query} cutaneous") + '&gsrlimit=3&prop=pageimages&format=json&piprop=original'
         res = requests.get(url_search, headers=headers, timeout=4)
@@ -39,7 +72,7 @@ def fetch_wikipedia_image(query: str):
                 continue
             if 'original' in p and p['original']['source']:
                 src = p['original']['source']
-                if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo']):
+                if not any(bad in src.lower() for bad in ['.svg', 'flag', 'symbol', 'icon', 'logo', 'x-ray', 'radiograph']):
                     return [src]
     except Exception as e:
         logger.error(f"Wikipedia search API error: {e}")
@@ -95,9 +128,6 @@ Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
     
     if not images and cond_name.lower() != q.lower():
         images = fetch_wikipedia_image(q)
-
-    # Note: If no authentic medical photo is found on Wikipedia, we return an empty list.
-    # The frontend will render an appropriate clinical placeholder rather than an unrelated stock image.
 
     condition_record = {
         "id": str(uuid.uuid4()),
