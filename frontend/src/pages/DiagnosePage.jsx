@@ -36,59 +36,65 @@ export default function DiagnosePage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] py-16 transition-colors">
-      <div className="section-container">
-        {/* Header */}
-        <div className="mb-14 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
-          <p className="text-sm font-medium text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-3">Skin assessment</p>
-          <h1 className="text-4xl font-light text-[#18181b] dark:text-white mb-3">Analyze your skin concern</h1>
-          <p className="text-lg text-slate-500 dark:text-slate-400 font-light max-w-xl">
-            Upload a clear, well-lit photograph of the affected area. Our system will provide an instant assessment.
+    <div className="min-h-[calc(100vh-72px)] bg-[#fafcff] dark:bg-[#020617] py-4 lg:py-6 transition-colors flex flex-col justify-start">
+      <div className="section-container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Compact Desktop Header */}
+        <div className="mb-4 lg:mb-5 animate-fade-in-up" style={{ animationDelay: '0.1s', opacity: 0 }}>
+          <p className="text-xs font-semibold text-[#6b8c84] dark:text-teal-400 tracking-widest uppercase mb-1">Skin Assessment</p>
+          <h1 className="text-2xl lg:text-3xl font-light text-[#18181b] dark:text-white mb-1">Analyze your skin concern</h1>
+          <p className="text-xs lg:text-sm text-slate-500 dark:text-slate-400 font-light max-w-xl">
+            Upload a clear, well-lit photograph centered on the affected area for instant AI evaluation.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8 items-start">
           {/* Upload column */}
-          <div className="space-y-5 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
-            <div className="bg-white dark:bg-[#0f172a] rounded-[1.75rem] p-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800 transition-colors">
+          <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
+            <div className="bg-white dark:bg-[#0f172a] rounded-[1.5rem] p-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800 transition-colors">
               <ImageUploader onImageUpload={handleImageUpload} selectedImage={selectedImage} />
             </div>
 
             {selectedImage && !result && (
-              <button onClick={handleDiagnose} disabled={loading} className="btn-primary w-full">
+              <button 
+                onClick={handleDiagnose} 
+                disabled={loading} 
+                className="btn-primary w-full py-3 text-sm font-medium rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
+              >
                 {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing...</>
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing Skin Lesion...</>
                 ) : (
-                  <><Upload className="w-5 h-5" /> Analyze Skin Condition</>
+                  <><Upload className="w-4 h-4" /> Analyze Skin Condition</>
                 )}
               </button>
             )}
 
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-sm font-medium border border-red-100 dark:border-red-900/50">{error}</div>
+              <div className="bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 px-4 py-2.5 rounded-xl text-xs font-medium border border-rose-100 dark:border-rose-900/50">
+                {error}
+              </div>
             )}
           </div>
 
           {/* Results column */}
           <div className="animate-fade-in-up" style={{ animationDelay: '0.3s', opacity: 0 }}>
             {loading ? (
-              <div className="h-full min-h-[420px] flex flex-col items-center justify-center bg-white rounded-[1.75rem] border border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-                <div className="w-14 h-14 relative mb-6">
-                  <div className="absolute inset-0 rounded-full border-[3px] border-slate-100" />
+              <div className="h-[340px] lg:h-[370px] flex flex-col items-center justify-center bg-white dark:bg-[#0f172a] rounded-[1.5rem] border border-slate-100 dark:border-slate-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <div className="w-12 h-12 relative mb-4">
+                  <div className="absolute inset-0 rounded-full border-[3px] border-slate-100 dark:border-slate-800" />
                   <div className="absolute inset-0 rounded-full border-[3px] border-[#84a59d] border-t-transparent animate-spin" />
                 </div>
-                <h3 className="text-lg font-medium text-[#18181b] mb-1">Analyzing your photo</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 font-light">This usually takes a few seconds.</p>
+                <h3 className="text-base font-medium text-[#18181b] dark:text-white mb-1">Analyzing your photograph</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-light">Comparing against 121 conditions...</p>
               </div>
             ) : result ? (
               <DiagnosisResult result={result} />
             ) : (
-              <div className="h-full min-h-[420px] flex flex-col items-center justify-center bg-white/60 border-2 border-dashed border-slate-200 rounded-[1.75rem]">
-                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-5 text-slate-300">
-                  <FileSearch className="w-7 h-7" strokeWidth={1.5} />
+              <div className="h-[280px] lg:h-[320px] flex flex-col items-center justify-center bg-white/60 dark:bg-[#0f172a]/60 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[1.5rem] p-6 text-center">
+                <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-3 text-slate-300 dark:text-slate-600">
+                  <FileSearch className="w-6 h-6" strokeWidth={1.5} />
                 </div>
-                <p className="text-slate-400 font-light text-center text-sm leading-relaxed">
-                  Your assessment will appear here<br />after uploading a photo.
+                <p className="text-slate-500 dark:text-slate-400 font-light text-xs lg:text-sm leading-relaxed max-w-xs">
+                  Your diagnostic assessment, confidence score, and clinical guidance will appear here.
                 </p>
               </div>
             )}
@@ -98,4 +104,3 @@ export default function DiagnosePage() {
     </div>
   );
 }
-
