@@ -9,14 +9,19 @@ router = APIRouter()
 @router.get("")
 def get_history(
     page: int = 1,
-    limit: int = 20,
+    limit: int = 100,
+    condition: str = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     skip = (page - 1) * limit
+    query = db.query(Diagnosis).filter(Diagnosis.user_id == current_user.id)
+    
+    if condition and condition != "All":
+        query = query.filter(Diagnosis.primary_diagnosis.ilike(f"%{condition}%"))
+        
     diagnoses = (
-        db.query(Diagnosis)
-        .filter(Diagnosis.user_id == current_user.id)
+        query
         .order_by(Diagnosis.created_at.desc())
         .offset(skip)
         .limit(limit)

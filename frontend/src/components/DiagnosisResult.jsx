@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ShieldAlert, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import VoiceExplainer from './VoiceExplainer';
 
 export default function DiagnosisResult({ result }) {
@@ -35,16 +36,27 @@ export default function DiagnosisResult({ result }) {
         <p id="diagnosis-explanation-text" className="text-[15px] text-slate-600 dark:text-slate-300 font-light leading-relaxed mb-6">{result.explanation_text}</p>
 
         <VoiceExplainer text={result.explanation_text} />
+
+        {/* Action: Track Progression for this specific condition */}
+        <div className="mt-6">
+          <Link
+            to={`/progression?condition=${encodeURIComponent(result.primary_diagnosis)}`}
+            className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl text-xs md:text-sm font-medium text-[#6b8c84] dark:text-teal-400 bg-[#f0f5f3] dark:bg-teal-900/30 hover:bg-[#e2ece8] dark:hover:bg-teal-900/50 border border-[#dce8e3] dark:border-teal-800/40 transition-all duration-200 shadow-sm"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Track Progression for {result.primary_diagnosis}
+          </Link>
+        </div>
       </div>
 
       {/* Differentials */}
-      <div className="bg-[#f8fafc] p-8 mt-6 border-t border-slate-100">
+      <div className="bg-[#f8fafc] dark:bg-slate-800/50 p-8 mt-6 border-t border-slate-100 dark:border-slate-800">
         <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-5">Other possibilities</p>
         <div className="space-y-3">
           {result.top_3_candidates?.map((c, i) => (
-            <div key={i} className="flex items-center justify-between px-4 py-3 bg-white rounded-xl border border-slate-100 transition-shadow hover:shadow-sm">
-              <span className="text-sm font-medium text-[#27272a]">{c.class_name}</span>
-              <span className="text-xs font-medium text-slate-500 bg-slate-50 px-2.5 py-1 rounded-md">{Math.round(c.confidence * 100)}%</span>
+            <div key={i} className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#0f172a] rounded-xl border border-slate-100 dark:border-slate-800 transition-shadow hover:shadow-sm">
+              <span className="text-sm font-medium text-[#27272a] dark:text-slate-200">{c.class_name}</span>
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-2.5 py-1 rounded-md">{Math.round(c.confidence * 100)}%</span>
             </div>
           ))}
         </div>
@@ -52,4 +64,3 @@ export default function DiagnosisResult({ result }) {
     </div>
   );
 }
-
